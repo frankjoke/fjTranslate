@@ -16,7 +16,8 @@
           :right="right"
           :left="left"
           v-bind="iconAttr"
-        >{{ img }}</v-icon>
+          v-text="img"
+        />
         <span v-if="!!label">{{ label | tt }}</span>
         <v-icon
           dense
@@ -24,7 +25,8 @@
           :right="right"
           :left="left"
           v-bind="iconAttr"
-        >{{ img }}</v-icon>
+          v-text="img"
+        />
       </v-btn>
     </template>
     <span>{{ tooltip | tt }}</span>
@@ -38,7 +40,8 @@
       :left="left"
       v-bind="iconAttr"
       @click="click($event)"
-    >{{ img }}</v-icon>
+      v-text="img"
+    />
     {{ label | tt }}
     <v-icon
       dense
@@ -47,15 +50,27 @@
       :left="left"
       v-bind="iconAttr"
       @click="click($event)"
-    >{{ img }}</v-icon>
+      v-text="img"
+    />
     <slot></slot>
   </v-btn>
-  <v-icon v-else-if="img" :disabled="disabled" :right="right" :left="left" v-bind="iconAttr" @click="click($event)">
-    {{
-    img
-    }}
-  </v-icon>
-  <v-icon v-else :disabled="disabled" :right="right" :left="left" v-bind="iconAttr" @click="click($event)">
+  <v-icon
+    v-else-if="img"
+    :disabled="disabled"
+    :right="right"
+    :left="left"
+    v-bind="iconAttr"
+    @click="click($event)"
+    v-text="img"
+  />
+  <v-icon
+    v-else
+    :disabled="disabled"
+    :right="right"
+    :left="left"
+    v-bind="iconAttr"
+    @click="click($event)"
+  >
     <slot></slot>
   </v-icon>
 </template>

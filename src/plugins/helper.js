@@ -119,9 +119,6 @@ const helper = {
       }
       return text;
     },
-    vConfirm(text, action, ...args) {
-      this.$confirm(text).then(res => (res ? action(...args) : null));
-    },
     wait(time) {
       var timer;
       const that = this;
@@ -132,6 +129,14 @@ const helper = {
           return res();
         }, time);
       });
+    },
+    mapSetObject(obj) {
+      const nobj = Object.assign({}, obj);
+      for (var k of Object.keys(nobj)) {
+        const val = nobj[k];
+        if (nobj.hasOwnProperty(k));
+          this.$set(obj, k, val);
+      }
     },
     alert(text) {
       if (!this.$alert) return console.log("alert", text);

@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar fixed app color="primary" dark>
+    <v-app-bar fixed app color="primary" dark class="py-0 my-0">
       <div class="d-flex align-center">
         <v-img
           alt="webtranslate logo"
@@ -27,14 +27,14 @@
       </div>
 
       <v-spacer></v-spacer>
-      <FjAlerts :offsetX="-100" :offsetY="20"></FjAlerts>
+      <FjAlerts :offsetX="-100" :offsetY="20" />
       <ConfigForm
         title="Configure settings:"
-        icon="mdi-settings"
+        icon="mdi-cog"
         v-model="config"
         text
         @click="showConfigForm = true"
-        img="mdi-settings"
+        img="mdi-cog"
         label="edit settings"
         tooltip="Edit program settings..."
       />
@@ -58,17 +58,6 @@
             ></FjFileLoadButton>
           </v-col>
           <v-col cols="2">
-            <FjB
-              justify="center"
-              iconleft
-              img="mdi-folder-star"
-              label="edit words"
-              :disabled="!wordContent || editContent === wordContent"
-              x-small
-              @click="editContent = wordContent"
-            />
-          </v-col>
-          <v-col cols="2">
             <FjFileSaveButton
               justify="center"
               iconleft
@@ -76,20 +65,16 @@
               img="mdi-folder-download"
               label="save words"
               :opts="config.editWordsFile"
-              :content="wordContent"
-              :disabled="!wordContent || !changedWords"
+              :content="editContent"
+              :disabled="!editContent || !changedWords"
             />
           </v-col>
           <v-col cols="6">
             <!--             <v-text-field dense readonly :value="config.editWordsFile.name" solo flat class="ma-0 "></v-text-field>
             -->
             <div v-if="config.editWordsFile.name" align="top" justify="left">
-              <div style="line-height: 0.6rem" class="caption">
-                Words Filename:
-              </div>
-              <div class="subtitle-2" style="line-height: 0.8rem">
-                {{ config.editWordsFile.name }}
-              </div>
+              <div style="line-height: 0.6rem" class="caption">Words Filename:</div>
+              <div class="subtitle-2" style="line-height: 0.8rem">{{ config.editWordsFile.name }}</div>
             </div>
           </v-col>
         </v-row>
@@ -106,17 +91,6 @@
             ></FjFileLoadButton>
           </v-col>
           <v-col cols="2">
-            <FjB
-              justify="center"
-              iconleft
-              img="mdi-briefcase-check"
-              label="edit global"
-              :disabled="!globalContent || editContent === globalContent"
-              x-small
-              @click="editContent = globalContent"
-            />
-          </v-col>
-          <v-col cols="2">
             <FjFileSaveButton
               justify="center"
               iconleft
@@ -130,12 +104,8 @@
           </v-col>
           <v-col cols="6">
             <div v-if="config.globalWordsFile.name" align="top" justify="left">
-              <div style="line-height: 0.6rem" class="caption">
-                Global Filename:
-              </div>
-              <div class="subtitle-2" style="line-height: 0.8rem">
-                {{ config.globalWordsFile.name }}
-              </div>
+              <div style="line-height: 0.6rem" class="caption">Global Filename:</div>
+              <div class="subtitle-2" style="line-height: 0.8rem">{{ config.globalWordsFile.name }}</div>
             </div>
           </v-col>
         </v-row>
@@ -154,33 +124,18 @@
               calculate-widths
             >
               <template v-slot:top>
-                <v-toolbar flat>
-                  <v-toolbar-title>
-                    <v-icon v-if="editKeys.length">
-                      {{
-                        editContent === wordContent
-                          ? "mdi-folder-star"
-                          : "mdi-briefcase-check"
-                      }}
-                    </v-icon>
-                    <span class="subtitle-2">
-                      {{
-                        editContent === wordContent
-                          ? "Words"
-                          : editContent === globalContent
-                          ? "Global"
-                          : ""
-                      }}
-                      Translation File
-                    </span>
-                  </v-toolbar-title>
+                <v-system-bar window light class="pb-2">
+                  <v-icon v-if="editKeys.length" left>mdi-folder-star</v-icon>
+                  <span class="subtitle-2">Words Translation File</span>
                   <v-spacer></v-spacer>
                   <v-text-field
+                    class="body-2"
                     v-model="editSearch"
                     append-icon="mdi-magnify"
                     label="Search in keys"
                     single-line
                     hide-details
+                    dense
                   ></v-text-field>
                   <v-dialog v-model="addDialog" max-width="500px">
                     <template v-slot:activator="{ on }">
@@ -217,22 +172,12 @@
 
                       <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn
-                          color="primary darken-1"
-                          text
-                          @click="closeEditAdd"
-                          >Cancel</v-btn
-                        >
-                        <v-btn
-                          color="primary darken-1"
-                          text
-                          @click="saveEditAdd"
-                          >Save</v-btn
-                        >
+                        <v-btn color="primary darken-1" text @click="closeEditAdd">Cancel</v-btn>
+                        <v-btn color="primary darken-1" text @click="saveEditAdd">Save</v-btn>
                       </v-card-actions>
                     </v-card>
                   </v-dialog>
-                </v-toolbar>
+                </v-system-bar>
               </template>
               <template v-slot:item.langs="props">
                 <span class="caption">
@@ -278,7 +223,7 @@
                 </v-edit-dialog>
               </template>
               <template v-slot:expanded-item="{ headers }">
-                <td :colspan="headers.length" style="background-color: white;">
+                <td :colspan="headers.length" style="background-color: white;" class="pl-4 pr-0">
                   <v-card class="ml-2 pa-1">
                     <v-data-table
                       :headers="langsHeaders"
@@ -287,27 +232,24 @@
                       dense
                     >
                       <template v-slot:top>
-                        <v-toolbar
-                          dense
-                          flat
-                          color="grey lighten-2"
-                          style="height: 40px;"
-                        >
-                          <v-toolbar-title class="body-2">
-                            {{ "Edit Languages for key:" | tt }}
-                          </v-toolbar-title>
-                          <span class="ml-2 caption">
-                            {{ "'" + editExpand.key + "'" }}
-                          </span>
+                        <v-system-bar window light color="grey lighten-2">
+                          <div class="grey--text text--darken-4">
+                            <span class="ml-2 body-2">{{ "Edit Languages for key:" | tt }}</span>
+                            <span class="ml-2 caption">{{ "'" + editExpand.key + "'" }}</span>
+                          </div>
                           <v-spacer></v-spacer>
                           <FjB
-                            :disabled="editExpand.langs.indexOf(devLocale) < 0"
+                            :disabled="
+                              editExpand.langs.indexOf(devLocale) < 0 ||
+                                editDialog.showTrans
+                            "
+                            :loading="editDialog.showTrans"
                             color="primary darken-1"
-                            class="mb-2"
                             text
                             label="Re-translate all"
                             img="mdi-translate"
                             @click.stop="editDialog.retranslateAll(devLocale)"
+                            small
                           ></FjB>
                           <FjB
                             :disabled="
@@ -315,7 +257,6 @@
                             "
                             color="primary darken-1"
                             text
-                            class="mb-2"
                             small
                             label="Add Language"
                             img="mdi-map-marker-plus"
@@ -330,9 +271,9 @@
                               <v-card-title>
                                 <span class="headline">
                                   {{
-                                    editDialog.createNew
-                                      ? "New Language Item"
-                                      : "Edit Language Item"
+                                  editDialog.createNew
+                                  ? "New Language Item"
+                                  : "Edit Language Item"
                                   }}
                                 </span>
                               </v-card-title>
@@ -400,38 +341,31 @@
                               </v-card-actions>
                             </v-card>
                           </v-dialog>
-                        </v-toolbar>
+                        </v-system-bar>
                       </template>
-                      <template v-slot:item.action="{ item }">
-                        <FjB
-                          v-if="!item.wait"
-                          small
-                          color="primary darken-1"
-                          img="mdi-google-translate"
-                          @click="translateDialogItem(item)"
-                        />
-                        <v-progress-circular
-                          v-if="item.wait"
-                          :size="16"
-                          color="primary darken-1"
-                          :width="2"
-                          indeterminate
-                        ></v-progress-circular>
-                        <FjB
-                          right
-                          small
-                          color="error darken-3"
-                          img="mdi-delete"
-                          @click="deleteDialogItem(item)"
-                        />
+                      <template v-slot:item.lang="{ item }">
+                        <span
+                          :class="
+                            item.lang === devLocale ? 'subtitle-2' : 'caption'
+                          "
+                        >{{ item.lang }}</span>
                       </template>
                       <template v-slot:item.translation="{ item }">
                         <textarea
-                          class="caption"
+                          class="caption mt-1"
+                          :style="
+                            'height: ' +
+                              Math.ceil(
+                                editContent[editExpand.key][item.lang].length /
+                                  100.0
+                              ) *
+                                20 +
+                              'px'
+                          "
                           :rows="
                             Math.ceil(
                               editContent[editExpand.key][item.lang].length /
-                                80.0
+                                100.0
                             )
                           "
                           v-model="editContent[editExpand.key][item.lang]"
@@ -447,13 +381,28 @@
                         </div>
                         -->
                       </template>
-                      <template v-slot:item.lang="{ item }">
-                        <span
-                          :class="
-                            item.lang === devLocale ? 'subtitle-2' : 'caption'
-                          "
-                          >{{ item.lang }}</span
-                        >
+                      <template v-slot:item.action="{ item }">
+                        <FjB
+                          v-if="!item.wait"
+                          small
+                          color="primary darken-1"
+                          img="mdi-google-translate"
+                          @click="translateDialogItem(item)"
+                        />
+                        <v-progress-circular
+                          v-else
+                          :size="16"
+                          color="primary darken-1"
+                          :width="2"
+                          indeterminate
+                        ></v-progress-circular>&nbsp;
+                        <FjB
+                          right
+                          small
+                          color="error darken-3"
+                          img="mdi-delete"
+                          @click="deleteDialogItem(item)"
+                        />
                       </template>
                     </v-data-table>
                   </v-card>
@@ -463,12 +412,13 @@
           </v-col>
         </v-row>
       </v-container>
-      {{ tiv }}
       <span class="primary mx-1 lighten-4">primary</span>
-      <span class="success mx-1">success</span>
-      <span class="error mx-1">error</span>
-      <span class="warning mx-1">warning</span>
+      <span class="success lighten-4 mx-1">success</span>
+      <span class="error lighten-4 mx-1">error</span>
+      <span class="warning lighten-4 mx-1">warning</span>
+      <span class="info lighten-4 mx-1">info</span>
     </v-content>
+    <FjConfirm />
   </v-app>
 </template>
 
@@ -481,10 +431,12 @@ const gTranslate = setCORS("http://cors-anywhere.herokuapp.com/");
 
 import YandexTranslator from "yandex-translator";
 import config from "@/assets/config";
+import FjConfirm from "./components/FjConfirm";
 
 export default {
   name: "App",
   mixins: [helperMixin],
+  components: { FjConfirm },
   data() {
     const that = this;
     return {
@@ -499,6 +451,7 @@ export default {
         translation: "",
         otranslation: "",
         createNew: false,
+        showTrans: false,
         testcall() {
           console.log("testcall:", that.editDialog);
           that.editDialog.cancel();
@@ -535,7 +488,11 @@ export default {
               .then(() =>
                 that
                   .translate(key, ed.lang)
-                  .then(res => (that.editDialog.translation = res))
+                  .then(res =>
+                    res
+                      ? (that.editDialog.translation = res)
+                      : that.$alert("warning:No translation!")
+                  )
               )
               .catch(e => that.alert(`error: in translation: ${e}`));
           }
@@ -546,29 +503,37 @@ export default {
           const toLangs = that.config.allLocales.filter(
             x => x !== that.devLocale
           );
-          const text = that.editContent[that.editExpand.key][that.devLocale];
-          if (!text)
-            return that.$alert(
-              `error:Problem with key '${that.editExpand.key}' and language '${that.devLocale}'`
-            );
-          that.vConfirm(
-            `Do you really want to add/renew all languages from '${that.devLocale}'?`,
-            () =>
-              Promise.all(
-                toLangs.map(l =>
-                  that.translate(text, l).then(r => ({ res: r, lang: l}))
+          that.$set(ed, "showTrans", true);
+          that
+            .$fjConfirm(
+              `Add/Renew::Do you really want to add/renew all languages for<br><strong>${ed.key}</strong>from '<strong>${that.devLocale}</strong>'?`
+            )
+            .then(
+              res =>
+                res &&
+                Promise.all(
+                  toLangs.map(l =>
+                    that
+                      .translate(that.editExpand.key, l)
+                      .then(r =>
+                        that.$nextTick().then(() => ({ res: r, lang: l }))
+                      )
+                  )
                 )
-              ).then(res => {
-                for (var r of res) {
-                  console.log(r);
-                  that.$set(
-                    that.editContent[that.editExpand.key],
-                    r.lang,
-                    r.res
-                  );
-                }
-              })
-          );
+                  .then(res => {
+                    for (var r of res) {
+                      console.log(r);
+                      if (r.res)
+                        that.$set(
+                          that.editContent[that.editExpand.key],
+                          r.lang,
+                          r.res
+                        );
+                    }
+                  })
+                  .catch(e => that.$alert("error:Translation failure!"))
+            )
+            .then(() => that.$set(ed, "showTrans", false));
         }
       },
       //      time: new Date().toISOString(),
@@ -604,15 +569,16 @@ export default {
           value: "lang",
           align: "center",
           sortable: false,
-          width: "100"
+          width: "80"
         },
         {
           text: "Translation",
           value: "translation",
           align: "start",
-          sortable: false
+          sortable: false,
           //          class: "caption"
           //          width: "80%"
+          width: "100%"
         },
         {
           text: "Actions",
@@ -620,15 +586,14 @@ export default {
           align: "end",
           sortable: false,
           //          class: "caption"
-          width: "80"
+          width: "75"
         }
       ],
-      wordContent: null,
+      //      wordContent: null,
       wordCompare: "",
       globalCompare: "",
-      tiv: "just now",
       globalContent: null,
-      editContent: {},
+      editContent: null,
       editWhat: null,
       yandex: {
         yandex: null,
@@ -661,27 +626,26 @@ export default {
       ed.dialog = true;
     },
     editRemoveKey(props) {
-      console.log("removeKey:", props.item.key);
-      this.vConfirm(
-        "Do you really want to delete<br>'<strong>" +
+      //      console.log("removeKey:", props.item.key);
+      return this.$fjConfirm(
+        "Delete::Do you really want to delete<br>'<strong>" +
           props.item.key +
           "</strong>'?",
-        key => this.$delete(this.editContent, key),
-        props.item.key
-      );
+        { color: "error darken-2", okColor: "error darken-2" }
+      ).then(res => res && this.$delete(this.editContent, props.item.key));
     },
     deleteDialogItem(item) {
       const key = this.editExpand.key;
       const lang = item.lang;
-      console.log("removelanguage:", lang, key);
-      this.vConfirm(
-        "Do you really want to delete<br>'<strong>" +
+      //      console.log("removelanguage:", lang, key);
+      return this.$fjConfirm(
+        "Delete::Do you really want to delete<br>'<strong>" +
           lang +
-          "</strong> from '<strong>" +
+          "</strong>' from '<strong>" +
           key +
           "</strong>?",
-        () => this.$delete(this.editContent[key], lang)
-      );
+        { color: "error darken-2", okColor: "error darken-2" }
+      ).then(res => res && this.$delete(this.editContent[key], lang));
     },
     translateDialogItem(item, index) {
       index = index || 0;
@@ -689,20 +653,21 @@ export default {
       const lang = item.lang;
       const devLang = this.devLocale;
       const devText = this.editContent[key][devLang];
-      if (!devText)
-        return this.alert(
-          "Cannot translate empty Text without devLocale text available!"
-        );
+      if (!devText || devText === key)
+        this.$alert("Key = devLang text: '" + key + "'");
       if (lang !== devLang) {
         item.wait = true;
         return this.wait().then(() =>
-          this.translate(devText, lang)
+          this.translate(key, lang)
             .then(res => this.$set(this.editContent[key], lang, res))
             .catch(e => this.alert(`error: in translation: ${e}`))
             .then(() => (item.wait = false))
+            .then(() => this.$nextTick())
         );
       } else {
-        return this.alert("warning: Need to be implemented!");
+        return this.$fjConfirm("Translate: Should all be translated?").then(
+          res => res && this.alert("warning: Need to be implemented!")
+        );
       }
     },
     editDialogSave() {
@@ -720,15 +685,8 @@ export default {
     },
     loadWords(t) {
       t = this.checkContent(t);
-      this.wordContent = t;
+      this.editContent = t;
       this.wordCompare = JSON.stringify(t);
-      if (
-        !Object.keys(this.editContent).length &&
-        Object.keys(this.wordContent).length
-      )
-        this.$nextTick(() => {
-          this.editContent = this.wordContent;
-        });
     },
     loadGlobal(t) {
       t = this.checkContent(t);
@@ -763,22 +721,42 @@ export default {
       this.editedItem.name = "";
     },
     translateKey(key, to) {
-      if (
-        this.editContent !== this.wordContent &&
+      return (
         this.globalContent &&
+        key &&
+        to &&
         this.globalContent[key] &&
         this.globalContent[key][to]
-      )
-        return Promise.resolve(this.globalContent[key][to]);
+      );
     },
-    translate(text, to, from) {
-      from = from || this.devLocale || "auto";
-      return this.anyTranslate({ text, from, to }).then(res => {
-        return res ? res.text : "";
+    translate(key, to) {
+      const tk = this.translateKey(key, to);
+      if (tk) {
+        console.log("globalFile returned:", tk);
+        return Promise.resolve(tk);
+      }
+      return this.anyTranslate({
+        text: this.editContent[key][this.devLocale],
+        from: this.devLocale || "auto",
+        to
+      }).then(res => {
+        if (res) res = res.text;
+        if (res && this.globalContent) {
+          let gc = this.globalContent;
+          if (!gc[key]) {
+            const dl = {
+              [this.devLocale]: this.editContent[key][this.devLocale] || key
+            };
+            this.$set(gc, key, dl);
+          }
+          this.$set(gc[key], to, res);
+        }
+        return res;
       });
     },
     anyTranslate(opts_) {
       const that = this;
+
       function gTrans() {
         if (that.editDialog.wasGoogleError)
           return Promise.reject("Google translation not available!");
@@ -823,6 +801,8 @@ export default {
         this.yandex.yandex &&
         this.yandex.yandexLangs.indexOf(opts.from) >= 0 &&
         this.yandex.yandexLangs.indexOf(opts.to) >= 0;
+      if (opts.from === opts.to)
+        return this.$alert("warning:Cannot translater from/to same languiage!");
 
       return this.yandex.yandex && this.config.useYandex
         ? yTrans().catch(e => gTrans())
@@ -851,16 +831,20 @@ export default {
       return this.globalCompare != JSON.stringify(this.globalContent);
     },
     changedWords() {
-      return this.wordCompare != JSON.stringify(this.wordContent);
+      return this.editCompare != JSON.stringify(this.editContent);
     },
     editKeys() {
       const ec = this.editContent;
-      return Object.keys(ec).map(k => ({
-        key: k,
-        name: k,
-        langs: Object.keys(this.editContent[k]),
-        trans: this.editContent[k]
-      }));
+
+      return ec
+        ? Object.keys(ec).map(k => ({
+            key: k,
+            name: k,
+            langs: Object.keys(ec[k]),
+            trans: ec[k],
+            devKey: ec[k][this.devLocale]
+          }))
+        : [];
     },
     editExpand() {
       return this.editExpanded.length ? this.editExpanded[0] : null;
@@ -878,33 +862,44 @@ export default {
     }
   },
   watch: {
-    config(newV, oldV) {
-      if (
-        newV.yandexKey !== oldV.yandexKey ||
-        newV.devLocale !== oldV.devLocale
-      ) {
-        if (newV.devLocale !== oldV.devLocale)
-          this.devLocale = this.newV.devLocale;
+    "config.yandexKey": function(newV) {
+      this.saveYandex();
+      console.log("watch yandexkey newV:", newV);
+    },
+    "config.devLocale": function(newV) {
+      if (newV !== this.devLocale) {
+        this.devLocale = newV;
         this.saveYandex();
       }
-      //      console.log("watch newC:", newC);
+      console.log("watch devlocale newV:", newV);
     },
     devLocale(newV, oldV) {
       console.log("devLocale changed:", newV, oldV);
       if (this.config.locales.indexOf(this.toLang) < 0)
         this.toLang = this.config.locales[0];
-      if (newV.devLocale !== this.config.devLocale)
-        this.config.devLocale = newV.devLocale;
+      if (newV !== this.config.devLocale) this.config.devLocale = newV;
+    },
+    editExpand(newV) {
+      if (newV) {
+        const { key, devKey } = newV;
+        this.$set(this.editDialog, "key", key);
+        this.$set(this.editDialog, "devKey", devKey);
+      } else {
+        this.$set(this.editDialog, "key", "");
+        this.$set(this.editDialog, "devKey", "");
+      }
     }
   },
   mounted() {
     //    console.log(this.toAddDictionary);
     //    console.log(Vue.prototype.$dictionary);
-    console.log(this.getTimeInterval(Date.now() - 100000));
+    //    console.log(this.getTimeInterval(Date.now() - 100000));
+    //    console.log(this.getTimeInterval(startup));
     //    this.toAdd = this.toAddDictionary();
     this.saveYandex(null);
-  },
-  created() {
+    this.devLocale = this.config.devLocale;
+  }
+  /*   created() {
     timerTiv = setInterval(() => {
       //       debugger;
       this.tiv = this.getTimeInterval(startup);
@@ -916,9 +911,11 @@ export default {
       timerTiv = null;
     }
   }
+ */
 };
-let timerTiv = null;
+/* let timerTiv = null;
 let startup = Date.now();
+ */
 </script>
 <style>
 html {
@@ -929,9 +926,5 @@ html {
 .v-card__title,
 .container {
   padding: 8px;
-}
-td.text-start {
-  padding-left: 5px;
-  padding-right: 5px;
 }
 </style>

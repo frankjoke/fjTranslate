@@ -23,18 +23,6 @@ Vue.prototype.$dictionary = {
   toadd
 };
 
-import VuetifyConfirm from "./plugins/Confirm.js";
-Vue.use(VuetifyConfirm, {
-  vuetify,
-  buttonTrueText: "Yes",
-  buttonFalseText: "No",
-  color: "warning",
-  icon: "warning",
-  title: "Warning",
-  width: 350,
-  property: "$confirm"
-});
-
 new Vue({
   vuetify,
   render: h => h(App)

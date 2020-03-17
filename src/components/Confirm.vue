@@ -49,7 +49,7 @@ export default {
     },
     buttonTrueColor: {
       type: String,
-      default: "primary"
+      default: "success"
     },
     buttonFalseColor: {
       type: String,

@@ -5,29 +5,29 @@
     </template>
 
     <v-card>
-      <v-card-title class="title grey lighten-2">
+      <v-card-title class="title grey lighten-2 py-2">
         <span>{{ title }}</span>
         <v-spacer></v-spacer>
         <v-icon v-if="!!icon">{{ icon }}</v-icon>
       </v-card-title>
       <ConfigFile
-        v-model="editWordsFile"
+        :value.sync="editWordsFile"
         label="Words file config:"
         icon="mdi-folder"
       />
       <ConfigFile
-        v-model="globalWordsFile"
-        label="Global translated file:"
+        :value.sync="globalWordsFile"
+        label="Global translation file:"
         icon="mdi-briefcase"
       />
-      <v-card raised class="mx-auto ma-1" max-width="99%">
+      <v-card raised class="ma-1">
         <v-card-title class="subtitle-1">
-          <v-icon small>mdi-google-translate</v-icon>
+          <v-icon small left>mdi-google-translate</v-icon>
           <span>Language Settings:</span>
         </v-card-title>
-        <v-container fluid>
+        <v-container fluid class="py-1">
           <v-row align="center">
-            <v-col cols="12">
+            <v-col cols="12" class="px-4 py-1">
               <v-combobox
                 v-model="allLocales"
                 :items="[]"
@@ -37,7 +37,7 @@
                 cache-items
                 deletable-chips
                 hide-selected
-                hint="add/remive langiues you want to be able to process"
+                hint="Add/remove languages you want to be able to process"
                 persistent-hint
               >
                 <template v-slot:selection="data">
@@ -56,7 +56,7 @@
             </v-col>
           </v-row>
           <v-row align="center">
-            <v-col class="d-flex" cols="12" sm="2">
+            <v-col class="d-flex pl-4 pr-0 py-1" cols="12" sm="2">
               <v-select
                 dense
                 label="devLocale"
@@ -66,7 +66,7 @@
                 v-model="devLocale"
               ></v-select>
             </v-col>
-            <v-col class="d-flex" cols="12" sm="2">
+            <v-col class="d-flex pl-2 pr-1 py-1" cols="12" sm="2">
               <v-switch
                 dense
                 v-model="all"
@@ -74,7 +74,7 @@
                 :label="all ? 'All remaining' : 'Select yourself'"
               ></v-switch>
             </v-col>
-            <v-col class="d-flex" cols="12" sm="8">
+            <v-col class="d-flex pl-1 pr-3  py-1" cols="12" sm="8">
               <v-combobox
                 dense
                 label="locales to edit/create"
@@ -90,7 +90,7 @@
             </v-col>
           </v-row>
           <v-row align="center">
-            <v-col class="d-flex" cols="12" sm="2">
+            <v-col class="d-flex pl-2 pr-0 py-1" cols="12" sm="2">
               <v-switch
                 dense
                 :disabled="!yandexKey"
@@ -99,8 +99,9 @@
                 label="Use Yandex first"
               ></v-switch>
             </v-col>
-            <v-col class="d-flex" cols="12" sm="10">
-              <v-text-field class="caption"
+            <v-col class="d-flex pl-1 pr-3 py-1" cols="12" sm="10">
+              <v-text-field
+                class="caption"
                 dense
                 :type="passwd ? 'password' : 'text'"
                 label="Yandex API key"
@@ -115,7 +116,7 @@
           </v-row>
         </v-container>
       </v-card>
-      <v-card-actions>
+      <v-card-actions class="pt-0 pb-1">
         <FjFileLoadButton
           text
           dense
@@ -158,9 +159,11 @@
 
 <script>
 import ConfigFile from "./ConfigFile";
+import helperMixin from "../plugins/helper";
 
 export default {
   name: "ConfigForm",
+  mixins: [helperMixin],
 
   data() {
     return {
@@ -173,7 +176,8 @@ export default {
       allLocales: [],
       all: true,
       passwd: true,
-      show: false
+      show: false,
+      origConf: ""
     };
   },
   components: { ConfigFile },
@@ -192,13 +196,14 @@ export default {
       type: String,
       default: "",
       required: false
-    },
-/*     yandex: {
+    }
+    /*     yandex: {
       type: Object,
       default: () => null,
       required: true
     },
- */  },
+ */
+  },
   computed: {
     locales: {
       get() {
@@ -221,17 +226,20 @@ export default {
         editWordsFile: this.editWordsFile,
         yandexKey: this.yandexKey.trim()
       };
+      delete conf.globalWordsFile.name;
+      delete conf.editWordsFile.name;
       return conf;
     },
     changed() {
-      const ch =
-        this.devLocale !== this.value.devLocale ||
-        this.allLocales !== this.value.allLocales ||
-        this.tempLocales !== this.value.locales ||
-        this.useYandex !== this.value.useYandex ||
-        this.globalWordsFile != this.value.globalWordsFile ||
-        this.editWordsFile != this.value.editWordsFile ||
-        this.yandexKey !== this.value.yandexKey;
+      let ch =
+        this.devLocale ||
+        this.allLocales ||
+        this.tempLocales ||
+        this.useYandex ||
+        this.globalWordsFile ||
+        this.editWordsFile ||
+        this.yandexKey;
+      ch = JSON.stringify(this.newConf) != this.origConf;
       return ch;
     },
     allLocalesList() {
@@ -252,18 +260,8 @@ export default {
         this.allLocales.splice(this.allLocales.indexOf(what >= 0), 1);
     },
     save() {
-      const conf = {
-        devLocale: this.devLocale,
-        allLocales: this.allLocales,
-        locales: this.locales,
-        useYandex: this.useYandex,
-        globalWordsFile: this.globalWordsFile,
-        editWordsFile: this.editWordsFile,
-        yandexKey: this.yandexKey.trim()
-      };
-      //      this.value = conf;
-      //      this.$emit("input", conf);
-      this.config = this.newConf;
+      const conf = this.newConf;
+      this.$emit("input", conf);
       return conf;
     },
     loaded(e) {
@@ -319,6 +317,11 @@ export default {
       }
     );
  */ this.loadConf();
+  },
+  mounted() {
+    this.mapSetObject(this.globalWordsFile);
+    this.mapSetObject(this.editWordsFile);
+    this.origConf = this.newConf;
   }
 };
 </script>

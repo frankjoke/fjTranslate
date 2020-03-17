@@ -1,14 +1,14 @@
 <template>
-  <v-card raised class="mx-auto ma-1" max-width="99%">
+  <v-card raised class="ma-1">
     <v-card-title class="subtitle-1">
-      <v-icon V-if="icon" small>{{ icon }}</v-icon>
+      <v-icon V-if="icon" left small>{{ icon }}</v-icon>
       {{ label | tt }}
     </v-card-title>
     <v-container fluid>
       <v-row align="center">
         <v-col class="d-flex" cols="12" sm="2">
           <v-select
-          auto-select-first
+            auto-select-first
             label="type"
             hint="The language which you will work in to base the translations on"
             :items="['JSON', 'Javascript', 'Text']"
@@ -18,7 +18,7 @@
           ></v-select>
         </v-col>
         <v-col class="d-flex" cols="12" sm="2">
-          <span>
+          <span class="body-2">
             {{
               tt(
                 isJson
@@ -56,6 +56,7 @@
         </v-col>
         <v-col class="d-flex" cols="12" sm="2">
           <v-text-field
+            class="body-2"
             :disabled="isJson"
             type="text"
             label="Add At Start"
@@ -67,6 +68,7 @@
         </v-col>
         <v-col class="d-flex" cols="12" sm="2">
           <v-text-field
+            class="body-2"
             :disabled="isJson"
             type="text"
             label="Add at End"
@@ -141,10 +143,14 @@ export default {
       return this.value.type == "Javascript";
     }
   },
-  watch: {},
+  watch: {
+    value(oldV, newV) {
+      console.log("something changed!", oldV, newV);
+    }
+  },
   methods: {},
   created() {
-//    console.log("value:", this.value, "icon:", this.icon);
+    //    console.log("value:", this.value, "icon:", this.icon);
     /*     this.$store.watch(
       (state, getters) => state.config,
       (newV, oldV) => {

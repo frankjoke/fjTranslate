@@ -26,6 +26,7 @@
         >
           <template v-slot:append>
             <FjB
+              class="ml-1"
               dense
               text
               :label="label"
@@ -44,7 +45,7 @@
 <script>
 import Vue from "vue";
 
-const FjAlerts = {
+export default {
   name: "FjAlerts",
   props: {
     selector: {
@@ -79,17 +80,17 @@ const FjAlerts = {
       options = options || {};
       if (typeof options === "string") {
         let text = options.trim();
-        const types = ["warning", "error", "info", "success"];
+        const types = ["warning", "error", "info", "success", "primary"];
         let res = types.filter(v => text.startsWith(v + ":"));
         if (res.length) {
           res = res[0];
           options = {
             text: text.slice(res.length + 1).trim(),
             type: res,
-            label: "OK",
+            label: "",
             timeout: 6
           };
-        } else options = { text: text };
+        } else options = { text, color: "primary lighten-4" };
       }
       options = Object.assign(
         {
@@ -107,11 +108,12 @@ const FjAlerts = {
         options.hastimeout = setTimeout(() => {
           options.hastimeout = null;
           const index = that.items.findIndex(i => i.id === id);
-//          console.log("will delete", index);
+          //          console.log("will delete", index);
           if (index >= 0) that.items.splice(index, 1);
         }, options.timeout * 1000);
       }
       this.items.unshift(options);
+      return Promise.resolve(null);
     },
     deleteAlert(index) {
       //      console.log("Delete Item:", index, item, event);
@@ -137,18 +139,13 @@ const FjAlerts = {
   },
   mounted() {
     this.$nextTick(() => {
-      const ref =
-        this.selector && this.$refs[this.selector]
-          ? this.$refs[this.selector].$el
-          : this.$el;
+      const ref = this.$el;
       //   console.log(this.$refs, this.$refs.refgnbtn.$el);
       this.posx = ref.getBoundingClientRect().left + this.offsetX;
       this.posy = ref.getBoundingClientRect().bottom + this.offsetY;
     });
   }
 };
-
-export default FjAlerts;
 </script>
 <style>
 .slide-fade-enter-active {
