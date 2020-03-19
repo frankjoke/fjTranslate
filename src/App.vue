@@ -22,7 +22,7 @@
           href="https://translate.google.com/"
           target="_blank"
           img="mdi-open-in-new"
-          tooltip="goto Yandex.Translate"
+          tooltip="goto Translate.Google"
         />
       </div>
 
@@ -39,8 +39,7 @@
         tooltip="Edit program settings..."
       />
     </v-app-bar>
-    <!--     <ConfigForm :visible="showConfigForm" @close="showConfigForm = false">
-    -->
+
     <v-content class="ma-1">
       <v-container>
         <v-row no-gutters class="mb-1">
@@ -73,8 +72,12 @@
             <!--             <v-text-field dense readonly :value="config.editWordsFile.name" solo flat class="ma-0 "></v-text-field>
             -->
             <div v-if="config.editWordsFile.name" align="top" justify="left">
-              <div style="line-height: 0.6rem" class="caption">Words Filename:</div>
-              <div class="subtitle-2" style="line-height: 0.8rem">{{ config.editWordsFile.name }}</div>
+              <div style="line-height: 0.6rem" class="caption">
+                Words Filename:
+              </div>
+              <div class="subtitle-2" style="line-height: 0.8rem">
+                {{ config.editWordsFile.name }}
+              </div>
             </div>
           </v-col>
         </v-row>
@@ -104,8 +107,12 @@
           </v-col>
           <v-col cols="6">
             <div v-if="config.globalWordsFile.name" align="top" justify="left">
-              <div style="line-height: 0.6rem" class="caption">Global Filename:</div>
-              <div class="subtitle-2" style="line-height: 0.8rem">{{ config.globalWordsFile.name }}</div>
+              <div style="line-height: 0.6rem" class="caption">
+                Global Filename:
+              </div>
+              <div class="subtitle-2" style="line-height: 0.8rem">
+                {{ config.globalWordsFile.name }}
+              </div>
             </div>
           </v-col>
         </v-row>
@@ -172,8 +179,18 @@
 
                       <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn color="primary darken-1" text @click="closeEditAdd">Cancel</v-btn>
-                        <v-btn color="primary darken-1" text @click="saveEditAdd">Save</v-btn>
+                        <v-btn
+                          color="primary darken-1"
+                          text
+                          @click="closeEditAdd"
+                          >Cancel</v-btn
+                        >
+                        <v-btn
+                          color="primary darken-1"
+                          text
+                          @click="saveEditAdd"
+                          >Save</v-btn
+                        >
                       </v-card-actions>
                     </v-card>
                   </v-dialog>
@@ -223,7 +240,11 @@
                 </v-edit-dialog>
               </template>
               <template v-slot:expanded-item="{ headers }">
-                <td :colspan="headers.length" style="background-color: white;" class="pl-4 pr-0">
+                <td
+                  :colspan="headers.length"
+                  style="background-color: white;"
+                  class="pl-4 pr-0"
+                >
                   <v-card class="ml-2 pa-1">
                     <v-data-table
                       :headers="langsHeaders"
@@ -234,8 +255,12 @@
                       <template v-slot:top>
                         <v-system-bar window light color="grey lighten-2">
                           <div class="grey--text text--darken-4">
-                            <span class="ml-2 body-2">{{ "Edit Languages for key:" | tt }}</span>
-                            <span class="ml-2 caption">{{ "'" + editExpand.key + "'" }}</span>
+                            <span class="ml-2 body-2">
+                              {{ "Edit Languages for key:" | tt }}
+                            </span>
+                            <span class="ml-2 caption">
+                              {{ "'" + editExpand.key + "'" }}
+                            </span>
                           </div>
                           <v-spacer></v-spacer>
                           <FjB
@@ -271,9 +296,9 @@
                               <v-card-title>
                                 <span class="headline">
                                   {{
-                                  editDialog.createNew
-                                  ? "New Language Item"
-                                  : "Edit Language Item"
+                                    editDialog.createNew
+                                      ? "New Language Item"
+                                      : "Edit Language Item"
                                   }}
                                 </span>
                               </v-card-title>
@@ -348,7 +373,8 @@
                           :class="
                             item.lang === devLocale ? 'subtitle-2' : 'caption'
                           "
-                        >{{ item.lang }}</span>
+                          >{{ item.lang }}</span
+                        >
                       </template>
                       <template v-slot:item.translation="{ item }">
                         <textarea
@@ -395,7 +421,8 @@
                           color="primary darken-1"
                           :width="2"
                           indeterminate
-                        ></v-progress-circular>&nbsp;
+                        ></v-progress-circular
+                        >&nbsp;
                         <FjB
                           right
                           small
@@ -412,11 +439,19 @@
           </v-col>
         </v-row>
       </v-container>
-      <span class="primary mx-1 lighten-4">primary</span>
+      <!--       <span class="primary mx-1 lighten-4">primary</span>
       <span class="success lighten-4 mx-1">success</span>
       <span class="error lighten-4 mx-1">error</span>
       <span class="warning lighten-4 mx-1">warning</span>
       <span class="info lighten-4 mx-1">info</span>
+      <div>
+        <v-text-field v-model="textfile" />
+        <FjB dense label="Test" @click="readTextFile(textfile)" />
+      </div>
+      <div>
+        <textarea rows="10" v-model="textarea">Label</textarea>
+      </div>
+      -->
     </v-content>
     <FjConfirm />
   </v-app>
@@ -440,6 +475,8 @@ export default {
   data() {
     const that = this;
     return {
+      textfile: "c:\\windows-version.txt",
+      textarea: "result",
       config: config,
       devLocale: "en",
       addDialog: false,
@@ -452,10 +489,6 @@ export default {
         otranslation: "",
         createNew: false,
         showTrans: false,
-        testcall() {
-          console.log("testcall:", that.editDialog);
-          that.editDialog.cancel();
-        },
         clear() {
           const ed = that.editDialog;
           ed.lang = ed.olang = "";
@@ -522,7 +555,7 @@ export default {
                 )
                   .then(res => {
                     for (var r of res) {
-                      console.log(r);
+                      //                      console.log(r);
                       if (r.res)
                         that.$set(
                           that.editContent[that.editExpand.key],
@@ -670,9 +703,6 @@ export default {
         );
       }
     },
-    editDialogSave() {
-      console.log("save:", this.editDialog.lang, this.editDialog.translation);
-    },
     rulesNoKeyDuplicates(value) {
       return !value || !this.editContent[value] || "Key exist already!";
     },
@@ -731,12 +761,16 @@ export default {
     },
     translate(key, to) {
       const tk = this.translateKey(key, to);
-      if (tk) {
-        console.log("globalFile returned:", tk);
+      const dl = this.editContent[key][this.devLocale];
+      if (tk === dl) {
+        //        console.log("globalFile returned:", tk);
         return Promise.resolve(tk);
-      }
+      } else if (this.globalContent)
+        this.globalContent[key][this.devLocale] = this.editContent[key][
+          this.devLocale
+        ];
       return this.anyTranslate({
-        text: this.editContent[key][this.devLocale],
+        text: dl,
         from: this.devLocale || "auto",
         to
       }).then(res => {
@@ -763,7 +797,7 @@ export default {
         return gTranslate(opts.text, opts)
           .then(res => {
             res.service = "google";
-            console.log("Google returned ", res, " for ", opts.text);
+            //            console.log("Google returned ", res, " for ", opts.text);
             return res;
           })
           .catch(e => {
@@ -780,7 +814,7 @@ export default {
           .then(res => {
             res.service = "yandex";
             if (Array.isArray(res.text)) res.text = res.text.join("\n");
-            console.log("Yandex returned ", res, " for ", opts.text);
+            //            console.log("Yandex returned ", res, " for ", opts.text);
             return res;
           })
           .catch(e => {
@@ -824,6 +858,15 @@ export default {
           this.yandexLangs = this.yandex.yandexLangs = dist;
         })
         .catch(e => this.alert(`error: ${e}`));
+    },
+    readTextFile(file) {
+      let res = "";
+      try {
+        res = fs.readFileSync(this.textfile).toString();
+      } catch (e) {
+        res = `${e}`;
+      }
+      this.textarea = res;
     }
   },
   computed: {
@@ -864,17 +907,17 @@ export default {
   watch: {
     "config.yandexKey": function(newV) {
       this.saveYandex();
-      console.log("watch yandexkey newV:", newV);
+      //      console.log("watch yandexkey newV:", newV);
     },
     "config.devLocale": function(newV) {
       if (newV !== this.devLocale) {
         this.devLocale = newV;
         this.saveYandex();
       }
-      console.log("watch devlocale newV:", newV);
+      //      console.log("watch devlocale newV:", newV);
     },
     devLocale(newV, oldV) {
-      console.log("devLocale changed:", newV, oldV);
+      //      console.log("devLocale changed:", newV, oldV);
       if (this.config.locales.indexOf(this.toLang) < 0)
         this.toLang = this.config.locales[0];
       if (newV !== this.config.devLocale) this.config.devLocale = newV;
@@ -898,6 +941,10 @@ export default {
     //    this.toAdd = this.toAddDictionary();
     this.saveYandex(null);
     this.devLocale = this.config.devLocale;
+  },
+  created() {
+    if (!fs || !fs.readFileSync)
+      return (this.textarea = "Cannot run fs.readFileSync in browser!");
   }
   /*   created() {
     timerTiv = setInterval(() => {
@@ -916,6 +963,8 @@ export default {
 /* let timerTiv = null;
 let startup = Date.now();
  */
+
+const fs = require("fs");
 </script>
 <style>
 html {

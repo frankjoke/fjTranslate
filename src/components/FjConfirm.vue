@@ -9,11 +9,7 @@
       <v-toolbar dark :color="options.color" dense flat>
         <v-toolbar-title class="white--text" v-text="options.title" />
       </v-toolbar>
-      <v-card-text
-        v-show="!!options.message"
-        class="pa-4"
-        v-html="options.message"
-      />
+      <v-card-text v-show="!!options.message" class="pa-4" v-html="options.message" />
       <v-card-actions class="pt-0">
         <v-spacer></v-spacer>
         <v-btn :color="options.okColor" text @click.native="agree">

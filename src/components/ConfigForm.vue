@@ -74,7 +74,7 @@
                 :label="all ? 'All remaining' : 'Select yourself'"
               ></v-switch>
             </v-col>
-            <v-col class="d-flex pl-1 pr-3  py-1" cols="12" sm="8">
+            <v-col class="d-flex pl-1 pr-3 py-1" cols="12" sm="8">
               <v-combobox
                 dense
                 label="locales to edit/create"
@@ -282,7 +282,7 @@ export default {
       this.globalWordsFile = globalWordsFile || this.globalWordsFile;
       this.editWordsFile = editWordsFile || this.editWordsFile;
       this.useYandex = useYandex || this.useYandex;
-      console.log("loded config:", e);
+      //      console.log("loded config:", e);
     },
     saveClose() {
       this.save();
@@ -308,7 +308,7 @@ export default {
     }
   },
   created() {
-    console.log("value:", this.value);
+    //    console.log("value:", this.value);
     /*     this.$store.watch(
       (state, getters) => state.config,
       (newV, oldV) => {
@@ -319,8 +319,8 @@ export default {
  */ this.loadConf();
   },
   mounted() {
-    this.mapSetObject(this.globalWordsFile);
-    this.mapSetObject(this.editWordsFile);
+    //    this.mapSetObject(this.globalWordsFile);
+    //    this.mapSetObject(this.editWordsFile);
     this.origConf = this.newConf;
   }
 };

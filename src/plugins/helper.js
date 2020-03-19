@@ -130,15 +130,17 @@ const helper = {
         }, time);
       });
     },
-    mapSetObject(obj) {
+    /*     mapSetObject(obj) {
       const nobj = Object.assign({}, obj);
       for (var k of Object.keys(nobj)) {
         const val = nobj[k];
-        if (nobj.hasOwnProperty(k));
+        if (nobj.hasOwnProperty(k))
           this.$set(obj, k, val);
       }
     },
-    alert(text) {
+ */ alert(
+      text
+    ) {
       if (!this.$alert) return console.log("alert", text);
       return this.$alert(text);
     },

@@ -160,6 +160,6 @@ export default {
   opacity: 0;
 }
 .v-menu__content {
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
 }
 </style>

@@ -1,50 +1,173 @@
 <template>
-  <v-tooltip v-if="tooltip" :bottom="bottom || !top" :top="top">
+  <v-tooltip v-if="!!tooltip" v-bind="iconAttr" :top="mtop" :bottom="mbottom">
     <template v-slot:activator="{ on }">
-      <FjButtonBackend v-bind="$attrs" v-on="on" @click.stop="$emit('click', $event)"></FjButtonBackend>
+      <v-btn
+        :icon="!label"
+        :small="!label"
+        :disabled="disabled"
+        v-on="on"
+        style="margin-right: 5px; margin-left: 5px"
+        @click="click($event)"
+        v-bind="iconAttr"
+      >
+        <v-icon
+          dense
+          v-if="!!img && iconleft"
+          :right="right"
+          :left="left"
+          v-bind="iconAttr"
+          v-text="img"
+        />
+        <span v-if="!!label">{{ label | tt }}</span>
+        <v-icon
+          dense
+          v-if="!!img && !iconleft"
+          :right="right"
+          :left="left"
+          v-bind="iconAttr"
+          v-text="img"
+        />
+      </v-btn>
     </template>
     <span>{{ tooltip | tt }}</span>
     <slot></slot>
   </v-tooltip>
-  <FjButtonBackend v-else v-bind="$attrs" @click.stop="$emit('click', $event)">
+  <v-btn v-else-if="label" :disabled="disabled" @click="click($event)" v-bind="iconAttr">
+    <v-icon
+      dense
+      v-if="!!img && iconleft"
+      :right="right"
+      :left="left"
+      v-bind="iconAttr"
+      @click="click($event)"
+      v-text="img"
+    />
+    {{ label | tt }}
+    <v-icon
+      dense
+      v-if="!!img && !iconleft"
+      :right="right"
+      :left="left"
+      v-bind="iconAttr"
+      @click="click($event)"
+      v-text="img"
+    />
     <slot></slot>
-  </FjButtonBackend>
+  </v-btn>
+  <v-icon
+    v-else-if="img"
+    :disabled="disabled"
+    :right="right"
+    :left="left"
+    v-bind="iconAttr"
+    @click="click($event)"
+    v-text="img"
+  />
+  <v-icon
+    v-else
+    :disabled="disabled"
+    :right="right"
+    :left="left"
+    v-bind="iconAttr"
+    @click="click($event)"
+  >
+    <slot></slot>
+  </v-icon>
 </template>
 
 <script>
-import Vue from "vue";
-import FjButtonBackend from "./FjBtn";
-
-Vue.component("FjButtonBackend", FjButtonBackend);
+//import attrsMixin from "../mixins/attrs";
+// import translateMixin from "../mixins/translate";
 
 export default {
-  name: "FjB",
+  name: "FjBtn",
+  inheritAttrs: false,
 
-  // inheritAttrs: false,
-  components: { FjButtonBackend },
+  //  mixins: [attrsMixin],
+  data() {
+    //    return { my_attrs: "top,bottom,left,right" };
+    return {
+      iconAttr: {},
+      left: false,
+      right: false,
+      mtop: false,
+      mbottom: false
+    };
+  },
   props: {
+    img: {
+      type: String,
+      default: ""
+    },
+    label: {
+      type: String,
+      default: ""
+    },
     tooltip: {
       type: String,
       default: ""
     },
-    top: {
+    /*     disabled: {
+      type: Boolean,
+      default: false
+    },
+ */ top: {
       type: Boolean,
       default: false
     },
     bottom: {
       type: Boolean,
       default: false
-    }
-    /*     disabled: {
+    },
+    disabled: {
       type: Boolean,
       default: false
     },
- */
+
+    iconleft: {
+      type: Boolean,
+      default: false
+    },
+    iconright: {
+      type: Boolean,
+      default: false
+    }
   },
-  computed: {},
-  methods: {},
+  methods: {
+    click(event) {
+      event.stopPropagation();
+      //      if (!Array.isArray(event)) event = [event];
+      this.$emit("click", event);
+    }
+  },
   created() {
-    //    console.log(this._uid, this.iconleft, this.label, this.img)0
+    //    console.log(this.$attrs);
+    const { left, right, top, bottom } = this.$attrs;
+    this.left = left || (this.iconleft && !!this.label);
+    this.right = right || (!this.iconleft && !!this.label);
+    const natt = Object.assign({}, this.$attrs);
+    delete natt.left;
+    delete natt.right;
+    //    natt.disabled = this.disabled;
+    if (natt.text !== undefined) natt.text = true;
+    if (natt.small !== undefined) natt.small = true;
+    if (this.botton || !this.top) this.mbottom = true;
+    else if (this.top) this.mtop = true;
+    //    if (!this.iconleft && !natt.left) natt.left = true;
+    //    console.log(this.left, this.right, this.label, this.iconleft, natt);
+    this.iconAttr = natt;
   }
 };
 </script>
+
+<style>
+/* .v-icon {
+  margin-left: 0.2em;
+  margin-right: 0.2em;
+}
+.v-image {
+  margin-left: 0.1em;
+  margin-right: 0.1em;
+}
+ */
+</style>
