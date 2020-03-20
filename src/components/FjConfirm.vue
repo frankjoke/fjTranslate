@@ -85,11 +85,11 @@ export default {
       });
     },
     agree() {
-      this.$nextTick().then(() => this.resolve(true));
+      this.$nextTick().then(_ => this.resolve(true));
       this.dialog = false;
     },
     cancel() {
-      this.$nextTick().then(() => this.resolve(false));
+      this.$nextTick().then(_ => this.resolve(false));
       this.dialog = false;
     }
   },

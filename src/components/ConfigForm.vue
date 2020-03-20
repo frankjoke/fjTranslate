@@ -122,7 +122,6 @@
           dense
           img="mdi-upload"
           label="Load Config File"
-          tooltip="Load config from file"
           iconleft
           jsonparse
           stripuntil="{"

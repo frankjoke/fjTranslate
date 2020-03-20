@@ -105,7 +105,7 @@ export default {
       if (options.label) this.label = options.label;
       if (options.timeout) {
         const id = options.id;
-        options.hastimeout = setTimeout(() => {
+        options.hastimeout = setTimeout(_ => {
           options.hastimeout = null;
           const index = that.items.findIndex(i => i.id === id);
           //          console.log("will delete", index);
@@ -138,7 +138,7 @@ export default {
     while (this.items.length > 0) this.deleteAlert(0);
   },
   mounted() {
-    this.$nextTick(() => {
+    this.$nextTick(_ => {
       const ref = this.$el;
       //   console.log(this.$refs, this.$refs.refgnbtn.$el);
       this.posx = ref.getBoundingClientRect().left + this.offsetX;

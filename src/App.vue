@@ -10,7 +10,7 @@
           transition="scale-transition"
           width="40"
         />
-        <span>translateDictionary App Powered by Yandex.Translate</span>
+        <span>translate dictionary App Powered by Yandex.Translate</span>
         <FjB
           href="http://translate.yandex.com"
           target="_blank"
@@ -49,6 +49,7 @@
               iconleft
               img="mdi-folder-upload"
               label="load words"
+              message="Words file"
               value="words.js"
               stripuntil="{"
               :opts="config.editWordsFile"
@@ -68,17 +69,35 @@
               :disabled="!editContent || !changedWords"
             />
           </v-col>
-          <v-col cols="6">
+          <v-col cols="2">
+            <FjB
+              justify="center"
+              iconleft
+              x-small
+              img="mdi-folder-move"
+              label="To clipboard"
+              :disabled="!editContent"
+              @click.stop="doCopyClipboard(editContent)"
+            />
+          </v-col>
+          <v-col cols="4">
             <!--             <v-text-field dense readonly :value="config.editWordsFile.name" solo flat class="ma-0 "></v-text-field>
             -->
             <div v-if="config.editWordsFile.name" align="top" justify="left">
-              <div style="line-height: 0.6rem" class="caption">
-                Words Filename:
-              </div>
-              <div class="subtitle-2" style="line-height: 0.8rem">
-                {{ config.editWordsFile.name }}
-              </div>
+              <div style="line-height: 0.6rem" class="caption">Words Filename:</div>
+              <div class="subtitle-2" style="line-height: 0.8rem">{{ config.editWordsFile.name }}</div>
             </div>
+          </v-col>
+          <v-col cols="2">
+            <FjB
+              justify="center"
+              iconleft
+              x-small
+              img="mdi-folder-multiple"
+              label="Translate All"
+              :disabled="!editContent || !Object.keys(editContent).length"
+              @click.stop="translateAllKeys"
+            />
           </v-col>
         </v-row>
         <v-row no-gutters class="mb-1">
@@ -88,6 +107,7 @@
               iconleft
               img="mdi-briefcase-upload"
               label="load global"
+              message="Global file"
               :opts="config.globalWordsFile"
               @onchange="loadGlobal"
               x-small
@@ -105,15 +125,33 @@
               x-small
             />
           </v-col>
-          <v-col cols="6">
+          <v-col cols="2">
+            <FjB
+              justify="center"
+              iconleft
+              x-small
+              img="mdi-briefcase"
+              label="To clipboard"
+              :disabled="!globalContent"
+              @click.stop="doCopyClipboard(globalContent)"
+            />
+          </v-col>
+          <v-col cols="4">
             <div v-if="config.globalWordsFile.name" align="top" justify="left">
-              <div style="line-height: 0.6rem" class="caption">
-                Global Filename:
-              </div>
-              <div class="subtitle-2" style="line-height: 0.8rem">
-                {{ config.globalWordsFile.name }}
-              </div>
+              <div style="line-height: 0.6rem" class="caption">Global Filename:</div>
+              <div class="subtitle-2" style="line-height: 0.8rem">{{ config.globalWordsFile.name }}</div>
             </div>
+          </v-col>
+          <v-col cols="2">
+            <v-checkbox
+              class="my-0 py-0 caption"
+              justify="center"
+              v-model="globalOnly"
+              dense
+              hide-details
+              label="Global only"
+              :disabled="!globalContent"
+            />
           </v-col>
         </v-row>
         <v-row no-gutters>
@@ -144,7 +182,7 @@
                     hide-details
                     dense
                   ></v-text-field>
-                  <v-dialog v-model="addDialog" max-width="500px">
+                  <v-dialog v-model="editedItem.show" max-width="500px">
                     <template v-slot:activator="{ on }">
                       <FjB
                         text
@@ -152,63 +190,72 @@
                         v-on="on"
                         label="Add Key"
                         img="mdi-key-plus"
-                        :disabled="!editKeys.length"
+                        :disabled="!editContent"
+                        @click="
+                          Object.assign(editedItem, editedItem, {
+                            name: '',
+                            devText: '',
+                            show: true
+                          })
+                        "
                       />
                     </template>
                     <v-card>
-                      <v-card-title>
-                        <span class="headline">Add new Key</span>
-                      </v-card-title>
-
+                      <v-card-title
+                        class="subtitle-1"
+                        v-text="tt('Add a new Key for translation')"
+                      />
                       <v-card-text>
                         <v-container>
                           <v-row>
-                            <v-col cols="12" sm="6" md="4">
-                              <v-text-field
-                                autofocus
-                                v-model="editedItem.name"
-                                hint="No duplicates allowed!"
-                                clearable
-                                :rules="[rulesNoKeyDuplicates]"
-                                hide-details="auto"
-                              ></v-text-field>
-                            </v-col>
+                            <v-text-field
+                              :autofocus="!editedItem.devText"
+                              v-model="editedItem.name"
+                              hint="No duplicates allowed!"
+                              :rules="[rulesNoKeyDuplicates]"
+                              hide-details="auto"
+                              label="New Key"
+                              @change="editedItem.devText = editedItem.name"
+                            ></v-text-field>
+                          </v-row>
+                          <v-row>
+                            <v-textarea
+                              :autofocus="!!editedItem.devText"
+                              :label="'Text in language `' + devLocale + '`'"
+                              v-model="editedItem.devText"
+                              :hint="
+                                'This text will be used as source text for translation to other languages!'
+                              "
+                              clearable
+                            ></v-textarea>
                           </v-row>
                         </v-container>
                       </v-card-text>
 
                       <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn
-                          color="primary darken-1"
+                        <FjB
+                          color="primary darken-2"
                           text
-                          @click="closeEditAdd"
-                          >Cancel</v-btn
-                        >
-                        <v-btn
-                          color="primary darken-1"
+                          iconleft
+                          label="cancel"
+                          img="mdi-cancel"
+                          @click.stop="editedItem.show = false"
+                        />
+                        <FjB
+                          color="success darken-2"
                           text
+                          img="mdi-check"
+                          right
+                          label="Save"
+                          :disabled="!editedItem.name"
                           @click="saveEditAdd"
-                          >Save</v-btn
-                        >
+                        />
                       </v-card-actions>
                     </v-card>
                   </v-dialog>
                 </v-system-bar>
               </template>
-              <template v-slot:item.langs="props">
-                <span class="caption">
-                  {{ props.item.langs.join(",") }}
-                  <FjB
-                    img="mdi-delete"
-                    small
-                    color="error darken-3"
-                    right
-                    @click.stop="editRemoveKey(props)"
-                  ></FjB>
-                </span>
-              </template>
-
               <template v-slot:item.name="props">
                 <v-edit-dialog
                   :return-value.sync="props.item.name"
@@ -220,31 +267,63 @@
                       v-model="props.item.name"
                       label="Edit Key"
                       :rules="[rulesNoKeyDuplicates]"
-                      outlined
+                      flat
+                      dense
                       hide-details="auto"
-                      class="mt-4"
-                      hint="No existing keys allowed!"
-                    ></v-text-field>
-                  </template>
-                  <template v-slot:input>
-                    <v-text-field
-                      v-model="props.item.name"
-                      label="Edit Key"
-                      :rules="[rulesNoKeyDuplicates]"
-                      outlined
-                      hide-details="auto"
-                      class="mt-4"
+                      class="mt-3 py-2"
                       hint="No existing keys allowed!"
                     ></v-text-field>
                   </template>
                 </v-edit-dialog>
               </template>
+              <template v-slot:item.devKey="props">
+                <textarea
+                  class="caption mt-1"
+                  :style="
+                    'height: ' +
+                      Math.ceil(props.item.devKey.length / 60.0) * 20 +
+                      'px'
+                  "
+                  :rows="Math.ceil(props.item.devKey.length / 60.0)"
+                  v-model="props.item.devKey"
+                  style="width:100%;"
+                  @change="
+                    $set(
+                      editContent[props.item.key],
+                      devLocale,
+                      props.item.devKey
+                    )
+                  "
+                ></textarea>
+              </template>
+              <template v-slot:item.langs="props">
+                <FjB
+                  v-if="!props.item.showTrans"
+                  small
+                  icon
+                  color="primary darken-1"
+                  img="mdi-google-translate"
+                  :tooltip="props.item.langs.join(',') + ', translate all?'"
+                  @click.stop="editDialog.retranslateAll(props.item)"
+                />
+                <v-progress-circular
+                  v-else
+                  :size="16"
+                  color="primary darken-1"
+                  :width="2"
+                  indeterminate
+                  class="mr-2"
+                ></v-progress-circular>
+                <FjB
+                  img="mdi-delete"
+                  small
+                  color="error darken-3"
+                  @click.stop="editRemoveKey(props)"
+                ></FjB>
+              </template>
+
               <template v-slot:expanded-item="{ headers }">
-                <td
-                  :colspan="headers.length"
-                  style="background-color: white;"
-                  class="pl-4 pr-0"
-                >
+                <td :colspan="headers.length" style="background-color: white;" class="pl-4 pr-0">
                   <v-card class="ml-2 pa-1">
                     <v-data-table
                       :headers="langsHeaders"
@@ -255,12 +334,8 @@
                       <template v-slot:top>
                         <v-system-bar window light color="grey lighten-2">
                           <div class="grey--text text--darken-4">
-                            <span class="ml-2 body-2">
-                              {{ "Edit Languages for key:" | tt }}
-                            </span>
-                            <span class="ml-2 caption">
-                              {{ "'" + editExpand.key + "'" }}
-                            </span>
+                            <span class="ml-2 body-2">{{ "Edit Languages for key:" | tt }}</span>
+                            <span class="ml-2 caption">{{ "'" + editExpand.key + "'" }}</span>
                           </div>
                           <v-spacer></v-spacer>
                           <FjB
@@ -273,7 +348,7 @@
                             text
                             label="Re-translate all"
                             img="mdi-translate"
-                            @click.stop="editDialog.retranslateAll(devLocale)"
+                            @click.stop="editDialog.retranslateAll(null)"
                             small
                           ></FjB>
                           <FjB
@@ -296,9 +371,9 @@
                               <v-card-title>
                                 <span class="headline">
                                   {{
-                                    editDialog.createNew
-                                      ? "New Language Item"
-                                      : "Edit Language Item"
+                                  editDialog.createNew
+                                  ? "New Language Item"
+                                  : "Edit Language Item"
                                   }}
                                 </span>
                               </v-card-title>
@@ -373,8 +448,7 @@
                           :class="
                             item.lang === devLocale ? 'subtitle-2' : 'caption'
                           "
-                          >{{ item.lang }}</span
-                        >
+                        >{{ item.lang }}</span>
                       </template>
                       <template v-slot:item.translation="{ item }">
                         <textarea
@@ -421,8 +495,7 @@
                           color="primary darken-1"
                           :width="2"
                           indeterminate
-                        ></v-progress-circular
-                        >&nbsp;
+                        ></v-progress-circular>&nbsp;
                         <FjB
                           right
                           small
@@ -439,6 +512,10 @@
           </v-col>
         </v-row>
       </v-container>
+      <textarea rows="10" v-model="textfile" />
+      <br />
+      <FjB label="Copy!" @click="doCopyClipboard('textfile')" />
+      <FjB label="Paste" v-sticky:ppp.aaa="'xxx'" @click="consoleLog(clipboardData())" />
       <!--       <span class="primary mx-1 lighten-4">primary</span>
       <span class="success lighten-4 mx-1">success</span>
       <span class="error lighten-4 mx-1">error</span>
@@ -479,7 +556,7 @@ export default {
       textarea: "result",
       config: config,
       devLocale: "en",
-      addDialog: false,
+      globalOnly: false,
       editDialog: {
         dialog: false,
         wasGoogleError: false,
@@ -518,7 +595,7 @@ export default {
             ed.dialog = true;
             return that
               .$nextTick()
-              .then(() =>
+              .then(_ =>
                 that
                   .translate(key, ed.lang)
                   .then(res =>
@@ -527,29 +604,32 @@ export default {
                       : that.$alert("warning:No translation!")
                   )
               )
-              .catch(e => that.alert(`error: in translation: ${e}`));
+              .catch(e => that.$alert(`error: in translation: ${e}`));
           }
-          that.alert(`warning: could not find language for ${key}!`);
+          that.$alert(`warning: could not find language for ${key}!`);
         },
-        retranslateAll(devLocale) {
-          const ed = that.editDialog;
+        retranslateAll(item) {
+          const key = (item && item.key) || that.editDialog.key;
+          const stat = item ? item : that.editDialog;
           const toLangs = that.config.allLocales.filter(
             x => x !== that.devLocale
           );
-          that.$set(ed, "showTrans", true);
-          that
-            .$fjConfirm(
-              `Add/Renew::Do you really want to add/renew all languages for<br><strong>${ed.key}</strong>from '<strong>${that.devLocale}</strong>'?`
-            )
+          that.$set(stat, "showTrans", true);
+          return (item && item.key
+            ? Promise.resolve(true)
+            : that.$fjConfirm(
+                `Add/Renew::Do you really want to add/renew all languages for<br><strong>${key}</strong>from '<strong>${that.devLocale}</strong>'?`
+              )
+          )
             .then(
               res =>
                 res &&
                 Promise.all(
                   toLangs.map(l =>
                     that
-                      .translate(that.editExpand.key, l)
+                      .translate(key, l)
                       .then(r =>
-                        that.$nextTick().then(() => ({ res: r, lang: l }))
+                        that.$nextTick().then(_ => ({ res: r, lang: l }))
                       )
                   )
                 )
@@ -557,22 +637,21 @@ export default {
                     for (var r of res) {
                       //                      console.log(r);
                       if (r.res)
-                        that.$set(
-                          that.editContent[that.editExpand.key],
-                          r.lang,
-                          r.res
-                        );
+                        that.$set(that.editContent[key], r.lang, r.res);
                     }
                   })
                   .catch(e => that.$alert("error:Translation failure!"))
             )
-            .then(() => that.$set(ed, "showTrans", false));
+            .then(_ => that.$set(stat, "showTrans", false))
+            .then(_ => key);
         }
       },
       //      time: new Date().toISOString(),
       editSearch: "",
       editedItem: {
-        name: ""
+        name: "",
+        devText: "",
+        show: false
       },
       //      toAdd: this.toAddDictionary(),
       editExpanded: [],
@@ -582,16 +661,26 @@ export default {
           align: "start",
           sortable: true,
           filterable: true,
-          value: "name"
-          //          width: "65%"
+          value: "name",
+          width: "1%"
         },
         {
-          text: "Languages",
+          get text() {
+            return "Original text in '" + that.devLocale + "'";
+          },
+          align: "start",
+          sortable: true,
+          filterable: true,
+          value: "devKey",
+          width: "65%"
+        },
+        {
+          text: "Actions",
           align: "end",
           value: "langs",
           sortable: false,
           filterable: true,
-          width: 220
+          width: 90
           //          class: "caption"
         }
       ],
@@ -626,7 +715,7 @@ export default {
       wordCompare: "",
       globalCompare: "",
       globalContent: null,
-      editContent: null,
+      editContent: {},
       editWhat: null,
       yandex: {
         yandex: null,
@@ -648,6 +737,16 @@ export default {
       this.$alert(options);
     },
  */
+    translateAllKeys() {
+      this.pSequence(
+        this.editKeys,
+        key => this.editDialog.retranslateAll(key),
+        100
+      ).then(res => console.log(res));
+      // const testPromise = key =>
+      //   this.wait(1000).then(_ => this.$alert("info:Processing " + key));
+      // keys.reduce((p, x) => p.then(_ => testPromise(x)), Promise.resolve());
+    },
     editDialogItem(item, edit) {
       const ed = this.editDialog;
       this.$set(ed, "lang", item.lang || this.devLocale);
@@ -690,16 +789,16 @@ export default {
         this.$alert("Key = devLang text: '" + key + "'");
       if (lang !== devLang) {
         item.wait = true;
-        return this.wait().then(() =>
+        return this.wait().then(_ =>
           this.translate(key, lang)
             .then(res => this.$set(this.editContent[key], lang, res))
-            .catch(e => this.alert(`error: in translation: ${e}`))
-            .then(() => (item.wait = false))
-            .then(() => this.$nextTick())
+            .catch(e => this.$alert(`error: in translation: ${e}`))
+            .then(_ => (item.wait = false))
+            .then(_ => this.$nextTick())
         );
       } else {
         return this.$fjConfirm("Translate: Should all be translated?").then(
-          res => res && this.alert("warning: Need to be implemented!")
+          res => res && this.$alert("warning: Need to be implemented!")
         );
       }
     },
@@ -730,12 +829,6 @@ export default {
       this.$set(this.editContent, item.name, item.trans);
       this.$delete(this.editContent, item.key);
     },
-    closeEditAdd() {
-      this.addDialog = false;
-      setTimeout(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
-      }, 300);
-    },
     saveEditAdd() {
       /*         if (this.editedIndex > -1) {
           Object.assign(this.desserts[this.editedIndex], this.editedItem)
@@ -747,7 +840,7 @@ export default {
       this.$set(this.editContent, this.editedItem.name, {
         [this.devLocale]: this.editedItem.name
       });
-      this.addDialog = false;
+      this.editedItem.show = false;
       this.editedItem.name = "";
     },
     translateKey(key, to) {
@@ -761,9 +854,11 @@ export default {
     },
     translate(key, to) {
       const tk = this.translateKey(key, to);
+      if (this.globalOnly) return Promise.resolve(tk);
       const dl = this.editContent[key][this.devLocale];
+      //      console.log("globalFile returned:", key, to, tk, dl);
       if (tk === dl) {
-        //        console.log("globalFile returned:", tk);
+        //        console.log("globalFile returned:", tk, dl);
         return Promise.resolve(tk);
       } else if (this.globalContent)
         this.globalContent[key][this.devLocale] = this.editContent[key][
@@ -857,7 +952,7 @@ export default {
           if (dist.length > 0) dist.push(this.devLocale);
           this.yandexLangs = this.yandex.yandexLangs = dist;
         })
-        .catch(e => this.alert(`error: ${e}`));
+        .catch(e => this.$alert(`error: ${e}`));
     },
     readTextFile(file) {
       let res = "";
@@ -947,7 +1042,7 @@ export default {
       return (this.textarea = "Cannot run fs.readFileSync in browser!");
   }
   /*   created() {
-    timerTiv = setInterval(() => {
+    timerTiv = setInterval(_ => {
       //       debugger;
       this.tiv = this.getTimeInterval(startup);
     }, 5000);

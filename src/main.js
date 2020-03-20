@@ -9,7 +9,9 @@ import FjB from "./components/FjB";
 import FjFileLoadButton from "./components/FjFileLoadButton";
 import FjFileSaveButton from "./components/FjFileSaveButton";
 import FjAlerts from "./components/FjAlerts";
+import VueClipboard from "vue-clipboard2";
 
+Vue.use(VueClipboard);
 Vue.config.productionTip = false;
 Vue.config.devtools = true; // ==> This line is needed for VueTools <<===
 //Vue.config.devtools = __ENV__.NODE_ENV !== 'production';
@@ -32,6 +34,25 @@ Vue.prototype.$dictionary = {
   dictionary,
   toadd
 };
+
+Vue.directive("sticky", {
+  bind(el, binding, vnode) {
+    console.log(binding, vnode);
+    /*     if (binding.arg == "bottom") {
+      el.style.position = "fixed";
+      el.style.bottom = "0px";
+      el.style.width = "100%";
+    } else {
+      el.style.position = "sticky";
+      el.style.top = "0px";
+    }
+
+    if (binding.modifiers.light) {
+      el.style.background = "#CCC";
+    }
+ */
+  }
+});
 
 new Vue({
   vuetify,

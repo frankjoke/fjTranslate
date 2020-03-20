@@ -40,6 +40,9 @@ const helper = {
   },
   methods: {
     ...mapFilters(["tt", "ago"]),
+    clipboardData() {
+      return window;
+    },
     startCase(str) {
       return str
         .replace(/[_\-]+/g, " ")
@@ -69,6 +72,17 @@ const helper = {
       return Vue.filter("truncate")(what, len, end);
     },
  */
+    pSequence(arr, promise, wait) {
+      wait = wait || 1;
+      if (!Array.isArray(arr) && typeof arr === "object")
+        arr = Object.entries(arr);
+      const res = [];
+      const myPromise = key =>
+        this.wait(wait).then(_ => promise(key).then(r => res[res.push(r) - 1]));
+      return arr
+        .reduce((p, x) => p.then(_ => myPromise(x)), Promise.resolve())
+        .then(_ => res);
+    },
     consoleLog(...args) {
       console.log(...args);
     },
@@ -123,8 +137,9 @@ const helper = {
       var timer;
       const that = this;
       return new Promise(res => {
-        if (!time) return that.$nexttick(res());
-        timer = setTimeout(() => {
+        if (!time || time < 0 || typeof time !== "number")
+          return that.$nexttick(res);
+        timer = setTimeout(_ => {
           timer = null;
           return res();
         }, time);
@@ -138,12 +153,23 @@ const helper = {
           this.$set(obj, k, val);
       }
     },
- */ alert(
-      text
-    ) {
-      if (!this.$alert) return console.log("alert", text);
-      return this.$alert(text);
+ */
+    doCopyClipboard(text) {
+      const that = this;
+      if (!text) return Promise.resolve();
+      if (typeof text !== "string") text = JSON.stringify(text, null, 2);
+      return this.$copyText(text).then(
+        e => {
+          that.$alert("success:Copied to clipboard!");
+          console.log(e);
+        },
+        e => {
+          that.$alert("warning:Cannot copy!");
+          console.log(e);
+        }
+      );
     },
+
     getTimeInterval(oldTime, hoursToShow) {
       hoursToShow = hoursToShow || 0;
       if (oldTime < 946681200000) oldTime = oldTime * 1000;

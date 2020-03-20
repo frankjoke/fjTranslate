@@ -1,15 +1,29 @@
 <template>
-  <div>
-    <!--     <v-progress-linear
+  <!--
+        <div>
+     <v-progress-linear
       v-if="loading"
       indeterminate
       color="primary darken-1"
     ></v-progress-linear>
-    -->
-    <FjB v-bind="$attrs" @click.stop="triggerLoad" :loading="loading" :disabled="loading">
-      <input type="file" :id="myId" style="display:none" @change="loadTextFromFile" />
-    </FjB>
-  </div>
+  -->
+  <FjB
+    v-bind="$attrs"
+    :label="over ? droplabel : label"
+    @click.stop="triggerLoad"
+    :loading="loading"
+    :disabled="loading"
+    :class="over ? dropclass : ''"
+  >
+    <input
+      type="file"
+      :id="myId"
+      style="display:none"
+      @change="loadTextFromFile"
+    />
+  </FjB>
+  <!--   </div>
+  -->
 </template>
 
 <script>
@@ -24,11 +38,29 @@ export default {
         type: "Text",
         basename: "FileLoadButton"
       })
+    },
+    dropclass: {
+      type: String,
+      default: "success"
+    },
+    label: {
+      type: String,
+      default: ""
+    },
+    message: {
+      type: String,
+      default: ""
+    },
+    droplabel: {
+      type: String,
+      default: "Drop here"
     }
   },
   data() {
     return {
-      loading: false
+      loading: false,
+      drop: false,
+      over: false
     };
   },
   computed: {
@@ -54,7 +86,7 @@ export default {
       this.loading = true;
       const file = ev.target.files[0];
       const reader = new FileReader();
-      this.$nextTick(() => {
+      this.$nextTick(_ => {
         this.opts.name = file.name;
         //      debugger;
         //      console.log(ev.target.value, reader);
@@ -85,6 +117,9 @@ export default {
 
           //        console.log("results text:", r);
           this.$emit("onchange", r);
+          this.$alert &&
+            this.message &&
+            this.$alert(`info:${this.message} loaded!`);
           this.loading = false;
           //        this.value = r;
           //        return r;
@@ -109,7 +144,78 @@ export default {
     //    console.log(this._uid, this.iconleft, this.label, this.img)0
   },
   mounted() {
+    const that = this;
+    this.drop = typeof window.FileReader !== "undefined";
+    //    console.log(this.$el, "FileReader supported:", this.drop);
+    const holder = this.$el;
+    if (this.drop) {
+      holder.ondragenter = function() {
+        that.over = true;
+        return false;
+      };
+      holder.ondragover = function() {
+        that.over = true;
+        return false;
+      };
+      holder.ondragleave = function() {
+        that.over = false;
+        return false;
+      };
+      holder.ondrop = function(e) {
+        that.over = false;
+        e.preventDefault();
+        e.target.files = e.dataTransfer.files;
+        that.$nextTick().then(_ => that.loadTextFromFile(e));
+        return false;
+      };
+    }
+
     //    console.log(this.myId, this.opts);
+  },
+  unmounted() {
+    //    console.log(this.$el);
+    if (this.drop) {
+      const holder = this.$el;
+      holder.ondragenter = null;
+      holder.ondragover = null;
+      holder.ondragleave = null;
+      holder.ondrop = null;
+    }
   }
+  /*
+var holder = document.getElementById('holder'),
+    state = document.getElementById('status');
+
+if (typeof window.FileReader === 'undefined') {
+    state.className = 'fail';
+} else {
+    state.className = 'success';
+    state.innerHTML = 'File API & FileReader available';
+}
+
+holder.ondragover = function() {
+    this.className = 'hover';
+    return false;
+};
+holder.ondragend = function() {
+    this.className = '';
+    return false;
+};
+holder.ondrop = function(e) {
+    this.className = '';
+    e.preventDefault();
+
+    var file = e.dataTransfer.files[0],
+        reader = new FileReader();
+    reader.onload = function(event) {
+        console.log(event.target);
+        holder.innerText = event.target.result;
+    };
+    console.log(file);
+    reader.readAsText(file);
+
+    return false;
+};
+*/
 };
 </script>
