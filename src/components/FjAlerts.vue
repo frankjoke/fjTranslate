@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-resize="resize">
     <v-menu
       v-if="items.length"
       dense
@@ -16,7 +16,8 @@
         <v-alert
           mode="in-out"
           origin="transform-origin: -100% 50%;"
-          border="left"
+          border="top"
+          colored-border
           :color="item.color"
           dense
           :type="item.type"
@@ -28,13 +29,14 @@
             <FjB
               class="ml-1"
               dense
+              right
               text
               :label="label"
               img="mdi-close"
               @click.stop="deleteAlert(index)"
             ></FjB>
           </template>
-          <span>{{ item.text }}</span>
+          <span class="body-2" v-html="item.text"></span>
         </v-alert>
       </transition>
     </v-menu>
@@ -77,26 +79,40 @@ export default {
   methods: {
     addAlert(options) {
       const that = this;
+      const wtime = {
+        warning: 10,
+        error: 10,
+        info: 5,
+        success: 5,
+        primary: 6,
+        [undefined]: 6
+      };
       options = options || {};
       if (typeof options === "string") {
         let text = options.trim();
-        const types = ["warning", "error", "info", "success", "primary"];
-        let res = types.filter(v => text.startsWith(v + ":"));
-        if (res.length) {
-          res = res[0];
+        const m = text.match(
+          /^(?:(\d*(?=\|))?\|?(warning|error|info|success|primary)\:)?(.*)$/i
+        );
+        if (m)
           options = {
-            text: text.slice(res.length + 1).trim(),
-            type: res,
             label: "",
-            timeout: 6
+            timeout: (m[1] && Number(m[1])) || wtime[m[2]],
+            text: m[3],
+            type: m[2] || "primary"
           };
-        } else options = { text, color: "primary lighten-4" };
+        else options = { text, color: "primary lighten-4" };
       }
+      if (options.type === "primary") {
+        options.type = null;
+        if (!options.color) options.color = "primary lighten-2";
+      }
+      if (!options.text && options.tt)
+        options.text = this.$dictionary.translate(options.tt);
       options = Object.assign(
         {
           timeout: this.timeout,
           id: this.idCount++,
-          text: "(empty)"
+          text: this.$dictionary.translate("empty"),
         },
         options
       );
@@ -112,7 +128,7 @@ export default {
           if (index >= 0) that.items.splice(index, 1);
         }, options.timeout * 1000);
       }
-      this.items.unshift(options);
+      this.items.push(options);
       return Promise.resolve(null);
     },
     deleteAlert(index) {
@@ -129,6 +145,13 @@ export default {
       if (typeof end === "number") return Math.random() * (end - start) + start;
       if (typeof start === "number") return Math.random() * start;
       return Math.random();
+    },
+    resize() {
+      const ref = this.$el;
+      //   console.log(this.$refs, this.$refs.refgnbtn.$el);
+      this.posx = ref.getBoundingClientRect().left + this.offsetX;
+      this.posy = ref.getBoundingClientRect().bottom + this.offsetY;
+//      this.addAlert(`Alert resize: ${this.posx}, ${this.posy}`);
     }
   },
   created() {
@@ -138,28 +161,23 @@ export default {
     while (this.items.length > 0) this.deleteAlert(0);
   },
   mounted() {
-    this.$nextTick(_ => {
-      const ref = this.$el;
-      //   console.log(this.$refs, this.$refs.refgnbtn.$el);
-      this.posx = ref.getBoundingClientRect().left + this.offsetX;
-      this.posy = ref.getBoundingClientRect().bottom + this.offsetY;
-    });
+    this.$nextTick(_ => this.resize());
   }
 };
 </script>
-<style>
-.slide-fade-enter-active {
+<style scoped>
+::v-deep .slide-fade-enter-active {
   transition: all 0.3s ease;
 }
-.slide-fade-leave-active {
+::v-deep .slide-fade-leave-active {
   transition: all 0.6s cubic-bezier(1, 0.5, 0.8, 1);
 }
-.slide-fade-enter, .slide-fade-leave-to
+::v-deep .slide-fade-enter, .slide-fade-leave-to
 /* .slide-fade-leave-active below version 2.1.8 */ {
   transform: translatex(100px);
   opacity: 0;
 }
-.v-menu__content {
+::v-deep .v-menu__content {
   transition: all 0.3s ease;
 }
 </style>

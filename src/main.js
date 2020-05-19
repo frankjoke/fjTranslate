@@ -8,9 +8,25 @@ import ConfigForm from "./components/ConfigForm";
 import FjB from "./components/FjB";
 import FjFileLoadButton from "./components/FjFileLoadButton";
 import FjFileSaveButton from "./components/FjFileSaveButton";
+import FjTimerRefresh from "./components/FjTimerRefresh";
 import FjAlerts from "./components/FjAlerts";
 import VueClipboard from "vue-clipboard2";
-
+/* 
+try {
+  const { BrowserWindow } = require("electron");
+  const path = require("path");
+  const os = require("os");
+  BrowserWindow &&
+    BrowserWindow.addDevToolsExtension(
+      path.join(
+        os.homedir(),
+        "/Users/sissi/AppData/Local/Google/Chrome/User Data/Default/Extensions/nhdogjmejiglipccpnnnanhbledajbpd/5.3.3_0"
+      )
+    );
+} catch (e) {
+  console.log(e);
+}
+ */
 Vue.use(VueClipboard);
 Vue.config.productionTip = false;
 Vue.config.devtools = true; // ==> This line is needed for VueTools <<===
@@ -25,15 +41,10 @@ installExtension(VUEJS_DEVTOOLS)
 Vue.component("ConfigForm", ConfigForm);
 Vue.component("FjB", FjB);
 Vue.component("FjAlerts", FjAlerts);
+Vue.component("FjTimerRefresh", FjTimerRefresh);
 Vue.component("FjFileLoadButton", FjFileLoadButton);
 Vue.component("FjFileSaveButton", FjFileSaveButton);
-import { translate, dictionary, toadd } from "./plugins/dictionary";
-//import filters from "./plugins/filters.js";
-Vue.prototype.$dictionary = {
-  translate,
-  dictionary,
-  toadd
-};
+//import { translate, dictionary, toadd } from "./plugins/dictionary";
 
 Vue.directive("sticky", {
   bind(el, binding, vnode) {

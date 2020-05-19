@@ -95,6 +95,15 @@
     </v-col>
         -->
       </v-row>
+      <v-row v-if="filesys">
+        <v-col cols="12">
+          <v-text-field
+            dense
+            label="Filename:"
+            v-model="value.fileName"
+          ></v-text-field>
+        </v-col>
+      </v-row>
     </v-container>
     <!--     </v-card-subtitle>
     -->
@@ -120,6 +129,7 @@ export default {
         skipAfterEnd: "",
         addAtStart: "",
         addAtEnd: "",
+        fileName: "",
         saveWithJSON: type == "JSON"
       }),
       required: true
@@ -133,6 +143,10 @@ export default {
       type: String,
       default: "",
       required: false
+    },
+    filesys: {
+      type: Object,
+      default: null
     }
   },
   computed: {

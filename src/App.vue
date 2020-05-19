@@ -37,6 +37,8 @@
         img="mdi-cog"
         label="edit settings"
         tooltip="Edit program settings..."
+        :yandexapi="yandexKey"
+        :filesys="fileSys"
       />
     </v-app-bar>
 
@@ -67,25 +69,19 @@
               :opts="config.editWordsFile"
               :content="editContent"
               :disabled="!editContent || !changedWords"
-            />
-          </v-col>
-          <v-col cols="2">
-            <FjB
-              justify="center"
-              iconleft
-              x-small
-              img="mdi-folder-move"
-              label="To clipboard"
-              :disabled="!editContent"
-              @click.stop="doCopyClipboard(editContent)"
+              @shiftclick="doCopyClipboard($event.str)"
             />
           </v-col>
           <v-col cols="4">
             <!--             <v-text-field dense readonly :value="config.editWordsFile.name" solo flat class="ma-0 "></v-text-field>
             -->
             <div v-if="config.editWordsFile.name" align="top" justify="left">
-              <div style="line-height: 0.6rem" class="caption">Words Filename:</div>
-              <div class="subtitle-2" style="line-height: 0.8rem">{{ config.editWordsFile.name }}</div>
+              <div style="line-height: 0.6rem;" class="caption">
+                Words Filename:
+              </div>
+              <div class="subtitle-2" style="line-height: 0.8rem;">
+                {{ config.editWordsFile.name }}
+              </div>
             </div>
           </v-col>
           <v-col cols="2">
@@ -96,7 +92,11 @@
               img="mdi-folder-multiple"
               label="Translate All"
               :disabled="!editContent || !Object.keys(editContent).length"
-              @click.stop="translateAllKeys"
+              @click.stop="
+                $fjConfirm(
+                  'okText=all,cancelText=missing,title=Translate:|(re)Translate all or only missing languages?'
+                ).then((res) => translateAllKeys(res))
+              "
             />
           </v-col>
         </v-row>
@@ -123,23 +123,17 @@
               :content="globalContent"
               :disabled="!globalContent || !changedGlobal"
               x-small
-            />
-          </v-col>
-          <v-col cols="2">
-            <FjB
-              justify="center"
-              iconleft
-              x-small
-              img="mdi-briefcase"
-              label="To clipboard"
-              :disabled="!globalContent"
-              @click.stop="doCopyClipboard(globalContent)"
+              @shiftclick="doCopyClipboard($event.str)"
             />
           </v-col>
           <v-col cols="4">
             <div v-if="config.globalWordsFile.name" align="top" justify="left">
-              <div style="line-height: 0.6rem" class="caption">Global Filename:</div>
-              <div class="subtitle-2" style="line-height: 0.8rem">{{ config.globalWordsFile.name }}</div>
+              <div style="line-height: 0.6rem;" class="caption">
+                Global Filename:
+              </div>
+              <div class="subtitle-2" style="line-height: 0.8rem;">
+                {{ config.globalWordsFile.name }}
+              </div>
             </div>
           </v-col>
           <v-col cols="2">
@@ -165,13 +159,15 @@
               show-expand
               class="elevation-2"
               dense
+              :items-per-page="15"
               :search="editSearch"
               calculate-widths
+              :footer-props="{ showFirstLastPage: true }"
             >
               <template v-slot:top>
                 <v-system-bar window light class="pb-2">
                   <v-icon v-if="editKeys.length" left>mdi-folder-star</v-icon>
-                  <span class="subtitle-2">Words Translation File</span>
+                  <span class="subtitle-2 mt-2">Words Translation File</span>
                   <v-spacer></v-spacer>
                   <v-text-field
                     class="body-2"
@@ -191,11 +187,13 @@
                         label="Add Key"
                         img="mdi-key-plus"
                         :disabled="!editContent"
+                        small
+                        class="mt-2"
                         @click="
                           Object.assign(editedItem, editedItem, {
                             name: '',
                             devText: '',
-                            show: true
+                            show: true,
                           })
                         "
                       />
@@ -223,9 +221,7 @@
                               :autofocus="!!editedItem.devText"
                               :label="'Text in language `' + devLocale + '`'"
                               v-model="editedItem.devText"
-                              :hint="
-                                'This text will be used as source text for translation to other languages!'
-                              "
+                              :hint="'This text will be used as source text for translation to other languages!'"
                               clearable
                             ></v-textarea>
                           </v-row>
@@ -278,15 +274,15 @@
               </template>
               <template v-slot:item.devKey="props">
                 <textarea
-                  class="caption mt-1"
+                  class="caption"
                   :style="
                     'height: ' +
-                      Math.ceil(props.item.devKey.length / 60.0) * 20 +
-                      'px'
+                    Math.ceil(props.item.devKey.length / 80.0) * 20 +
+                    'px'
                   "
-                  :rows="Math.ceil(props.item.devKey.length / 60.0)"
+                  :rows="Math.ceil(props.item.devKey.length / 80.0)"
                   v-model="props.item.devKey"
-                  style="width:100%;"
+                  style="width: 100%;"
                   @change="
                     $set(
                       editContent[props.item.key],
@@ -304,7 +300,7 @@
                   color="primary darken-1"
                   img="mdi-google-translate"
                   :tooltip="props.item.langs.join(',') + ', translate all?'"
-                  @click.stop="editDialog.retranslateAll(props.item)"
+                  @click.stop="retranslateAll(props.item, true)"
                 />
                 <v-progress-circular
                   v-else
@@ -323,7 +319,11 @@
               </template>
 
               <template v-slot:expanded-item="{ headers }">
-                <td :colspan="headers.length" style="background-color: white;" class="pl-4 pr-0">
+                <td
+                  :colspan="headers.length"
+                  style="background-color: white;"
+                  class="pl-4 pr-0"
+                >
                   <v-card class="ml-2 pa-1">
                     <v-data-table
                       :headers="langsHeaders"
@@ -334,21 +334,25 @@
                       <template v-slot:top>
                         <v-system-bar window light color="grey lighten-2">
                           <div class="grey--text text--darken-4">
-                            <span class="ml-2 body-2">{{ "Edit Languages for key:" | tt }}</span>
-                            <span class="ml-2 caption">{{ "'" + editExpand.key + "'" }}</span>
+                            <span class="ml-2 body-2">{{
+                              "Edit Languages for key:" | tt
+                            }}</span>
+                            <span class="ml-2 caption">{{
+                              "'" + editExpand.key + "'"
+                            }}</span>
                           </div>
                           <v-spacer></v-spacer>
                           <FjB
                             :disabled="
                               editExpand.langs.indexOf(devLocale) < 0 ||
-                                editDialog.showTrans
+                              editDialog.showTrans
                             "
                             :loading="editDialog.showTrans"
                             color="primary darken-1"
                             text
                             label="Re-translate all"
                             img="mdi-translate"
-                            @click.stop="editDialog.retranslateAll(null)"
+                            @click.stop="retranslateAll(null, true)"
                             small
                           ></FjB>
                           <FjB
@@ -360,20 +364,20 @@
                             small
                             label="Add Language"
                             img="mdi-map-marker-plus"
-                            @click="editDialog.addLanguage(editExpand.key)"
+                            @click="addLanguage(editExpand.key)"
                           />
                           <v-dialog
                             v-model="editDialog.dialog"
                             max-width="800px"
-                            @close="editDialog.cancel"
+                            @close="editDialogCancel"
                           >
                             <v-card>
                               <v-card-title>
                                 <span class="headline">
                                   {{
-                                  editDialog.createNew
-                                  ? "New Language Item"
-                                  : "Edit Language Item"
+                                    editDialog.createNew
+                                      ? "New Language Item"
+                                      : "Edit Language Item"
                                   }}
                                 </span>
                               </v-card-title>
@@ -420,7 +424,7 @@
                                 <FjB
                                   color="primary darken-1"
                                   text
-                                  @click="editDialog.cancel"
+                                  @click="editDialogCancel"
                                   label="Close"
                                   img="mdi-close"
                                 />
@@ -428,13 +432,11 @@
                                   color="success darken-1"
                                   :disabled="
                                     editDialog.lang === editDialog.olang &&
-                                      editDialog.translation ===
-                                        editDialog.otranslation
+                                    editDialog.translation ===
+                                      editDialog.otranslation
                                   "
                                   text
-                                  @click="
-                                    editDialog.saveTranslation(editExpand.key)
-                                  "
+                                  @click="saveTranslation(editExpand.key)"
                                   label="Save"
                                   img="mdi-check"
                                 />
@@ -448,19 +450,20 @@
                           :class="
                             item.lang === devLocale ? 'subtitle-2' : 'caption'
                           "
-                        >{{ item.lang }}</span>
+                          >{{ item.lang }}</span
+                        >
                       </template>
                       <template v-slot:item.translation="{ item }">
                         <textarea
-                          class="caption mt-1"
+                          class="caption"
                           :style="
                             'height: ' +
-                              Math.ceil(
-                                editContent[editExpand.key][item.lang].length /
-                                  100.0
-                              ) *
-                                20 +
-                              'px'
+                            Math.ceil(
+                              editContent[editExpand.key][item.lang].length /
+                                100.0
+                            ) *
+                              20 +
+                            'px'
                           "
                           :rows="
                             Math.ceil(
@@ -469,7 +472,7 @@
                             )
                           "
                           v-model="editContent[editExpand.key][item.lang]"
-                          style="width:100%;"
+                          style="width: 100%;"
                         ></textarea>
                         <!--                         <div
                           :class="
@@ -485,8 +488,14 @@
                         <FjB
                           v-if="!item.wait"
                           small
+                          icon
                           color="primary darken-1"
                           img="mdi-google-translate"
+                          :tooltip="
+                            item.lang === devLocale
+                              ? 'Translate all?'
+                              : 'translate `' + item.lang + '`'
+                          "
                           @click="translateDialogItem(item)"
                         />
                         <v-progress-circular
@@ -495,9 +504,9 @@
                           color="primary darken-1"
                           :width="2"
                           indeterminate
-                        ></v-progress-circular>&nbsp;
+                        ></v-progress-circular
+                        >&nbsp;
                         <FjB
-                          right
                           small
                           color="error darken-3"
                           img="mdi-delete"
@@ -512,23 +521,49 @@
           </v-col>
         </v-row>
       </v-container>
-      <textarea rows="10" v-model="textfile" />
+      <!--       <textarea rows="10" v-model="textfile" />
       <br />
       <FjB label="Copy!" @click="doCopyClipboard('textfile')" />
       <FjB label="Paste" v-sticky:ppp.aaa="'xxx'" @click="consoleLog(clipboardData())" />
+      -->
+      <FjB
+        label="Test Alerts"
+        small
+        @click="
+          $alert({
+            type: random(['warning', 'error', 'info', 'success', 'primary']),
+            tt: 'This will be the text displayed!',
+          })
+        "
+      />
+      <FjFileSaveButton
+        iconleft
+        img="mdi-translate"
+        label="Save toAdd"
+        :opts="{ type: 'JSON' }"
+        :content="toAddDictionary()"
+        small
+        @shiftclick="doCopyClipboard($event.str)"
+      />
       <!--       <span class="primary mx-1 lighten-4">primary</span>
       <span class="success lighten-4 mx-1">success</span>
       <span class="error lighten-4 mx-1">error</span>
       <span class="warning lighten-4 mx-1">warning</span>
       <span class="info lighten-4 mx-1">info</span>
+      -->
       <div>
         <v-text-field v-model="textfile" />
         <FjB dense label="Test" @click="readTextFile(textfile)" />
       </div>
       <div>
-        <textarea rows="10" v-model="textarea">Label</textarea>
+        <v-textarea
+          rows="10"
+          cols="90"
+          v-model="textarea"
+          style="font-family: monospace; font-size: 12;"
+          label="Text:"
+        ></v-textarea>
       </div>
-      -->
     </v-content>
     <FjConfirm />
   </v-app>
@@ -537,12 +572,14 @@
 <script>
 import Vue from "vue";
 import helperMixin from "./plugins/helper";
-import { setCORS } from "google-translate-api-browser";
+import axios from "axios";
+//import { setCORS } from "google-translate-api-browser";
 // setting up cors-anywhere server address
-const gTranslate = setCORS("http://cors-anywhere.herokuapp.com/");
+//const gTranslate = setCORS("http://cors-anywhere.herokuapp.com/");
 
 import YandexTranslator from "yandex-translator";
-import config from "@/assets/config";
+//import config from "@/assets/config.json";
+//import global from "@/assets/global";
 import FjConfirm from "./components/FjConfirm";
 
 export default {
@@ -554,7 +591,10 @@ export default {
     return {
       textfile: "c:\\windows-version.txt",
       textarea: "result",
-      config: config,
+      fileSys: null,
+      loaded: Date.now(),
+      config: null,
+      isElectron: process.env.IS_ELECTRON || false,
       devLocale: "en",
       globalOnly: false,
       editDialog: {
@@ -566,92 +606,13 @@ export default {
         otranslation: "",
         createNew: false,
         showTrans: false,
-        clear() {
-          const ed = that.editDialog;
-          ed.lang = ed.olang = "";
-          ed.translation = ed.translation = "";
-          ed.createNew = true;
-        },
-        cancel() {
-          that.editDialog.dialog = false;
-          that.$nextTick(that.editDialog.clear);
-        },
-        saveTranslation(item) {
-          const ed = that.editDialog;
-          const ec = that.editContent;
-          that.$set(ec[item], ed.lang, ed.translation);
-          //          console.log("save call:", ed, item);
-          that.editDialog.cancel();
-        },
-        addLanguage(key) {
-          const ed = that.editDialog;
-          const keys = Object.keys(that.editContent[key]);
-          const list = that.config.allLocales.filter(i => keys.indexOf(i) < 0);
-          //          that.$alert(`info:${key}: ${list.join(",")}`);
-          if (list.length) {
-            ed.createNew = true;
-            ed.allLangs = list;
-            ed.lang = list[0];
-            ed.dialog = true;
-            return that
-              .$nextTick()
-              .then(_ =>
-                that
-                  .translate(key, ed.lang)
-                  .then(res =>
-                    res
-                      ? (that.editDialog.translation = res)
-                      : that.$alert("warning:No translation!")
-                  )
-              )
-              .catch(e => that.$alert(`error: in translation: ${e}`));
-          }
-          that.$alert(`warning: could not find language for ${key}!`);
-        },
-        retranslateAll(item) {
-          const key = (item && item.key) || that.editDialog.key;
-          const stat = item ? item : that.editDialog;
-          const toLangs = that.config.allLocales.filter(
-            x => x !== that.devLocale
-          );
-          that.$set(stat, "showTrans", true);
-          return (item && item.key
-            ? Promise.resolve(true)
-            : that.$fjConfirm(
-                `Add/Renew::Do you really want to add/renew all languages for<br><strong>${key}</strong>from '<strong>${that.devLocale}</strong>'?`
-              )
-          )
-            .then(
-              res =>
-                res &&
-                Promise.all(
-                  toLangs.map(l =>
-                    that
-                      .translate(key, l)
-                      .then(r =>
-                        that.$nextTick().then(_ => ({ res: r, lang: l }))
-                      )
-                  )
-                )
-                  .then(res => {
-                    for (var r of res) {
-                      //                      console.log(r);
-                      if (r.res)
-                        that.$set(that.editContent[key], r.lang, r.res);
-                    }
-                  })
-                  .catch(e => that.$alert("error:Translation failure!"))
-            )
-            .then(_ => that.$set(stat, "showTrans", false))
-            .then(_ => key);
-        }
       },
       //      time: new Date().toISOString(),
       editSearch: "",
       editedItem: {
         name: "",
         devText: "",
-        show: false
+        show: false,
       },
       //      toAdd: this.toAddDictionary(),
       editExpanded: [],
@@ -662,7 +623,7 @@ export default {
           sortable: true,
           filterable: true,
           value: "name",
-          width: "1%"
+          width: "30%",
         },
         {
           get text() {
@@ -672,7 +633,7 @@ export default {
           sortable: true,
           filterable: true,
           value: "devKey",
-          width: "65%"
+          width: "70%",
         },
         {
           text: "Actions",
@@ -680,9 +641,9 @@ export default {
           value: "langs",
           sortable: false,
           filterable: true,
-          width: 90
+          width: 75,
           //          class: "caption"
-        }
+        },
       ],
       langsHeaders: [
         {
@@ -691,7 +652,7 @@ export default {
           value: "lang",
           align: "center",
           sortable: false,
-          width: "80"
+          width: "80",
         },
         {
           text: "Translation",
@@ -700,7 +661,7 @@ export default {
           sortable: false,
           //          class: "caption"
           //          width: "80%"
-          width: "100%"
+          width: "100%",
         },
         {
           text: "Actions",
@@ -708,19 +669,20 @@ export default {
           align: "end",
           sortable: false,
           //          class: "caption"
-          width: "75"
-        }
+          width: "75",
+        },
       ],
       //      wordContent: null,
-      wordCompare: "",
+      editCompare: JSON.stringify({}),
       globalCompare: "",
-      globalContent: null,
+      globalContent: {},
       editContent: {},
       editWhat: null,
       yandex: {
         yandex: null,
-        yandexLangs: []
-      }
+        yandexLangs: [],
+        yandexKey: process.env.VUE_APP_YANDEXKEY,
+      },
     };
   },
   methods: {
@@ -737,16 +699,90 @@ export default {
       this.$alert(options);
     },
  */
-    translateAllKeys() {
+    editDialogCancel() {
+      const ed = this.editDialog;
+      ed.dialog = false;
+      this.$nextTick().then((_) => {
+        ed.lang = ed.olang = "";
+        ed.translation = ed.translation = "";
+        ed.createNew = true;
+      });
+    },
+
+    saveTranslation(item) {
+      const ed = this.editDialog;
+      const ec = this.editContent;
+      this.$set(ec[item], ed.lang, ed.translation);
+      //          console.log("save call:", ed, item);
+      this.editDialogCancel();
+    },
+
+    async addLanguage(key) {
+      const ed = this.editDialog;
+      const keys = Object.keys(this.editContent[key]);
+      const list = this.config.allLocales.filter((i) => keys.indexOf(i) < 0);
+      //          that.$alert(`info:${key}: ${list.join(",")}`);
+      if (list.length) {
+        ed.createNew = true;
+        ed.allLangs = list;
+        ed.lang = list[0];
+        ed.dialog = true;
+        await this.$nextTick();
+        try {
+          console.log("try to edit", key, ed);
+          const res = await this.translate(key, ed.lang);
+          if (res) return (this.editDialog.translation = res);
+          else this.$alert({ type: "warning", tt: "No translation!" });
+        } catch (e) {
+          this.$alert({
+            type: "error",
+            text: this.tt("Error in translation: ${1}", e),
+          });
+        }
+      } else
+        this.$alert({
+          type: "warning",
+          text: this.tt("could not find language for '${1}'!", key),
+        });
+    },
+
+    async retranslateAll(item, all) {
+      const that = this;
+      const key = (item && item.key) || that.editDialog.key;
+      const stat = item ? item : that.editDialog;
+      const curLangs = Object.keys(that.editContent[key]);
+      const toLangs = that.config.allLocales.filter(
+        (x) => x !== that.devLocale && (all || curLangs.indexOf(x) < 0)
+      );
+      that.$set(stat, "showTrans", true);
+      return that
+        .pAll(
+          toLangs,
+          (l) => that.translate(key, l).then((r) => ({ res: r, lang: l })),
+          20
+        )
+        .then((res) => {
+          for (var r of res)
+            r.res && that.$set(that.editContent[key], r.lang, r.res);
+        })
+        .catch((e) =>
+          that.$alert({
+            type: "error",
+            text: this.tt("Translation failure: ${1}", e),
+          })
+        )
+        .then((_) => that.$set(stat, "showTrans", false))
+        .then((_) => key);
+    },
+
+    translateAllKeys(all) {
       this.pSequence(
         this.editKeys,
-        key => this.editDialog.retranslateAll(key),
+        (key) => this.retranslateAll(key, all),
         100
-      ).then(res => console.log(res));
-      // const testPromise = key =>
-      //   this.wait(1000).then(_ => this.$alert("info:Processing " + key));
-      // keys.reduce((p, x) => p.then(_ => testPromise(x)), Promise.resolve());
+      );
     },
+
     editDialogItem(item, edit) {
       const ed = this.editDialog;
       this.$set(ed, "lang", item.lang || this.devLocale);
@@ -757,28 +793,25 @@ export default {
       ed.createNew = !edit;
       ed.dialog = true;
     },
+
     editRemoveKey(props) {
       //      console.log("removeKey:", props.item.key);
       return this.$fjConfirm(
-        "Delete::Do you really want to delete<br>'<strong>" +
-          props.item.key +
-          "</strong>'?",
-        { color: "error darken-2", okColor: "error darken-2" }
-      ).then(res => res && this.$delete(this.editContent, props.item.key));
+        `title=Delete key:, color=error darken-2, okColor=error darken-2|Do you really want to delete<br>
+        '<strong>${props.item.key}</strong>'?`
+      ).then((res) => res && this.$delete(this.editContent, props.item.key));
     },
+
     deleteDialogItem(item) {
       const key = this.editExpand.key;
       const lang = item.lang;
       //      console.log("removelanguage:", lang, key);
       return this.$fjConfirm(
-        "Delete::Do you really want to delete<br>'<strong>" +
-          lang +
-          "</strong>' from '<strong>" +
-          key +
-          "</strong>?",
-        { color: "error darken-2", okColor: "error darken-2" }
-      ).then(res => res && this.$delete(this.editContent[key], lang));
+        `title=Delete language:, color=error darken-2, okColor=error darken-2|Do you really want to delete<br>
+      '<strong>${lang}</strong>' from '<strong>${key}</strong>?`
+      ).then((res) => res && this.$delete(this.editContent[key], lang));
     },
+
     translateDialogItem(item, index) {
       index = index || 0;
       const key = this.editExpand.key;
@@ -786,25 +819,31 @@ export default {
       const devLang = this.devLocale;
       const devText = this.editContent[key][devLang];
       if (!devText || devText === key)
-        this.$alert("Key = devLang text: '" + key + "'");
+        this.$alert(
+          `warning:Key = devLang: <br>'<strong>${key}</strong>'!<br>Please check!`
+        );
       if (lang !== devLang) {
         item.wait = true;
-        return this.wait().then(_ =>
+        return this.wait().then((_) =>
           this.translate(key, lang)
-            .then(res => this.$set(this.editContent[key], lang, res))
-            .catch(e => this.$alert(`error: in translation: ${e}`))
-            .then(_ => (item.wait = false))
-            .then(_ => this.$nextTick())
+            .then((res) => this.$set(this.editContent[key], lang, res))
+            .catch((e) => this.$alert(`error: in translation: ${e}`))
+            .then((_) => (item.wait = false))
+            .then((_) => this.$nextTick())
         );
       } else {
-        return this.$fjConfirm("Translate: Should all be translated?").then(
-          res => res && this.$alert("warning: Need to be implemented!")
-        );
+        if (Object.keys(this.editContent[key]).length <= 1)
+          return this.retranslateAll(item, true);
+        return this.$fjConfirm(
+          "okText=all,cancelColor=info,cancelText=missing,title=Translate:|Should all be translated or only missing languages?"
+        ).then((res) => this.retranslateAll(item, res));
       }
     },
+
     rulesNoKeyDuplicates(value) {
       return !value || !this.editContent[value] || "Key exist already!";
     },
+
     checkContent(c) {
       if (!c || typeof c !== "object") return {};
       for (var key in c) {
@@ -812,23 +851,28 @@ export default {
       }
       return c;
     },
+
     loadWords(t) {
       t = this.checkContent(t);
       this.editContent = t;
       this.wordCompare = JSON.stringify(t);
     },
+
     loadGlobal(t) {
       t = this.checkContent(t);
       this.globalContent = t;
       this.globalCompare = JSON.stringify(t);
     },
+
     getEditItem(n) {
       return JSON.stringify(this.editContent[n], null, 2);
     },
+
     saveKeyChange(item) {
       this.$set(this.editContent, item.name, item.trans);
       this.$delete(this.editContent, item.key);
     },
+
     saveEditAdd() {
       /*         if (this.editedIndex > -1) {
           Object.assign(this.desserts[this.editedIndex], this.editedItem)
@@ -838,11 +882,12 @@ export default {
 
  */
       this.$set(this.editContent, this.editedItem.name, {
-        [this.devLocale]: this.editedItem.name
+        [this.devLocale]: this.editedItem.name,
       });
       this.editedItem.show = false;
       this.editedItem.name = "";
     },
+
     translateKey(key, to) {
       return (
         this.globalContent &&
@@ -852,70 +897,111 @@ export default {
         this.globalContent[key][to]
       );
     },
-    translate(key, to) {
-      const tk = this.translateKey(key, to);
-      if (this.globalOnly) return Promise.resolve(tk);
-      const dl = this.editContent[key][this.devLocale];
-      //      console.log("globalFile returned:", key, to, tk, dl);
-      if (tk === dl) {
-        //        console.log("globalFile returned:", tk, dl);
-        return Promise.resolve(tk);
-      } else if (this.globalContent)
-        this.globalContent[key][this.devLocale] = this.editContent[key][
-          this.devLocale
-        ];
-      return this.anyTranslate({
+
+    async translate(key, to) {
+      const that = this;
+      const tk = that.translateKey(key, to);
+      const l = that.devLocale;
+      const dl = that.editContent[key][l];
+      const gc = that.globalContent;
+      const gck = gc && gc[key];
+      const eck = that.editContent && that.editContent[key];
+      // console.log("globalFile returned:", key, to, tk, dl);
+      if (tk && gck && eck) {
+        if (gck[l] === eck[l]) return tk;
+      } else if (that.globalOnly) {
+        that.$alert({
+          type: "error",
+          text:
+            "globalOnly not possible: Global key language text for devLang different than in this file!",
+        });
+        return null;
+      }
+
+      if (gc) {
+        if (!gck && eck[l]) gc[key] = { [l]: eck[l] };
+        else if (!gck[l] && eck[l]) gck[l] = eck[l];
+      }
+      const res = await that.anyTranslate({
         text: dl,
-        from: this.devLocale || "auto",
-        to
-      }).then(res => {
-        if (res) res = res.text;
-        if (res && this.globalContent) {
-          let gc = this.globalContent;
-          if (!gc[key]) {
-            const dl = {
-              [this.devLocale]: this.editContent[key][this.devLocale] || key
-            };
-            this.$set(gc, key, dl);
-          }
-          this.$set(gc[key], to, res);
-        }
-        return res;
+        from: that.devLocale || "auto",
+        to,
       });
+      if (res && res.text) {
+        const ret = res.text;
+        if (ret && gc) {
+          if (!gc[key]) that.$set(gc, key, { [l]: eck[l] || key });
+          that.$set(gc[key], to, ret);
+        }
+        return ret;
+      }
+      return null;
     },
-    anyTranslate(opts_) {
+
+    async anyTranslate(opts_) {
       const that = this;
 
-      function gTrans() {
-        if (that.editDialog.wasGoogleError)
-          return Promise.reject("Google translation not available!");
-        return gTranslate(opts.text, opts)
-          .then(res => {
-            res.service = "google";
-            //            console.log("Google returned ", res, " for ", opts.text);
-            return res;
-          })
-          .catch(e => {
-            if (!that.editDialog.wasGoogleError)
-              this.$alert("warning:Google translation not available!");
-            that.editDialog.wasGoogleError = true;
-            return null;
-          });
+      async function gTrans() {
+        if (that.editDialog.wasGoogleError) return null;
+        try {
+          const res = await translateGoogle(opts.text, opts);
+          res.service = "google";
+          //            console.log("Google returned ", res, " for ", opts.text);
+          return res;
+        } catch (e) {
+          if (!that.editDialog.wasGoogleError)
+            that.$alert({
+              type: "warning",
+              tt: "Google translation not available!",
+            });
+          that.editDialog.wasGoogleError = true;
+          return null;
+        }
       }
-      function yTrans() {
-        return that.yandex.yandex
-          .translate(opts)
-          .then(res => JSON.parse(res))
-          .then(res => {
-            res.service = "yandex";
-            if (Array.isArray(res.text)) res.text = res.text.join("\n");
-            //            console.log("Yandex returned ", res, " for ", opts.text);
-            return res;
-          })
-          .catch(e => {
-            this.$alert(`warning:Yandex translation error ${e}!`);
-            return null;
+
+      async function translateGoogle(text, opts) {
+        const cors = "https://cors-anywhere.herokuapp.com/";
+        const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${
+          opts.from
+        }&tl=${opts.to}&dt=t&q=${encodeURIComponent(text)}&ie=UTF-8&oe=UTF-8`;
+        let response = null;
+        try {
+          try {
+            response = await axios({ url, timeout: 15000 });
+          } catch (e) {
+            console.log(e.toSTring(), e);
+            response = await axios({ url: cors + url, timeout: 15000 });
+          }
+          if (Array.isArray(response.data)) {
+            // we got a valid response
+            response.text = response.data[0][0][0];
+            response.service = "google";
+            return response;
+          }
+          throw new Error("Invalid response for translate request");
+        } catch (e) {
+          throw new Error(`Could not translate to "${targetLang}": ${e}`);
+        }
+      }
+
+      async function yTrans() {
+        const mopts = Object.assign({}, opts);
+        if (mopts.to == "zh-cn") mopt.to = "zh";
+        if (mopts.from == "zh-cn") mopt.from = "zh";
+        try {
+          let res = await that.yandex.yandex.translate(mopts);
+          res = JSON.parse(res);
+          res.service = "yandex";
+          if (Array.isArray(res.text)) res.text = res.text.join("\n");
+          //            console.log("Yandex returned ", res, " for ", opts.text);
+          return res;
+        } catch (e) {
+          that.$alert({
+            type: "warning",
+            text: that.tt("Yandex translation error: ${1}", e),
           });
+          return null;
+        }
       }
 
       const opts = {
@@ -924,36 +1010,41 @@ export default {
         hl: opts_.hl || "en",
         raw: opts_.raw || false,
         tld: opts_.tld || "com",
-        text: opts_.text || "no text supplied"
+        text: opts_.text || "no text supplied",
       };
       const yavailable =
-        this.yandex.yandex &&
-        this.yandex.yandexLangs.indexOf(opts.from) >= 0 &&
-        this.yandex.yandexLangs.indexOf(opts.to) >= 0;
+        that.yandex.yandex &&
+        that.yandex.yandexLangs.indexOf(opts.from) >= 0 &&
+        that.yandex.yandexLangs.indexOf(opts.to) >= 0;
       if (opts.from === opts.to)
-        return this.$alert("warning:Cannot translater from/to same languiage!");
+        return that.$alert("warning:Cannot translater from/to same languiage!");
 
-      return this.yandex.yandex && this.config.useYandex
-        ? yTrans().catch(e => gTrans())
-        : gTrans().catch(e => (yavailable ? yTrans() : opts.text));
+      if (
+        that.yandex.yandex &&
+        (that.config.useYandex || that.editDialog.wasGoogleError)
+      )
+        return yTrans().catch((e) => gTrans().catch((e) => null));
+
+      return gTrans().catch((e) => (yavailable ? yTrans() : null));
     },
+
     saveYandex() {
-      if (!this.config.yandexKey)
-        return Promise.resolve("Yandex key not available!");
+      if (!this.yandexKey) return Promise.resolve("Yandex key not available!");
       if (!this.yandex.yandex)
-        this.yandex.yandex = new YandexTranslator(this.config.yandexKey);
+        this.yandex.yandex = new YandexTranslator(this.yandexKey);
       return this.yandex.yandex
         .getAvailableLanguages()
-        .then(v => {
+        .then((v) => {
           let dist = JSON.parse(v);
           if (dist && dist.dirs)
-            dist = dist.dirs.filter(i => i.split("-")[0] == this.devLocale);
-          dist = dist.map(i => i.split("-")[1]);
+            dist = dist.dirs.filter((i) => i.split("-")[0] == this.devLocale);
+          dist = dist.map((i) => i.split("-")[1]);
           if (dist.length > 0) dist.push(this.devLocale);
           this.yandexLangs = this.yandex.yandexLangs = dist;
         })
-        .catch(e => this.$alert(`error: ${e}`));
+        .catch((e) => this.$alert(`error: ${e}`));
     },
+
     readTextFile(file) {
       let res = "";
       try {
@@ -962,9 +1053,13 @@ export default {
         res = `${e}`;
       }
       this.textarea = res;
-    }
+    },
   },
+
   computed: {
+    yandexKey() {
+      return this.yandex.yandexKey || this.config.yandexKey;
+    },
     changedGlobal() {
       return this.globalCompare != JSON.stringify(this.globalContent);
     },
@@ -975,36 +1070,37 @@ export default {
       const ec = this.editContent;
 
       return ec
-        ? Object.keys(ec).map(k => ({
+        ? Object.keys(ec).map((k) => ({
             key: k,
             name: k,
             langs: Object.keys(ec[k]),
             trans: ec[k],
-            devKey: ec[k][this.devLocale]
+            devKey: ec[k][this.devLocale],
           }))
         : [];
     },
+
     editExpand() {
       return this.editExpanded.length ? this.editExpanded[0] : null;
     },
     editExpandList() {
       if (this.editExpand) {
         const trans = this.editExpand.trans;
-        return Object.keys(trans).map(l => ({
+        return Object.keys(trans).map((l) => ({
           lang: l,
           translation: trans[l],
           action: l == this.devLocale,
-          wait: false
+          wait: false,
         }));
       } else return [];
-    }
+    },
   },
   watch: {
-    "config.yandexKey": function(newV) {
+    yandexKey: function (newV) {
       this.saveYandex();
       //      console.log("watch yandexkey newV:", newV);
     },
-    "config.devLocale": function(newV) {
+    "config.devLocale": function (newV) {
       if (newV !== this.devLocale) {
         this.devLocale = newV;
         this.saveYandex();
@@ -1026,21 +1122,42 @@ export default {
         this.$set(this.editDialog, "key", "");
         this.$set(this.editDialog, "devKey", "");
       }
-    }
+    },
   },
   mounted() {
     //    console.log(this.toAddDictionary);
-    //    console.log(Vue.prototype.$dictionary);
+    //    console.log(Vue.prototype.$dictionary, global);
     //    console.log(this.getTimeInterval(Date.now() - 100000));
     //    console.log(this.getTimeInterval(startup));
     //    this.toAdd = this.toAddDictionary();
-    this.saveYandex(null);
+    this.saveYandex();
     this.devLocale = this.config.devLocale;
+    // if (global) {
+    //   this.globalContent = global;
+    //   this.globalOnly = true;
+    // }
+    this.$alert({
+      text: this.tt(
+        "Mylang = ${1} and ${2} and ${3}",
+        this.myLang,
+        this.$llang,
+        this.$dictionary.mylang
+      ),
+    });
+    //    console.log(this.$options)
+    console.log(this.isElectron, this.$dictionary);
+    this.textarea = this.inspect(process.env);
   },
   created() {
-    if (!fs || !fs.readFileSync)
-      return (this.textarea = "Cannot run fs.readFileSync in browser!");
-  }
+    this.config = require("./assets/config.json").translatedictionary;
+    this.devLocale = this.config.devLocale;
+    Vue.prototype.$llang = this.myLang;
+    if (this.isElectron) this.fileSys = require("fs");
+    else
+      this.fileSys = {
+        readFileSync: (x) => console.log("Error:", "Filesystem not available"),
+      };
+  },
   /*   created() {
     timerTiv = setInterval(_ => {
       //       debugger;
@@ -1058,17 +1175,43 @@ export default {
 /* let timerTiv = null;
 let startup = Date.now();
  */
-
-const fs = require("fs");
 </script>
 <style>
 html {
   overflow-y: auto !important;
 }
-.v-card__subtitle,
-.v-card__text,
-.v-card__title,
-.container {
-  padding: 8px;
+</style>
+<style scoped>
+::v-deep .v-card__subtitle,
+::v-deep .v-card__title,
+::v-deep .v-card__text,
+::v-deep .container {
+  padding: 6px;
+}
+
+::v-deep tbody tr:nth-of-type(even) {
+  background-color: #e3f2fd;
+}
+
+::v-deep tbody tr:nth-of-type(odd) {
+  background-color: #fefefe;
+}
+
+.xv-data-table-header {
+  background-color: rgba(182, 183, 187);
+  color: white;
+}
+
+.xv-data-footer {
+  background-color: rgb(250, 250, 250);
+}
+
+.xtheme--light.v-data-table thead tr th {
+  color: white;
+}
+::v-deep .v-data-table td,
+::v-deep .v-data-table th {
+  padding: 0 4px;
+  border-left: 1px dotted #dddddd;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <FjB v-bind="$attrs" @click="saveFile(content, opts)"/>
+  <FjB v-bind="$attrs" @click="saveFile(content, opts, $event)" />
 </template>
 
 <script>
@@ -7,7 +7,7 @@ import { saveAs } from "file-saver";
 
 export default {
   name: "FjFileSaveButton",
-//  inheritAttrs: false,
+  //  inheritAttrs: false,
   props: {
     content: {
       type: Object,
@@ -22,42 +22,21 @@ export default {
   },
   computed: {},
   methods: {
-    saveFile(what, opts) {
-      let { type, addAtStart, addAtEnd, saveWithJSON, name, basename } = opts;
-      const todoTypes = {
-        JSON: {
-          stringify: true,
-          ending: ".json",
-          mime: "application/json"
-        },
-        Javascript: {
-          stringify: true,
-          ending: ".js",
-          mime: "application/javascript"
-        },
-        Text: {
-          ending: ".txt",
-          mime: "text/plain"
-        }
-      };
-      const todo = todoTypes[type] || todoTypes.Text;
-      if (saveWithJSON) todo.stringify = true;
+    saveFile(what, opts, e) {
+      const { mime, str, name } = this.$exportFile(what, opts);
+      if (!mime) return Promise.reject("invalid value to save!");
 
-      if (!name) name = (basename ? basename : "file") + todo.ending;
+      if (e.shiftKey) {
+        e.preventDefault();
+        e.str = str.toString();
+        this.$emit("shiftclick", e);
+        return false;
+      }
 
-      if (!what) return Promise.reject("invalid value to save!");
-      addAtStart = addAtStart || "";
-      addAtStart = addAtStart.split("\\n").join("\n");
-      addAtEnd = addAtEnd || "";
-      addAtEnd = addAtEnd.split("\\n").join("\n");
-      //    debugger;
-      const str =
-        addAtStart +
-        (todo.stringify ? JSON.stringify(what, null, 2) : what) +
-        addAtEnd;
       const blob = new Blob([str], {
-        type: todo.mime + ";charset=utf-8"
+        type: mime + ";charset=utf-8"
       });
+
       //      console.log(name, prepend, value, typ, str);
       return saveAs(blob, name);
     }

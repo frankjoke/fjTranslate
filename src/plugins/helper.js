@@ -5,7 +5,9 @@ if there is a value named 'my_attrs' use it to filer
 
 // @vue/component
 import Vue from "vue";
-import { translate, toadd, dictionary } from "./dictionary";
+import { translate, toadd, dictionary, mylang } from "./dictionary";
+
+import inspect from "browser-util-inspect";
 
 function mapFilters(filters) {
   return filters.reduce((result, filter) => {
@@ -18,6 +20,9 @@ function mapFilters(filters) {
 
 const helper = {
   computed: {
+    myLang() {
+      return mylang.split("-")[0];
+    }
     /* 
     safeId() {
       // Computed property that returns a dynamic function for creating the ID.
@@ -40,15 +45,18 @@ const helper = {
   },
   methods: {
     ...mapFilters(["tt", "ago"]),
+
     clipboardData() {
       return window;
     },
+
     startCase(str) {
       return str
         .replace(/[_\-]+/g, " ")
         .replace(/([a-z])([A-Z])/g, (str, $1, $2) => $1 + " " + $2)
         .replace(/(\s|^)(\w)/g, (str, $1, $2) => $1 + $2.toUpperCase());
     },
+
     random(start, end) {
       if (Array.isArray(start))
         return start[Math.floor(Math.random() * start.length)];
@@ -56,12 +64,19 @@ const helper = {
       if (typeof start === "number") return Math.random() * start;
       return Math.random();
     },
+
+    inspect(...args) {
+      return inspect(...args);
+    },
+
     toAddDictionary() {
       return toadd;
     },
+
     langDictionary() {
       return dictionary;
     },
+
     getType(obj) {
       return Object.prototype.toString
         .call(obj)
@@ -72,8 +87,17 @@ const helper = {
       return Vue.filter("truncate")(what, len, end);
     },
  */
+
+    pAll(arr, promise, wait) {
+      wait = wait || 0;
+      if (!Array.isArray(arr) && typeof arr === "object")
+        arr = Object.entries(arr);
+      const myPromise = key => this.wait(wait).then(_ => promise(key));
+      return Promise.all(arr.map(i => myPromise(i)));
+    },
+
     pSequence(arr, promise, wait) {
-      wait = wait || 1;
+      wait = wait || 0;
       if (!Array.isArray(arr) && typeof arr === "object")
         arr = Object.entries(arr);
       const res = [];
@@ -83,9 +107,11 @@ const helper = {
         .reduce((p, x) => p.then(_ => myPromise(x)), Promise.resolve())
         .then(_ => res);
     },
+
     consoleLog(...args) {
-      console.log(...args);
+      console.log("helper:", ...args);
     },
+
     getFormat(v, f = {}) {
       if (typeof f == "string")
         f = {
@@ -123,6 +149,7 @@ const helper = {
       //    console.log(i);
       return i;
     },
+    /* 
     _(text) {
       text = this.tt(text);
 
@@ -133,12 +160,14 @@ const helper = {
       }
       return text;
     },
+ */
+
     wait(time) {
       var timer;
       const that = this;
       return new Promise(res => {
         if (!time || time < 0 || typeof time !== "number")
-          return that.$nexttick(res);
+          return that.$nextTick(res);
         timer = setTimeout(_ => {
           timer = null;
           return res();
@@ -160,7 +189,7 @@ const helper = {
       if (typeof text !== "string") text = JSON.stringify(text, null, 2);
       return this.$copyText(text).then(
         e => {
-          that.$alert("success:Copied to clipboard!");
+          that.$alert("2|success:Copied to clipboard!");
           console.log(e);
         },
         e => {
@@ -168,64 +197,8 @@ const helper = {
           console.log(e);
         }
       );
-    },
-
-    getTimeInterval(oldTime, hoursToShow) {
-      hoursToShow = hoursToShow || 0;
-      if (oldTime < 946681200000) oldTime = oldTime * 1000;
-
-      var result = "";
-
-      var newTime = new Date();
-
-      if (!oldTime) return "";
-      if (typeof oldTime === "string") {
-        oldTime = new Date(oldTime);
-      } else {
-        if (typeof oldTime === "number") {
-          oldTime = new Date(oldTime);
-        }
-      }
-
-      var seconds = (newTime.getTime() - oldTime.getTime()) / 1000;
-
-      if (hoursToShow && seconds / 3600 > hoursToShow) return "";
-      seconds = Math.floor(seconds / 5) * 5;
-
-      if (seconds < 5) {
-        result = this._("just now");
-      } else if (seconds <= 60) {
-        result = this._("%s seconds ago", Math.floor(seconds));
-      } else if (seconds <= 3600) {
-        result = this._(
-          "for %s min %s seconds.",
-          Math.floor(seconds / 60),
-          Math.floor(seconds % 60)
-        );
-      } else if (seconds <= 3600 * 24) {
-        // between 1 und 24 hours
-        var hrs = Math.floor(seconds / 3600);
-        if (hrs === 1 || hrs === 21) {
-          result = this._("for1Hour", hrs, Math.floor(seconds / 60) % 60);
-        } else if (hrs >= 2 && hrs <= 4) {
-          result = this._("for2-4Hours", hrs, Math.floor(seconds / 60) % 60);
-        } else {
-          result = this._("forHours", hrs, Math.floor(seconds / 60) % 60);
-        }
-      } else if (seconds > 3600 * 24 && seconds <= 3600 * 48) {
-        result = this._("yesterday");
-      } else if (seconds > 3600 * 48) {
-        // over 2 days
-        result = this._("for %s hours", Math.floor(seconds / 3600));
-      }
-
-      return result;
     }
   }
 };
-
-Vue.filter("ago", (value, arg) => {
-  return helper.methods.getTimeInterval(value, arg);
-});
 
 export default helper;

@@ -9,15 +9,19 @@
       <v-toolbar dark :color="options.color" dense flat>
         <v-toolbar-title class="white--text" v-text="options.title" />
       </v-toolbar>
-      <v-card-text v-show="!!options.message" class="pa-4" v-html="options.message" />
+      <v-card-text
+        v-show="!!options.message"
+        class="pa-4"
+        v-html="options.message"
+      />
       <v-card-actions class="pt-0">
         <v-spacer></v-spacer>
         <v-btn :color="options.okColor" text @click.native="agree">
           <v-icon v-if="options.okIcon" left v-text="options.okIcon" />
-          {{ options.okText }}
+          {{ options.okText | tt }}
         </v-btn>
         <v-btn :color="options.cancelColor" text @click.native="cancel">
-          {{ options.cancelText }}
+          {{ options.cancelText | tt }}
           <v-icon v-if="options.cancelIcon" right v-text="options.cancelIcon" />
         </v-btn>
       </v-card-actions>
@@ -48,37 +52,51 @@ export default {
   },
   methods: {
     open(message, options) {
+      const defaults = {
+        color: "primary",
+        cancelColor: "grey darken-1",
+        okColor: "success darken-1",
+        okText: "Yes",
+        okIcon: "mdi-check",
+        cancelIcon: "mdi-close",
+        cancelText: "No",
+        message: "",
+        title: "",
+        width: 390,
+        zIndex: 200
+      };
       options = options || {};
-      if (!options.title && message.indexOf(":") > 0) {
-        let pos = message.indexOf(":");
-        if (message[pos + 1] == ":") ++pos;
-        options.title = message.slice(0, pos);
-        options.message = message.slice(pos + 1).trim();
+      if (!options.title && message.indexOf("|") > 0) {
+        const pos = message.indexOf("|");
+        options.message = message.slice(pos + 1);
+        const opts = message
+          .slice(0, pos)
+          .split(",")
+          .map(i =>
+            i
+              .trim()
+              .split("=")
+              .map(j => j.trim())
+          );
+        const cmap = Object.keys(defaults).map(i => i.toLowerCase());
+        let keys;
+        for (keys of opts) {
+          const key = keys[0],
+            val = keys[1],
+            keypos = cmap.indexOf(key.toLowerCase());
+          if (key && keypos >= 0)
+            options[Object.keys(defaults)[keypos]] =
+              val === undefined ? true : !!Number(val) ? Number(val) : val;
+        }
       } else options.message = message;
 
       if (!options.title) options.title = "Please confirm:";
 
       this.title = options.title;
       this.message = options.message;
-      this.options = Object.assign(
-        {},
-        this.options,
-        Object.assign(
-          {
-            color: "primary",
-            cancelColor: "grey darken-1",
-            okColor: "success darken-1",
-            okText: "Yes",
-            okIcon: "mdi-check",
-            cancelIcon: "mdi-close",
-            cancelText: "No",
-            width: 390,
-            zIndex: 200
-          },
-          this.defaults,
-          options
-        )
-      );
+      const myopts = Object.assign({}, defaults, this.defaults, options);
+
+      this.options = Object.assign({}, this.options, myopts);
       this.dialog = true;
       return new Promise(resolve => {
         this.resolve = resolve;

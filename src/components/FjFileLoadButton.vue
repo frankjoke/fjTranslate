@@ -74,12 +74,13 @@ export default {
   watch: {},
   methods: {
     loadTextFromFile(ev) {
+      const that = this;
       //      console.log(ev);
       if (!ev.target.files || !ev.target.files.length) {
         this.loading = false;
         if (ev.target.value)
           this.$alert(
-            "warning:Browser does not load same file again!",
+            "warning:" + this.tt("Browser does not load same file again!"),
             (this.loading = false)
           );
       }
@@ -92,35 +93,40 @@ export default {
         //      console.log(ev.target.value, reader);
         reader.onload = e => {
           let r = e.target.result;
-          if (this.opts.skipAtStart && r.indexOf(this.opts.skipAtStart) > 0)
-            r = r.slice(r.indexOf(this.opts.skipAtStart));
-          if (
-            this.opts.skipAfterEnd &&
-            r.lastIndexOf(this.opts.skipAfterEnd) > 0
-          )
-            r = r.slice(0, r.lastIndexOf(this.opts.skipAfterEnd) + 1);
-          if (this.opts.type === "JSON") {
+/*
+          let ss = r.indexOf(this.opts.skipAtStart);
+          if (that.opts.skipAtStart && ss > 0) {
+            that.opts.skippedAtStart = r.slice(0, ss);
+            r = r.slice(ss);
+          }
+          let se = r.lastIndexOf(this.opts.skipAfterEnd);
+          if (that.opts.skipAfterEnd && se > 0) {
+            that.opts.skippedAfterEnd = r.slice(se + 1);
+            r = r.slice(0, se + 1);
+          }
+          if (that.opts.type === "JSON") {
             try {
               r = JSON.parse(r);
             } catch (e) {
               r = "Error: file did not include json syntax!";
-              this.$alert(`error:JSON.parse: ${e}`);
+              that.$alert(`error:JSON.parse: ${e}`);
             }
           } else if (this.opts.type === "Javascript") {
             try {
               r = eval("(" + r + ")");
             } catch (e) {
               r = "Error: file could not be evaluated!";
-              this.$alert(`error:eval: ${e}`);
+              that.$alert(`error:eval: ${e}`);
             }
           }
-
+*/
+          r = that.$importFile(r, that.opts);
           //        console.log("results text:", r);
-          this.$emit("onchange", r);
-          this.$alert &&
-            this.message &&
-            this.$alert(`info:${this.message} loaded!`);
-          this.loading = false;
+          that.$emit("onchange", r);
+          that.$alert &&
+            that.message &&
+            that.$alert(`2|success:${this.message} loaded!`);
+          that.loading = false;
           //        this.value = r;
           //        return r;
           //       this.$emit("load", e.target.result);
@@ -149,11 +155,7 @@ export default {
     //    console.log(this.$el, "FileReader supported:", this.drop);
     const holder = this.$el;
     if (this.drop) {
-      holder.ondragenter = function() {
-        that.over = true;
-        return false;
-      };
-      holder.ondragover = function() {
+      holder.ondragleave = holder.ondragover = holder.ondragenter = function() {
         that.over = true;
         return false;
       };
@@ -176,46 +178,8 @@ export default {
     //    console.log(this.$el);
     if (this.drop) {
       const holder = this.$el;
-      holder.ondragenter = null;
-      holder.ondragover = null;
-      holder.ondragleave = null;
-      holder.ondrop = null;
+      holder.ondragenter = holder.ondragover = holder.ondragleave = holder.ondrop = null;
     }
   }
-  /*
-var holder = document.getElementById('holder'),
-    state = document.getElementById('status');
-
-if (typeof window.FileReader === 'undefined') {
-    state.className = 'fail';
-} else {
-    state.className = 'success';
-    state.innerHTML = 'File API & FileReader available';
-}
-
-holder.ondragover = function() {
-    this.className = 'hover';
-    return false;
-};
-holder.ondragend = function() {
-    this.className = '';
-    return false;
-};
-holder.ondrop = function(e) {
-    this.className = '';
-    e.preventDefault();
-
-    var file = e.dataTransfer.files[0],
-        reader = new FileReader();
-    reader.onload = function(event) {
-        console.log(event.target);
-        holder.innerText = event.target.result;
-    };
-    console.log(file);
-    reader.readAsText(file);
-
-    return false;
-};
-*/
 };
 </script>

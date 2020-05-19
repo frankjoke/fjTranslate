@@ -1,0 +1,22 @@
+{
+  "goto Yandex.Translate": {},
+  "goto Translate.Google": {},
+  "Edit program settings...": {},
+  "edit settings": {},
+  "load words": {},
+  "save words": {},
+  "Translate All": {},
+  "load global": {},
+  "save global": {},
+  "Add a new Key for translation": {},
+  "Add Key": {},
+  "Copy!": {},
+  "Paste": {},
+  "Save toAdd": {},
+  "Words file config:": {},
+  "Read as eval": {},
+  "Write as JSON": {},
+  "Global translation file:": {},
+  "Load Config File": {},
+  "Save config file": {}
+}

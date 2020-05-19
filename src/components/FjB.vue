@@ -29,10 +29,15 @@
         />
       </v-btn>
     </template>
-    <span>{{ tooltip | tt }}</span>
+    {{ tooltip | tt }}
     <slot></slot>
   </v-tooltip>
-  <v-btn v-else-if="label" :disabled="disabled" @click="click($event)" v-bind="iconAttr">
+  <v-btn
+    v-else-if="label"
+    :disabled="disabled"
+    @click="click($event)"
+    v-bind="iconAttr"
+  >
     <v-icon
       dense
       v-if="!!img && iconleft"
@@ -42,7 +47,7 @@
       @click="click($event)"
       v-text="img"
     />
-    {{ label | tt }}
+    <span v-if="!!label">{{ label | tt }}</span>
     <v-icon
       dense
       v-if="!!img && !iconleft"

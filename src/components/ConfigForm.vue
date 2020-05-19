@@ -14,11 +14,13 @@
         :value.sync="editWordsFile"
         label="Words file config:"
         icon="mdi-folder"
+        :filesys="filesys"
       />
       <ConfigFile
         :value.sync="globalWordsFile"
         label="Global translation file:"
         icon="mdi-briefcase"
+        :filesys="filesys"
       />
       <v-card raised class="ma-1">
         <v-card-title class="subtitle-1">
@@ -93,7 +95,6 @@
             <v-col class="d-flex pl-2 pr-0 py-1" cols="12" sm="2">
               <v-switch
                 dense
-                :disabled="!yandexKey"
                 v-model="useYandex"
                 class="ma-2"
                 label="Use Yandex first"
@@ -104,10 +105,22 @@
                 class="caption"
                 dense
                 :type="passwd ? 'password' : 'text'"
-                label="Yandex API key"
+                :label="tt('Yandex API key')"
                 append-icon="mdi-eye"
-                title="The Yandex.Translate API key you will use for translation"
-                :rules="[value => !!value || 'required']"
+                :placeholder="
+                  tt(
+                    yandexapi
+                      ? 'Already defined in VUE_APP_YANDEXKEY environment settings.'
+                      : 'The Yandex.Translate API key, you can put it also in VUE_APP_YANDEXKEY env settings!'
+                  )
+                "
+                :rules="[
+                  value =>
+                    !!value ||
+                    tt(
+                      'required for Yandex if not defined in VUE_APP_YANDEXKEY env settings!'
+                    )
+                ]"
                 hide-details="auto"
                 v-model="yandexKey"
                 @click:append="passwd = !passwd"
@@ -137,6 +150,7 @@
           iconleft
           :opts="{ type: 'JSON', basename: 'config' }"
           :content="newConf"
+          @shiftclick="doCopyClipboard($event.str)"
         />
         <v-spacer></v-spacer>
         <v-btn
@@ -176,7 +190,8 @@ export default {
       all: true,
       passwd: true,
       show: false,
-      origConf: ""
+      origConf: "",
+      yandexapi: process.env.VUE_APP_YANDEXKEY
     };
   },
   components: { ConfigFile },
@@ -195,13 +210,11 @@ export default {
       type: String,
       default: "",
       required: false
-    }
-    /*     yandex: {
-      type: Object,
-      default: () => null,
-      required: true
     },
- */
+    filesys: {
+      type: Object,
+      default: null
+    }
   },
   computed: {
     locales: {
@@ -216,17 +229,25 @@ export default {
       }
     },
     newConf() {
+      function filter(obj) {
+        const { addAtEnd, addAtStart, skipAfterEnd, skipAtStart, type } = obj;
+        return {
+          addAtEnd,
+          addAtStart,
+          skipAfterEnd,
+          skipAtStart,
+          type
+        };
+      }
       const conf = {
         devLocale: this.devLocale,
         allLocales: this.allLocales,
         locales: this.locales,
         useYandex: this.useYandex,
-        globalWordsFile: this.globalWordsFile,
-        editWordsFile: this.editWordsFile,
+        globalWordsFile: filter(this.globalWordsFile),
+        editWordsFile: filter(this.editWordsFile),
         yandexKey: this.yandexKey.trim()
       };
-      delete conf.globalWordsFile.name;
-      delete conf.editWordsFile.name;
       return conf;
     },
     changed() {

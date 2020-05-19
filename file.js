@@ -73,15 +73,15 @@ export default {
     "pl": "mój test 1"
   },
   "my test 2 ": {
-    "en": "my test 2 ",
-    "de": "Mein test 2 ",
-    "ru": "Russisch",
-    "pt": "meu teste 2",
-    "fr": "mon test 2",
-    "pl": "mój test 2",
-    "nl": "mijn test 2",
-    "es": "mi prueba 2",
-    "it": "il mio test 2",
-    "zh-cn": "我的测试2"
+    "en": "my test 2 xyyyy",
+    "de": "mein Test 2 xyyyy",
+    "ru": "мой тест 2 xyyyy",
+    "pt": "meu teste 2 xaaaa",
+    "fr": "mon test 2 xyyyy",
+    "pl": "mój test 2 xyyyy",
+    "nl": "mijn test 2 xyyyy",
+    "es": "mi prueba 2 xyyyy",
+    "it": "il mio test 2 xyyyy",
+    "zh-cn": "我的测试2 xyyyy"
   }
 };
