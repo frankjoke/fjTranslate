@@ -2,7 +2,7 @@
   "name": "fjTranslate",
   "version": "0.8.0",
   "private": false,
-  "homepage": 
+  "homepage": "https://github.com/frankjoke/fjTranslate",
   "description": "Translator for words.js files using Google or Yandex translate",
   "author": {
     "name": "frankjoke",
