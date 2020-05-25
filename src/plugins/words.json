@@ -332,7 +332,8 @@
     "it": "Caricare Il File Di Configurazione",
     "es": "Carga Del Archivo De Configuración",
     "pl": "Pobierz Plik Config",
-    "zh-cn": "载荷配置文件"
+    "zh-cn": "载荷配置文件",
+    "de": "Last-Config-Datei"
   },
   "Save config file": {
     "en": "Save config file",
@@ -396,7 +397,15 @@
   },
   "cancel": {
     "en": "cancel",
-    "de": "Abbrechen"
+    "de": "Abbrechen",
+    "ru": "отменить",
+    "pt": "cancelar",
+    "nl": "annuleren",
+    "fr": "annuler",
+    "it": "annulla",
+    "es": "cancelar",
+    "pl": "anuluj",
+    "zh-cn": "取消"
   },
   "Save": {
     "en": "Save",
@@ -423,13 +432,40 @@
     "zh-cn": "新增金钥"
   },
   "Mylang = {0}": {
-    "en": "Mylang = {0}"
+    "en": "Mylang = {0}",
+    "de": "Mylang = {0}",
+    "ru": "Mylang = {0}",
+    "pt": "Mylang = {0}",
+    "nl": "Mylang = {0}",
+    "fr": "Malangue = {0}",
+    "it": "Mylang = {0}",
+    "es": "Mylang = {0}",
+    "pl": "Mylang = {0}",
+    "zh-cn": "Mylang={0}"
   },
   "empty": {
-    "en": "empty"
+    "en": "empty",
+    "de": "leer",
+    "ru": "пустые",
+    "pt": "vazio",
+    "nl": "leeg",
+    "fr": "vide",
+    "it": "vuoto",
+    "es": "vacío",
+    "pl": "puste",
+    "zh-cn": "空"
   },
   "Read file": {
-    "en": "Read file"
+    "en": "Read file",
+    "de": "Datei lesen",
+    "ru": "Читать файл",
+    "pt": "Ler arquivo",
+    "nl": "Bestand lezen",
+    "fr": "Lire le fichier",
+    "it": "Leggi il file",
+    "es": "Leer archivo",
+    "pl": "Przeczytaj plik",
+    "zh-cn": "读取档案"
   },
   "Edit Key": {
     "en": "Edit Key",
@@ -444,7 +480,16 @@
     "de": "Bearbeiten-Taste"
   },
   "No existing keys allowed!": {
-    "en": "No existing keys allowed!"
+    "en": "No existing keys allowed!",
+    "de": "Keine vorhandenen Schlüssel erlaubt!",
+    "ru": "Существующие ключи не допускаются!",
+    "pt": "Nenhuma chave existente permitida!",
+    "nl": "Geen bestaande sleutels toegestaan!",
+    "fr": "Aucune clé existante n'est autorisée!",
+    "it": "Nessuna chiave esistente consentita!",
+    "es": "¡No se permiten claves existentes!",
+    "pl": "Żadne istniejące klucze nie są dozwolone!",
+    "zh-cn": "没有现有的密钥！"
   },
   "Missing words saved to clipboard!": {
     "en": "Missing words saved to clipboard!",
@@ -495,25 +540,88 @@
     "zh-cn": "添加语言"
   },
   "Edit Language Item": {
-    "en": "Edit Language Item"
+    "en": "Edit Language Item",
+    "de": "Sprachelement bearbeiten",
+    "ru": "Изменить языковой элемент",
+    "pt": "Editar item de idioma",
+    "nl": "Taalitem bewerken",
+    "fr": "Modifier l'élément de langue",
+    "it": "Modifica elemento lingua",
+    "es": "Editar elemento de idioma",
+    "pl": "Edytuj element językowy",
+    "zh-cn": "编辑语言项目"
   },
   "Language": {
-    "en": "Language"
+    "en": "Language",
+    "de": "Sprache",
+    "ru": "язык",
+    "pt": "Língua",
+    "nl": "Taal",
+    "fr": "Langue",
+    "it": "linguaggio",
+    "es": "Idioma",
+    "pl": "Język",
+    "zh-cn": "语言"
   },
   "For Key:": {
-    "en": "For Key:"
+    "en": "For Key:",
+    "de": "Für Schlüssel:",
+    "ru": "Для ключа:",
+    "pt": "Para chave:",
+    "nl": "Voor sleutel:",
+    "fr": "Pour la clé:",
+    "it": "Per chiave:",
+    "es": "Para clave:",
+    "pl": "Dla klucza:",
+    "zh-cn": "对于密钥："
   },
   "Translation": {
-    "en": "Translation"
+    "en": "Translation",
+    "de": "Übersetzung",
+    "ru": "Перевод",
+    "pt": "Tradução",
+    "nl": "Vertaling",
+    "fr": "Traduction",
+    "it": "Traduzione",
+    "es": "Traducción",
+    "pl": "Tłumaczenie",
+    "zh-cn": "翻译"
   },
   "Close": {
-    "en": "Close"
+    "en": "Close",
+    "de": "Schließen",
+    "ru": "близко",
+    "pt": "Fechar",
+    "nl": "Dichtbij",
+    "fr": "proche",
+    "it": "Vicino",
+    "es": "Cerca",
+    "pl": "Blisko",
+    "zh-cn": "关"
   },
   "Key:": {
-    "en": "Key:"
+    "en": "Key:",
+    "de": "Schlüssel:",
+    "ru": "Ключ:",
+    "pt": "Chave:",
+    "nl": "Sleutel:",
+    "fr": "Clé:",
+    "it": "Chiave:",
+    "es": "Clave:",
+    "pl": "Klucz:",
+    "zh-cn": "关键："
   },
   "Translate": {
-    "en": "Translate"
+    "en": "Translate",
+    "de": "Übersetzen",
+    "ru": "Перевести",
+    "pt": "Traduzir",
+    "nl": "Vertalen",
+    "fr": "Traduire",
+    "it": "Tradurre",
+    "es": "Traducir",
+    "pl": "Tłumaczyć",
+    "zh-cn": "翻译"
   },
   "(re)Translate all or only missing languages?": {
     "en": "Translate all or only missing languages?",
@@ -540,16 +648,16 @@
     "zh-cn": "所有"
   },
   "missing": {
-    "en": "missing",
-    "de": "fehlt",
-    "ru": "отсутствует",
-    "pt": "ausência de",
-    "nl": "missend",
-    "fr": "manquant",
-    "it": "mancante",
-    "es": "desaparecido",
-    "pl": "brakujący",
-    "zh-cn": "失踪"
+    "en": "missing only",
+    "de": "nur fehlende",
+    "ru": "отсутствует только",
+    "pt": "faltando apenas",
+    "nl": "alleen ontbreekt",
+    "fr": "manquant seulement",
+    "it": "manca solo",
+    "es": "solo falta",
+    "pl": "tylko zaginiony",
+    "zh-cn": "仅失踪"
   },
   "Google translation not available!": {
     "en": "Google translation not available!",
@@ -576,22 +684,76 @@
     "zh-cn": "保存文件"
   },
   "Drop words file here": {
-    "en": "Drop words file here"
+    "en": "Drop words file here",
+    "de": "Wortdatei hier ablegen",
+    "ru": "Перетащите файл слов сюда",
+    "pt": "Solte o arquivo de palavras aqui",
+    "nl": "Zet het woordenbestand hier neer",
+    "fr": "Déposer le fichier de mots ici",
+    "it": "Trascina qui il file delle parole",
+    "es": "Suelta el archivo de palabras aquí",
+    "pl": "Upuść plik słów tutaj",
+    "zh-cn": "在这里放词文件"
   },
   "open file selector for words file or drop it here": {
-    "en": "open file selector for words file or drop it here"
+    "en": "open file selector for words file or drop it here",
+    "de": "Öffnen Sie die Dateiauswahl für die Wortdatei oder legen Sie sie hier ab",
+    "ru": "откройте селектор файлов для файла слов или поместите его сюда",
+    "pt": "abra o seletor de arquivos para o arquivo de palavras ou solte-o aqui",
+    "nl": "open bestandselector voor woordenbestand of zet het hier neer",
+    "fr": "ouvrez le sélecteur de fichier pour le fichier de mots ou déposez-le ici",
+    "it": "apri il selettore di file per il file di parole o rilascialo qui",
+    "es": "Abra el selector de archivos para el archivo de palabras o suéltelo aquí",
+    "pl": "otwórz selektor pliku dla pliku słów lub upuść go tutaj",
+    "zh-cn": "打开word文件的文件选择器或将其放在此处"
   },
   "Save words file, with shift to clipboard, with alt select other location": {
-    "en": "Save words file, with shift to clipboard, with alt select other location"
+    "en": "Save words file, with shift to clipboard, with alt select other location",
+    "de": "Speichern Sie die Wortdatei mit der Verschiebung in die Zwischenablage, und wählen Sie mit Alt einen anderen Speicherort aus",
+    "ru": "Сохранить файл слов, с переходом в буфер обмена, с помощью Alt выбрать другое место",
+    "pt": "Salve o arquivo de palavras, com a mudança para a área de transferência, com alt selecione outro local",
+    "nl": "Sla woordenbestand op, met verschuiving naar klembord, met alt selecteer een andere locatie",
+    "fr": "Enregistrer le fichier de mots, avec passer au presse-papiers, avec alt sélectionner un autre emplacement",
+    "it": "Salva il file delle parole, con lo spostamento negli appunti, con alt seleziona un'altra posizione",
+    "es": "Guardar archivo de palabras, con cambio al portapapeles, con alt seleccionar otra ubicación",
+    "pl": "Zapisz plik słów, z przesunięciem do schowka, z alt wybierz inną lokalizację",
+    "zh-cn": "保存文字文件，移至剪贴板，alt选择其他位置"
   },
   "Drop global file here": {
-    "en": "Drop global file here"
+    "en": "Drop global file here",
+    "de": "Legen Sie die globale Datei hier ab",
+    "ru": "Перетащите глобальный файл сюда",
+    "pt": "Solte o arquivo global aqui",
+    "nl": "Zet het globale bestand hier neer",
+    "fr": "Déposer le fichier global ici",
+    "it": "Trascina qui il file globale",
+    "es": "Suelta el archivo global aquí",
+    "pl": "Upuść plik globalny tutaj",
+    "zh-cn": "将全局文件放在这里"
   },
   "open file selector for global file or drop it here": {
-    "en": "open file selector for global file or drop it here"
+    "en": "open file selector for global file or drop it here",
+    "de": "Öffnen Sie die Dateiauswahl für die globale Datei oder legen Sie sie hier ab",
+    "ru": "откройте селектор файлов для глобального файла или поместите его сюда",
+    "pt": "abra o seletor de arquivo global ou solte-o aqui",
+    "nl": "open bestandselector voor globaal bestand of zet het hier neer",
+    "fr": "ouvrez le sélecteur de fichiers pour le fichier global ou déposez-le ici",
+    "it": "apri il selettore di file per il file globale o rilascialo qui",
+    "es": "abra el selector de archivos para el archivo global o suéltelo aquí",
+    "pl": "otwórz selektor plików dla pliku globalnego lub upuść go tutaj",
+    "zh-cn": "打开全局文件的文件选择器或将其放在此处"
   },
   "Save global file, with shift to clipboard, with alt select other location": {
-    "en": "Save global file, with shift to clipboard, with alt select other location"
+    "en": "Save global file, with shift to clipboard, with alt select other location",
+    "de": "Speichern Sie die globale Datei mit der Verschiebung in die Zwischenablage, und wählen Sie bei ged",
+    "ru": "Сохранить глобальный файл со смещением в буфер обмена, с помощью alt выбрать другое место",
+    "pt": "Salvar arquivo global, com a mudança para a área de transferência, com alt selecionar outro local",
+    "nl": "Sla het globale bestand op, met shift naar het klembord, met alt selecteer een andere locatie",
+    "fr": "Enregistrer le fichier global, avec le déplacement dans le presse-papiers, avec alt sélectionner un autre emplacement",
+    "it": "Salvare il file globale, con spostamento negli appunti, con alt selezionare altra posizione",
+    "es": "Guarde el archivo global, con el cambio al portapapeles, con alt seleccione otra ubicación",
+    "pl": "Zapisz plik globalny, z przejściem do schowka, z alt wybierz inną lokalizację",
+    "zh-cn": "保存全局文件，转移到剪贴板，并选择alt选择其他位置"
   },
   "External only": {
     "en": "External only",
@@ -606,31 +768,112 @@
     "de": "Nur extern"
   },
   "save config to memory and to file if autosave is on": {
-    "en": "save config to memory and to file if autosave is on"
+    "en": "save config to memory and to file if autosave is on",
+    "de": "Speichern Sie die Konfiguration im Speicher und in der Datei, wenn die automatische Speicherung aktiviert ist",
+    "ru": "сохранить конфигурацию в память и в файл, если автосохранение включено",
+    "pt": "salve a configuração na memória e arquive se o salvamento automático estiver ativado",
+    "nl": "sla de configuratie op in het geheugen en in het bestand als automatisch opslaan is ingeschakeld",
+    "fr": "enregistrer la configuration en mémoire et dans un fichier si la sauvegarde automatique est activée",
+    "it": "salva la configurazione in memoria e nel file se il salvataggio automatico è attivo",
+    "es": "guardar la configuración en la memoria y en el archivo si el guardado automático está activado",
+    "pl": "zapisz config do pamięci i do pliku, jeśli włączone jest automatyczne zapisywanie",
+    "zh-cn": "如果启用了自动保存，则将配置保存到内存和文件中"
   },
   "exit config without saving": {
-    "en": "exit config without saving"
+    "en": "exit config without saving",
+    "de": "Beenden Sie die Konfiguration ohne zu speichern",
+    "ru": "выйти из конфигурации без сохранения",
+    "pt": "sair da configuração sem salvar",
+    "nl": "verlaat configuratie zonder op te slaan",
+    "fr": "quitter la configuration sans enregistrer",
+    "it": "esce dalla configurazione senza salvare",
+    "es": "salir de la configuración sin guardar",
+    "pl": "zakończ konfigurację bez zapisywania",
+    "zh-cn": "退出配置而不保存"
   },
   "save config from file or dropt it here": {
-    "en": "save config from file or dropt it here"
+    "en": "save config from file or dropt it here",
+    "de": "Speichern Sie die Konfiguration aus der Datei oder legen Sie sie hier ab",
+    "ru": "сохранить конфигурацию из файла или сбросить ее здесь",
+    "pt": "salve a configuração do arquivo ou solte-a aqui",
+    "nl": "sla configuratie op van bestand of dropt het hier",
+    "fr": "enregistrer la configuration du fichier ou la déposer ici",
+    "it": "salva la configurazione dal file o trascinala qui",
+    "es": "guardar la configuración del archivo o dejarlo aquí",
+    "pl": "zapisz konfigurację z pliku lub upuść ją tutaj",
+    "zh-cn": "从文件保存配置或将其放在此处"
   },
   "save config to file or with shift to clipboard, select new file with alt": {
-    "en": "save config to file or with shift to clipboard, select new file with alt"
+    "en": "save config to file or with shift to clipboard, select new file with alt",
+    "de": "Speichern Sie die Konfiguration in einer Datei oder verschieben Sie sie mit Alt in die Zwischenablage",
+    "ru": "сохранить конфигурацию в файл или со смещением в буфер обмена, выбрать новый файл с помощью Alt",
+    "pt": "salve a configuração em um arquivo ou, com a mudança para a área de transferência, selecione um novo arquivo com alt",
+    "nl": "sla configuratie op in bestand of met shift naar klembord, selecteer nieuw bestand met alt",
+    "fr": "enregistrer la configuration dans un fichier ou avec le déplacer dans le presse-papiers, sélectionner un nouveau fichier avec alt",
+    "it": "salva la configurazione in un file o con spostamento negli appunti, seleziona un nuovo file con alt",
+    "es": "guarde la configuración en el archivo o con el cambio al portapapeles, seleccione un nuevo archivo con alt",
+    "pl": "zapisz config do pliku lub przy pomocy Shift do schowka wybierz nowy plik za pomocą alt",
+    "zh-cn": "保存配置到文件或转移到剪贴板，使用alt选择新文件"
   },
   "open file selector for config file or drop it here": {
-    "en": "open file selector for config file or drop it here"
+    "en": "open file selector for config file or drop it here",
+    "de": "Öffnen Sie die Dateiauswahl für die Konfigurationsdatei oder legen Sie sie hier ab",
+    "ru": "откройте селектор файлов для конфигурационного файла или оставьте его здесь",
+    "pt": "abra o seletor de arquivos para o arquivo de configuração ou solte-o aqui",
+    "nl": "open bestandselector voor configuratiebestand of zet het hier neer",
+    "fr": "ouvrez le sélecteur de fichier pour le fichier de configuration ou déposez-le ici",
+    "it": "apri il selettore di file per il file di configurazione o rilascialo qui",
+    "es": "abra el selector de archivos para el archivo de configuración o suéltelo aquí",
+    "pl": "otwórz selektor plików dla pliku konfiguracyjnego lub upuść go tutaj",
+    "zh-cn": "打开配置文件的文件选择器或将其放在此处"
   },
   "type": {
-    "en": "type"
+    "en": "type",
+    "de": "Art",
+    "ru": "тип",
+    "pt": "tipo",
+    "nl": "type",
+    "fr": "type",
+    "it": "genere",
+    "es": "tipo",
+    "pl": "rodzaj",
+    "zh-cn": "类型"
   },
   "Read as JSON": {
-    "en": "Read as JSON"
+    "en": "Read as JSON",
+    "de": "Lesen Sie als JSON",
+    "ru": "Читать как JSON",
+    "pt": "Leia como JSON",
+    "nl": "Lees als JSON",
+    "fr": "Lire en JSON",
+    "it": "Leggi come JSON",
+    "es": "Leer como JSON",
+    "pl": "Czytaj jako JSON",
+    "zh-cn": "读取为JSON"
   },
   "Write as JSON": {
-    "en": "Write as JSON"
+    "en": "Write as JSON",
+    "de": "Schreiben Sie als JSON",
+    "ru": "Написать как JSON",
+    "pt": "Escreva como JSON",
+    "nl": "Schrijf als JSON",
+    "fr": "Écrire en JSON",
+    "it": "Scrivi come JSON",
+    "es": "Escribir como JSON",
+    "pl": "Napisz jako JSON",
+    "zh-cn": "写为JSON"
   },
   "Skip At Start": {
-    "en": "Skip At Start"
+    "en": "Skip At Start",
+    "de": "Beim Start überspringen",
+    "ru": "Пропустить при старте",
+    "pt": "Pular no início",
+    "nl": "Overslaan bij start",
+    "fr": "Ignorer au début",
+    "it": "Salta all'inizio",
+    "es": "Saltar al inicio",
+    "pl": "Pomiń na początku",
+    "zh-cn": "开始时跳过"
   },
   "Remove all text until this string at file on load": {
     "en": "Remove all text until this string at file on load",
@@ -799,5 +1042,49 @@
     "es": "Suelta el archivo de configuración aquí",
     "pl": "Upuść plik konfiguracyjny tutaj",
     "zh-cn": "将配置文件放在这里"
+  },
+  "Yes": {
+    "en": "Yes",
+    "de": "Ja",
+    "ru": "да",
+    "pt": "sim",
+    "nl": "Ja",
+    "fr": "Oui",
+    "it": "sì",
+    "es": "si",
+    "pl": "tak",
+    "zh-cn": "是"
+  },
+  "No": {
+    "en": "No",
+    "de": "Nein",
+    "ru": "нет",
+    "pt": "Não",
+    "nl": "Nee",
+    "fr": "Non",
+    "it": "No",
+    "es": "No",
+    "pl": "Nie",
+    "zh-cn": "没有"
+  },
+  "New Language Item": {
+    "en": "New Language Item",
+    "de": "Neues Sprachelement",
+    "ru": "Новый элемент языка",
+    "pt": "Novo item de idioma",
+    "nl": "Nieuw taalitem",
+    "fr": "Nouvel élément de langue",
+    "it": "Nuovo elemento lingua",
+    "es": "Nuevo ítem de idioma",
+    "pl": "Nowa pozycja językowa"
+  },
+  "Cannot translater from/to same language!": {
+    "en": "Cannot translater from/to same language!"
+  },
+  "No translation!": {
+    "en": "No translation!"
+  },
+  "keys not fully translated:": {
+    "en": "keys not fully translated:"
   }
 }

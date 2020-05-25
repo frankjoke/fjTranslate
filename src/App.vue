@@ -69,7 +69,11 @@
               img="mdi-folder-download"
               :label="$t('save words')"
               :disabled="!editContent || !changedWords"
-              @click.stop="saveFile(editContent, config.editWordsFile, $event)"
+              @click.stop="
+                saveFile(editContent, config.editWordsFile, $event).then(
+                  () => (editCompare = true)
+                )
+              "
               :tooltip="
                 $t(
                   'Save words file, with shift to clipboard, with alt select other location'
@@ -121,7 +125,9 @@
               :disabled="!globalContent || !changedGlobal"
               small
               @click.stop="
-                saveFile(globalContent, config.globalWordsFile, $event)
+                saveFile(globalContent, config.globalWordsFile, $event).then(
+                  () => (globalCompare = true)
+                )
               "
               :tooltip="
                 $t(
@@ -143,6 +149,34 @@
         </v-row>
         <v-row no-gutters class="mb-1">
           <v-col cols="3">
+            <v-checkbox
+              class="chb1 my-0 py-0 caption"
+              justify="center"
+              v-model="globalOnly"
+              dense
+              hide-details
+              :label="$t('Global only')"
+              :disabled="!isGlobalContent || noGlobal"
+              :title="$t('This is a title!')"
+            />
+          </v-col>
+          <v-col cols="3">
+            <v-checkbox
+              class="my-0 py-0 caption"
+              justify="center"
+              v-model="noGlobal"
+              dense
+              hide-details
+              :label="$t('External only')"
+              :disabled="globalOnly"
+            />
+          </v-col>
+
+          <v-col cols="3">
+            {{ `${numMissing} ${$t("keys not fully translated")}` }}
+          </v-col>
+
+          <v-col cols="3">
             <FjB
               v-if="!inTranslateAll"
               justify="center"
@@ -161,28 +195,6 @@
               indeterminate
               class="mr-2"
             ></v-progress-circular>
-          </v-col>
-          <v-col cols="3">
-            <v-checkbox
-              class="my-0 py-0 caption"
-              justify="center"
-              v-model="globalOnly"
-              dense
-              hide-details
-              :label="$t('Global only')"
-              :disabled="!isGlobalContent || noGlobal"
-            />
-          </v-col>
-          <v-col cols="3">
-            <v-checkbox
-              class="my-0 py-0 caption"
-              justify="center"
-              v-model="noGlobal"
-              dense
-              hide-details
-              :label="$t('External only')"
-              :disabled="globalOnly"
-            />
           </v-col>
         </v-row>
         <v-row no-gutters>
@@ -430,9 +442,9 @@ export default {
         return that.$alert(that.$t("Missing words saved to clipboard!"));
       }
       const q = await that.$fjConfirm(
-        `okText=all,cancelText=missing,title=${that.$t("Translate")}:|${that.$t(
-          "(re)Translate all or only missing languages?"
-        )}`
+        `okText=all,cancelText=${that.$t("missing")},title=${that.$t(
+          "Translate"
+        )}:|${that.$t("(re)Translate all or only missing languages?")}`
       );
       await that.translateAllKeys(q);
       that.inTranslateAll = false;
@@ -512,7 +524,11 @@ export default {
           li.notAll = li.langs.length < this.config.allLocales.length;
           res.push(li);
         }
+
       return res;
+    },
+    numMissing() {
+      return this.editKeys.filter((i) => i.notAll).length;
     },
   },
 
@@ -579,10 +595,13 @@ export default {
     //   this.globalContent = global;
     //   this.globalOnly = true;
     // }
+    that.$vuetify.lang.current = that.myLang.startsWith("zh")
+      ? "zh-Hans"
+      : that.myLang;
     // console.log(that.config);
-    that.$alert({
-      text: that.$t("Mylang = {0}", that.myLang),
-    });
+    // that.$alert({
+    //   text: that.$t("Mylang = {0}", that.myLang),
+    // });
     //    console.log(this.$options)
 
     if (that.config.globalWordsFile.autoload) {
