@@ -1,4 +1,4 @@
-# translatedictionary
+# fjTranslate
 
 ## Project setup
 ```

@@ -18,10 +18,10 @@
         <v-spacer></v-spacer>
         <v-btn :color="options.okColor" text @click.native="agree">
           <v-icon v-if="options.okIcon" left v-text="options.okIcon" />
-          {{ options.okText | tt }}
+          {{ $t(options.okText) }}
         </v-btn>
         <v-btn :color="options.cancelColor" text @click.native="cancel">
-          {{ options.cancelText | tt }}
+          {{ $t(options.cancelText) }}
           <v-icon v-if="options.cancelIcon" right v-text="options.cancelIcon" />
         </v-btn>
       </v-card-actions>
@@ -39,16 +39,17 @@
 import Vue from "vue";
 
 export default {
+  name: "FjConfirm",
   data: () => ({
     dialog: false,
     resolve: null,
-    options: {}
+    options: {},
   }),
   props: {
     defaults: {
       type: Object,
-      default: () => ({})
-    }
+      default: () => ({}),
+    },
   },
   methods: {
     open(message, options) {
@@ -63,7 +64,7 @@ export default {
         message: "",
         title: "",
         width: 390,
-        zIndex: 200
+        zIndex: 200,
       };
       options = options || {};
       if (!options.title && message.indexOf("|") > 0) {
@@ -72,13 +73,13 @@ export default {
         const opts = message
           .slice(0, pos)
           .split(",")
-          .map(i =>
+          .map((i) =>
             i
               .trim()
               .split("=")
-              .map(j => j.trim())
+              .map((j) => j.trim())
           );
-        const cmap = Object.keys(defaults).map(i => i.toLowerCase());
+        const cmap = Object.keys(defaults).map((i) => i.toLowerCase());
         let keys;
         for (keys of opts) {
           const key = keys[0],
@@ -98,24 +99,22 @@ export default {
 
       this.options = Object.assign({}, this.options, myopts);
       this.dialog = true;
-      return new Promise(resolve => {
+      return new Promise((resolve) => {
         this.resolve = resolve;
       });
     },
     agree() {
-      this.$nextTick().then(_ => this.resolve(true));
+      this.$nextTick().then((_) => this.resolve(true));
       this.dialog = false;
     },
     cancel() {
-      this.$nextTick().then(_ => this.resolve(false));
+      this.$nextTick().then((_) => this.resolve(false));
       this.dialog = false;
-    }
+    },
   },
   created() {
     Vue.prototype.$fjConfirm = this.open.bind(this);
   },
-  mounted() {
-    //    console.log("FjConfirm mounted:", Vue.prototype);
-  }
+  // mounted() {},
 };
 </script>

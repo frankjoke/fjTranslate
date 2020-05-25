@@ -1,7 +1,7 @@
 {
   "fjTranslate": {
     "devLocale": "en",
-    "configFile": "./cofig.json",
+    "configFile": "C:\\Users\\sissi\\apps\\cofig.json",
     "autosave": true,
     "allLocales": [
       "en",
@@ -28,18 +28,22 @@
     ],
     "useYandex": false,
     "globalWordsFile": {
-      "type": "Javascript",
+      "type": "JSON",
       "skipAtStart": "{",
       "skipAfterEnd": "}",
       "addAtStart": "!",
-      "addAtEnd": "!"
+      "addAtEnd": "!",
+      "autoload": true,
+      "fileName": "C:\\Users\\sissi\\apps\\global-words.json"
     },
     "editWordsFile": {
-      "type": "Javascript",
+      "type": "JSON",
       "skipAtStart": "{",
       "skipAfterEnd": "}",
       "addAtStart": "!",
-      "addAtEnd": "!"
+      "addAtEnd": "!",
+      "fileName": "C:\\Users\\sissi\\apps\\missing.json",
+      "autoload": true
     },
     "yandexKey": ""
   }

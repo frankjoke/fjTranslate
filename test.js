@@ -35,7 +35,7 @@ function detectLanguageSample(text) {
     let [detections] = await translate.detect(text);
     detections = Array.isArray(detections) ? detections : [detections];
     console.log("Detections:");
-    detections.forEach(detection => {
+    detections.forEach((detection) => {
       console.log(`${detection.input} => ${detection.language}`);
     });
   }
@@ -57,7 +57,7 @@ function listLanguagesSample() {
     const [languages] = await translate.getLanguages();
 
     console.log("Languages:");
-    languages.forEach(language => console.log(language));
+    languages.forEach((language) => console.log(language));
   }
 
   listLanguages();
@@ -82,7 +82,7 @@ function listLanguagesWithTargetSample(target) {
     const [languages] = await translate.getLanguages(target);
 
     console.log("Languages:");
-    languages.forEach(language => console.log(language));
+    languages.forEach((language) => console.log(language));
   }
 
   listLanguagesWithTarget();
@@ -140,7 +140,7 @@ function translateTextWithModelSample(text, target, model) {
       to: target,
       // Make sure your project is whitelisted.
       // Possible values are "base" and "nmt"
-      model: model
+      model: model,
     };
 
     // Translates the text into the target language. "text" can be a string for
@@ -164,13 +164,13 @@ require(`yargs`)
     `detect <text..>`,
     `Detects the language of one or more strings.`,
     {},
-    async opts => await detectLanguageSample(opts.text)
+    async (opts) => await detectLanguageSample(opts.text)
   )
   .command(
     `list [target]`,
     `Lists available translation languages. To language names in a language other than English, specify a target language.`,
     {},
-    async opts => {
+    async (opts) => {
       if (opts.target) {
         await listLanguagesWithTargetSample(opts.target);
       } else {
@@ -182,13 +182,13 @@ require(`yargs`)
     `translate <toLang> <text..>`,
     `Translates one or more strings into the target language.`,
     {},
-    async opts => await translateTextSample(opts.text, opts.toLang)
+    async (opts) => await translateTextSample(opts.text, opts.toLang)
   )
   .command(
     `translate-with-model <toLang> <model> <text..>`,
     `Translates one or more strings into the target language using the specified model.`,
     {},
-    async opts =>
+    async (opts) =>
       await translateTextWithModelSample(opts.text, opts.toLang, opts.model)
   )
   .example(`node $0 detect "Hello world!"`, `Detects the language of a string.`)

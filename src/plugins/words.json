@@ -1,0 +1,803 @@
+{
+  "open webpage of {0}": {
+    "en": "open webpage of {0}",
+    "de": "Webseite von {0} öffnen",
+    "ru": "открыть веб-страницу {0}",
+    "pt": "abrir página da web de {0}",
+    "nl": "open webpagina van {0}",
+    "fr": "page Web ouverte de {0}",
+    "it": "apri la pagina web di {0}",
+    "es": "abrir la página web de {0}",
+    "pl": "otwarta strona {0}",
+    "zh-cn": "打开{0}的网页"
+  },
+  "Configure settings:": {
+    "en": "Configure settings:",
+    "de": "Einstellungen konfigurieren:",
+    "ru": "Настройте параметры:",
+    "pt": "Defina as configurações:",
+    "nl": "Configureer instellingen:",
+    "fr": "Configurer les paramètres:",
+    "it": "Configura impostazioni:",
+    "es": "Configurar ajustes:",
+    "pl": "Skonfiguruj ustawienia:",
+    "zh-cn": "配置设置："
+  },
+  "edit settings": {
+    "en": "edit settings",
+    "de": "Einstellungen bearbeiten",
+    "ru": "изменить настройки",
+    "pt": "Editar Configurações",
+    "nl": "instellingen bewerken",
+    "fr": "modifier les paramètres",
+    "it": "modificare le impostazioni",
+    "es": "editar la configuración",
+    "pl": "Edytuj ustawienia",
+    "zh-cn": "编辑设置"
+  },
+  "Edit program settings...": {
+    "en": "Edit program settings...",
+    "de": "Programmeinstellungen bearbeiten ...",
+    "ru": "Изменить настройки программы ...",
+    "pt": "Editar configurações do programa ...",
+    "nl": "Programma-instellingen bewerken ...",
+    "fr": "Modifier les paramètres du programme ...",
+    "it": "Modifica impostazioni programma ...",
+    "es": "Editar configuración del programa ...",
+    "pl": "Edytuj ustawienia programu ...",
+    "zh-cn": "编辑程序设置..."
+  },
+  "load words": {
+    "en": "load words",
+    "de": "Wörter laden",
+    "ru": "загрузить слова",
+    "pt": "carregar palavras",
+    "nl": "woorden laden",
+    "fr": "charger des mots",
+    "it": "carica parole",
+    "es": "cargar palabras",
+    "pl": "ładuj słowa",
+    "zh-cn": "载入单词"
+  },
+  "Words file": {
+    "en": "Words file",
+    "de": "Wortdatei",
+    "ru": "Файл слов",
+    "pt": "Arquivo de palavras",
+    "nl": "Woordenbestand",
+    "fr": "Fichier de mots",
+    "it": "File di parole",
+    "es": "Archivo de palabras",
+    "pl": "Plik słów",
+    "zh-cn": "文字文件"
+  },
+  "save words": {
+    "en": "save words",
+    "de": "Wörter speichern",
+    "ru": "сохранить слова",
+    "pt": "salvar palavras",
+    "nl": "woorden opslaan",
+    "fr": "sauver des mots",
+    "it": "salva le parole",
+    "es": "guardar palabras",
+    "pl": "zapisać słowa",
+    "zh-cn": "节省文字"
+  },
+  "Translate All": {
+    "en": "Translate All",
+    "de": "Alle übersetzen",
+    "ru": "Перевести все",
+    "pt": "Traduzir tudo",
+    "nl": "Alles vertalen",
+    "fr": "Tout traduire",
+    "it": "Traduci tutto",
+    "es": "Traducir todo",
+    "pl": "Przetłumacz wszystko",
+    "zh-cn": "全部翻译"
+  },
+  "load global": {
+    "en": "load global",
+    "de": "global laden",
+    "ru": "загрузить глобальный",
+    "pt": "carregar global",
+    "nl": "laad globaal",
+    "fr": "charge globale",
+    "it": "carico globale",
+    "es": "carga global",
+    "pl": "ładuj globalnie",
+    "zh-cn": "全局加载"
+  },
+  "Global file": {
+    "en": "Global file",
+    "de": "Globale Datei",
+    "ru": "Глобальный файл",
+    "pt": "Arquivo global",
+    "nl": "Globaal bestand",
+    "fr": "Fichier global",
+    "it": "File globale",
+    "es": "Archivo global",
+    "pl": "Plik globalny",
+    "zh-cn": "全局文件"
+  },
+  "save global": {
+    "en": "save global",
+    "de": "global speichern",
+    "ru": "сохранить глобальный",
+    "pt": "salvar global",
+    "nl": "wereldwijd opslaan",
+    "fr": "sauver global",
+    "it": "salva globale",
+    "es": "guardar global",
+    "pl": "zapisz globalnie",
+    "zh-cn": "保存全球"
+  },
+  "Global only": {
+    "en": "Global only",
+    "de": "Nur global",
+    "ru": "Только глобальный",
+    "pt": "Apenas global",
+    "nl": "Alleen wereldwijd",
+    "fr": "Global uniquement",
+    "it": "Solo globale",
+    "es": "Solo global",
+    "pl": "Tylko globalne",
+    "zh-cn": "仅全球"
+  },
+  "Text:": {
+    "en": "Text:",
+    "de": "Text:",
+    "ru": "Текст:",
+    "pt": "Texto:",
+    "nl": "Tekst:",
+    "fr": "Texte:",
+    "it": "Testo:",
+    "es": "Texto:",
+    "pl": "Tekst:",
+    "zh-cn": "文本："
+  },
+  "Words file config:": {
+    "en": "Words file config:",
+    "de": "Words file config:",
+    "ru": "Конфигурация файла слов:",
+    "pt": "Configuração do arquivo de palavras:",
+    "nl": "Configuratie van woordenbestand:",
+    "fr": "Configuration du fichier de mots:",
+    "it": "File config di parole:",
+    "es": "Configuración del archivo de palabras:",
+    "pl": "Konfiguracja pliku słów:",
+    "zh-cn": "Words文件配置："
+  },
+  "Global translation file:": {
+    "en": "Global translation file:",
+    "de": "Globale Übersetzungsdatei:",
+    "ru": "Глобальный файл перевода:",
+    "pt": "Arquivo de tradução global:",
+    "nl": "Globaal vertaalbestand:",
+    "fr": "Fichier de traduction global:",
+    "it": "File di traduzione globale:",
+    "es": "Archivo de traducción global:",
+    "pl": "Globalny plik tłumaczenia:",
+    "zh-cn": "全局翻译文件："
+  },
+  "Add/remove languages you want to be able to process": {
+    "en": "Add/remove languages you want to be able to process",
+    "de": "Hinzufügen / Entfernen von Sprachen, die Sie verarbeiten möchten",
+    "ru": "Добавить / удалить языки, которые вы хотите обрабатывать",
+    "pt": "Adicione / remova os idiomas que você deseja processar",
+    "nl": "Voeg talen toe / verwijder ze die u wilt kunnen verwerken",
+    "fr": "Ajouter / supprimer des langues que vous souhaitez pouvoir traiter",
+    "it": "Aggiungi / rimuovi le lingue che desideri essere in grado di elaborare",
+    "es": "Agregar / eliminar idiomas que desea poder procesar",
+    "pl": "Dodaj / usuń języki, które chcesz przetwarzać",
+    "zh-cn": "添加/删除您希望能够处理的语言"
+  },
+  "devLocale": {
+    "en": "devLocale",
+    "de": "devLocale",
+    "ru": "devLocale",
+    "pt": "devLocale",
+    "nl": "devLocale",
+    "fr": "devLocale",
+    "it": "devLocale",
+    "es": "devLocale",
+    "pl": "devLocale",
+    "zh-cn": "devLocale"
+  },
+  "The language which you will work in to base the translations on": {
+    "en": "The language which you will work in to base the translations on",
+    "de": "Die Sprache, in der Sie arbeiten, um die Übersetzungen zu erstellen",
+    "ru": "Язык, на котором вы будете работать, чтобы основывать переводы",
+    "pt": "O idioma em que você trabalhará para basear as traduções",
+    "nl": "De taal waarin u gaat werken om de vertalingen op te baseren",
+    "fr": "La langue dans laquelle vous travaillerez pour baser les traductions",
+    "it": "La lingua in cui lavorerai per basare le traduzioni",
+    "es": "El idioma en el que trabajará para basar las traducciones",
+    "pl": "Język, w którym będziesz pracować na podstawie tłumaczeń",
+    "zh-cn": "您将用来翻译的语言"
+  },
+  "All remaining": {
+    "en": "All remaining",
+    "de": "Alles übrig",
+    "ru": "Все остальное",
+    "pt": "Todos os restantes",
+    "nl": "Alle overgebleven",
+    "fr": "Tous les restants",
+    "it": "Tutto il resto",
+    "es": "Todo restante",
+    "pl": "Wszystkie pozostałe",
+    "zh-cn": "所有剩余"
+  },
+  "locales to edit/create": {
+    "en": "locales to edit/create",
+    "de": "Gebietsschemas zum Bearbeiten / Erstellen",
+    "ru": "локали для редактирования / создания",
+    "pt": "localidades para editar / criar",
+    "nl": "landinstellingen om te bewerken / maken",
+    "fr": "paramètres régionaux à modifier / créer",
+    "it": "locali da modificare / creare",
+    "es": "locales para editar / crear",
+    "pl": "ustawienia regionalne do edycji / tworzenia",
+    "zh-cn": "编辑/创建的语言环境"
+  },
+  "The languages you want to translate the devLocale into": {
+    "en": "The languages you want to translate the devLocale into",
+    "de": "Die Sprachen, in die Sie die devLocale übersetzen möchten",
+    "ru": "Языки, на которые вы хотите перевести devLocale на",
+    "pt": "Os idiomas nos quais você deseja traduzir o devLocale para",
+    "nl": "De talen waarin u de devLocale wilt vertalen",
+    "fr": "Les langues dans lesquelles vous souhaitez traduire devLocale",
+    "it": "Le lingue in cui vuoi tradurre devLocale",
+    "es": "Los idiomas a los que desea traducir devLocale",
+    "pl": "Języki, na które chcesz przetłumaczyć devLocale",
+    "zh-cn": "您想要将devLocale转换为的语言"
+  },
+  "Use Yandex first": {
+    "en": "Use Yandex first",
+    "de": "Verwenden Sie zuerst Yandex",
+    "ru": "Сначала используйте Яндекс",
+    "pt": "Use o Yandex primeiro",
+    "nl": "Gebruik eerst Yandex",
+    "fr": "Utilisez d'abord Yandex",
+    "it": "Usa prima Yandex",
+    "es": "Use Yandex primero",
+    "pl": "Najpierw użyj Yandex",
+    "zh-cn": "首先使用Yandex"
+  },
+  "Yandex API key": {
+    "en": "Yandex API key",
+    "de": "Yandex API-Schlüssel",
+    "ru": "Ключ API Яндекса",
+    "pt": "Chave da API Yandex",
+    "nl": "Yandex API-sleutel",
+    "fr": "Clé API Yandex",
+    "it": "Chiave API Yandex",
+    "es": "Clave Yandex API",
+    "pl": "Klucz API Yandex",
+    "zh-cn": "Yandex API密钥"
+  },
+  "Already defined in VUE_APP_YANDEXKEY environment settings!": {
+    "en": "Already defined in VUE_APP_YANDEXKEY environment settings!",
+    "de": "Bereits in den Umgebungseinstellungen von VUE_APP_YANDEXKEY definiert!",
+    "ru": "Уже определено в настройках среды VUE_APP_YANDEXKEY!",
+    "pt": "Já definido nas configurações do ambiente VUE_APP_YANDEXKEY!",
+    "nl": "Al gedefinieerd in VUE_APP_YANDEXKEY omgevingsinstellingen!",
+    "fr": "Déjà défini dans les paramètres d'environnement VUE_APP_YANDEXKEY!",
+    "it": "Già definito nelle impostazioni dell'ambiente VUE_APP_YANDEXKEY!",
+    "es": "¡Ya definido en la configuración del entorno VUE_APP_YANDEXKEY!",
+    "pl": "Już zdefiniowane w ustawieniach środowiska VUE_APP_YANDEXKEY!",
+    "zh-cn": "已在VUE_APP_YANDEXKEY环境设置中定义！"
+  },
+  "AutoSave config": {
+    "en": "AutoSave config",
+    "de": "AutoSave-Konfiguration",
+    "ru": "Автосохранение конфигурации",
+    "pt": "Configuração do AutoSalvar",
+    "nl": "AutoSave-configuratie",
+    "fr": "Configuration de l'enregistrement automatique",
+    "it": "Configurazione salvataggio automatico",
+    "es": "Configuración de guardado automático",
+    "pl": "Konfiguracja AutoSave",
+    "zh-cn": "自动保存配置"
+  },
+  "Config Filename:": {
+    "en": "Config Filename:",
+    "de": "Konfigurationsdateiname:",
+    "ru": "Имя файла конфигурации:",
+    "pt": "Nome do arquivo de configuração:",
+    "nl": "Configureer bestandsnaam:",
+    "fr": "Nom du fichier de configuration:",
+    "it": "Nome file config:",
+    "es": "Nombre de archivo de configuración:",
+    "pl": "Config Nazwa pliku:",
+    "zh-cn": "配置文件名："
+  },
+  "If filename is stored in VUE_APP_FSTRANSLATE_CONFIG env settings  config will load automatically!": {
+    "en": "If filename is stored in VUE_APP_FSTRANSLATE_CONFIG env settings  config will load automatically!",
+    "de": "Wenn der Dateiname in VUE_APP_FSTRANSLATE_CONFIG gespeichert ist, wird die Umgebungskonfiguration automatisch geladen!",
+    "ru": "Если имя файла сохранено в VUE_APP_FSTRANSLATE_CONFIG, конфигурация настроек env загрузится автоматически!",
+    "pt": "Se o nome do arquivo estiver armazenado em VUE_APP_FSTRANSLATE_CONFIG, as configurações do env serão carregadas automaticamente!",
+    "nl": "Als de bestandsnaam is opgeslagen in VUE_APP_FSTRANSLATE_CONFIG, wordt de configuratie van de env-instellingen automatisch geladen!",
+    "fr": "Si le nom de fichier est stocké dans VUE_APP_FSTRANSLATE_CONFIG, la configuration des paramètres env se charge automatiquement!",
+    "it": "Se il nome file è memorizzato in VUE_APP_FSTRANSLATE_CONFIG, le impostazioni env verranno caricate automaticamente!",
+    "pl": "Jeśli filename przechowywane w VUE_APP_FSTRANSLATE_CONFIG ustawienia OCD konfig będzie automatycznie pobierać!",
+    "zh-cn": "如果文件是存在VUE_APP_FSTRANSLATE_CONFIG env设置的配置将负载！",
+    "es": "Si el nombre de fichero se almacena en VUE_APP_FSTRANSLATE_CONFIG env ajustes de configuración se carga de forma automática!"
+  },
+  "Load Config File": {
+    "en": "Load Config File",
+    "ru": "Загрузить Файл Config",
+    "pt": "Carregar O Arquivo De Configuração",
+    "nl": "Laden Config Bestand",
+    "fr": "Chargement Du Fichier De Config",
+    "it": "Caricare Il File Di Configurazione",
+    "es": "Carga Del Archivo De Configuración",
+    "pl": "Pobierz Plik Config",
+    "zh-cn": "载荷配置文件"
+  },
+  "Save config file": {
+    "en": "Save config file",
+    "de": "Speichern der config-Datei",
+    "ru": "Сохранить файл конфигурации ",
+    "pt": "Salvar arquivo de configuração",
+    "nl": "Save config bestand",
+    "fr": "Enregistrer le fichier config",
+    "it": "Salvare il file di configurazione",
+    "es": "Guardar archivo de configuración",
+    "pl": "Zapisz plik konfiguracji ",
+    "zh-cn": "保存配置的文件"
+  },
+  "Search in keys": {
+    "en": "Search in keys",
+    "de": "Suche in Schlüsseln",
+    "ru": "Поиск по ключам",
+    "pt": "Pesquisar nas chaves",
+    "nl": "Zoek in sleutels",
+    "fr": "Rechercher dans les clés",
+    "it": "Cerca in chiavi",
+    "es": "Buscar en llaves",
+    "pl": "Szukaj w kluczach",
+    "zh-cn": "搜索钥匙"
+  },
+  "Add a new Key for translation": {
+    "en": "Add a new Key for translation",
+    "de": "Fügen Sie einen neuen Schlüssel für die Übersetzung hinzu",
+    "ru": "Добавить новый ключ для перевода",
+    "pt": "Adicionar uma nova chave para tradução",
+    "nl": "Voeg een nieuwe sleutel toe voor vertaling",
+    "fr": "Ajouter une nouvelle clé pour la traduction",
+    "it": "Aggiungi una nuova chiave per la traduzione",
+    "es": "Agregar una nueva clave para la traducción",
+    "pl": "Dodaj nowy klucz do tłumaczenia",
+    "zh-cn": "添加新的翻译密钥"
+  },
+  "No duplicates allowed!": {
+    "en": "No duplicates allowed!",
+    "de": "Keine Duplikate erlaubt!",
+    "ru": "Никаких дубликатов разрешено!",
+    "pt": "Duplicatas não permitido!",
+    "nl": "Geen duplicaten toegestaan!",
+    "fr": "Pas de doublons autorisés!",
+    "it": "Duplicati non ammessi ammessi!",
+    "es": "Sin duplicados permitido!",
+    "pl": "Żadnych duplikatów dozwolone!",
+    "zh-cn": "没有重复允许！"
+  },
+  "New Key": {
+    "en": "New Key",
+    "de": "Neuen Schlüssel",
+    "ru": "Новый Ключ",
+    "pt": "Nova Chave",
+    "nl": "Nieuwe Sleutel",
+    "fr": "Nouvelle Clé",
+    "it": "Nuova Chiave",
+    "es": "Nueva Clave",
+    "pl": "Nowy Klucz",
+    "zh-cn": "新的关键"
+  },
+  "cancel": {
+    "en": "cancel",
+    "de": "Abbrechen"
+  },
+  "Save": {
+    "en": "Save",
+    "de": "speichern",
+    "ru": "Сохранить",
+    "pt": "Salve ",
+    "nl": "Opslaan",
+    "fr": "sauver",
+    "it": "Salva",
+    "es": "Salvar",
+    "pl": "Zapisać",
+    "zh-cn": "救"
+  },
+  "Add Key": {
+    "en": "Add Key",
+    "de": "Schlüssel hinzufügen",
+    "ru": "Добавить ключ",
+    "pt": "Adicionar chave",
+    "nl": "Sleutel toevoegen",
+    "fr": "Ajouter une clé",
+    "it": "Aggiungi chiave",
+    "es": "Añadir clave",
+    "pl": "Dodaj klucz",
+    "zh-cn": "新增金钥"
+  },
+  "Mylang = {0}": {
+    "en": "Mylang = {0}"
+  },
+  "empty": {
+    "en": "empty"
+  },
+  "Read file": {
+    "en": "Read file"
+  },
+  "Edit Key": {
+    "en": "Edit Key",
+    "ru": "Ключ Редактировать ",
+    "pt": "Tecla Editar",
+    "nl": "Edit Toets",
+    "fr": "Modifier La Clé",
+    "it": "Tasto Modifica",
+    "es": "Tecla Editar",
+    "pl": "Klucz Edytować ",
+    "zh-cn": "编辑的关键",
+    "de": "Bearbeiten-Taste"
+  },
+  "No existing keys allowed!": {
+    "en": "No existing keys allowed!"
+  },
+  "Missing words saved to clipboard!": {
+    "en": "Missing words saved to clipboard!",
+    "de": "Fehlende Wörter gespeichert, in die Zwischenablage!",
+    "ru": "Недостающие слова, сохраненные в буфер обмена!",
+    "pt": "Faltam palavras guardadas para a área de transferência!",
+    "nl": "Ontbrekende woorden opgeslagen op het klembord!",
+    "fr": "Manque les mots enregistrés dans le presse-papiers!",
+    "it": "Parole mancanti salvato negli appunti!",
+    "es": "Palabras que faltan guardado en el portapapeles!",
+    "pl": "Brakujące słowa, zapisane w schowku!",
+    "zh-cn": "遗漏的字词已保存到剪贴板！"
+  },
+  "translate all?": {
+    "en": "translate all?",
+    "de": "alles übersetzen?",
+    "ru": "перевести все?",
+    "pt": "traduzir tudo?",
+    "nl": "alles vertalen?",
+    "fr": "traduire tout?",
+    "it": "tradurre tutto?",
+    "es": "traducir todo?",
+    "pl": "tłumaczyć wszystko?",
+    "zh-cn": "全部翻译？"
+  },
+  "Re-translate all": {
+    "en": "Re-translate all",
+    "ru": "Заново перевести все",
+    "pt": "Re-traduzir tudo",
+    "nl": "Opnieuw vertalen alle",
+    "fr": "Re-traduire tous les",
+    "it": "Ri-tradurre tutti",
+    "es": "Volver a traducir todo",
+    "pl": "Ponownie tłumaczyć wszystko",
+    "zh-cn": "重新翻译所有",
+    "de": "Re-übersetzen"
+  },
+  "Add Language": {
+    "en": "Add Language",
+    "de": "Sprache hinzufügen",
+    "ru": "Добавить язык",
+    "pt": "Adicionar idioma",
+    "nl": "Taal toevoegen",
+    "fr": "Ajouter une langue",
+    "it": "Aggiungi lingua",
+    "es": "Agregar idioma",
+    "pl": "Dodaj język",
+    "zh-cn": "添加语言"
+  },
+  "Edit Language Item": {
+    "en": "Edit Language Item"
+  },
+  "Language": {
+    "en": "Language"
+  },
+  "For Key:": {
+    "en": "For Key:"
+  },
+  "Translation": {
+    "en": "Translation"
+  },
+  "Close": {
+    "en": "Close"
+  },
+  "Key:": {
+    "en": "Key:"
+  },
+  "Translate": {
+    "en": "Translate"
+  },
+  "(re)Translate all or only missing languages?": {
+    "en": "Translate all or only missing languages?",
+    "de": "Übersetzen Sie alle oder nur die fehlenden Sprachen?",
+    "ru": "Перевести все или только отсутствующие языки?",
+    "pt": "Traduzir todas ou apenas falta de línguas?",
+    "nl": "Vertalen alle of alleen ontbreekt talen?",
+    "fr": "Traduire tout ou seulement les langues manquantes?",
+    "it": "Tradurre tutti o solo manca lingue?",
+    "es": "Traducir todo o sólo faltan idiomas?",
+    "pl": "Przenieść wszystkie lub tylko brakujące języki?",
+    "zh-cn": "翻译所有或唯一缺少语言？"
+  },
+  "all": {
+    "en": "all",
+    "de": "alle",
+    "ru": "все",
+    "pt": "todos",
+    "nl": "allemaal",
+    "fr": "tout",
+    "it": "tutti",
+    "es": "todas",
+    "pl": "wszystko",
+    "zh-cn": "所有"
+  },
+  "missing": {
+    "en": "missing",
+    "de": "fehlt",
+    "ru": "отсутствует",
+    "pt": "ausência de",
+    "nl": "missend",
+    "fr": "manquant",
+    "it": "mancante",
+    "es": "desaparecido",
+    "pl": "brakujący",
+    "zh-cn": "失踪"
+  },
+  "Google translation not available!": {
+    "en": "Google translation not available!",
+    "de": "Google Übersetzung nicht verfügbar!",
+    "ru": "Гугл перевод недоступен!",
+    "pt": "Tradução do Google não disponível!",
+    "nl": "Google-vertaling niet beschikbaar!",
+    "fr": "Traduction Google non disponible!",
+    "it": "Traduzione di Google non disponibile!",
+    "es": "¡La traducción de Google no está disponible!",
+    "pl": "Tłumaczenie Google niedostępne!",
+    "zh-cn": "Google翻译不可用！"
+  },
+  "Saved file": {
+    "en": "Saved file",
+    "de": "Gespeicherte Datei",
+    "ru": "Сохраненный файл",
+    "pt": "Arquivo salvo",
+    "nl": "Opgeslagen bestand",
+    "fr": "Fichier enregistré",
+    "it": "File salvato",
+    "es": "Archivo guardado",
+    "pl": "Zapisany plik",
+    "zh-cn": "保存文件"
+  },
+  "Drop words file here": {
+    "en": "Drop words file here"
+  },
+  "open file selector for words file or drop it here": {
+    "en": "open file selector for words file or drop it here"
+  },
+  "Save words file, with shift to clipboard, with alt select other location": {
+    "en": "Save words file, with shift to clipboard, with alt select other location"
+  },
+  "Drop global file here": {
+    "en": "Drop global file here"
+  },
+  "open file selector for global file or drop it here": {
+    "en": "open file selector for global file or drop it here"
+  },
+  "Save global file, with shift to clipboard, with alt select other location": {
+    "en": "Save global file, with shift to clipboard, with alt select other location"
+  },
+  "External only": {
+    "en": "External only",
+    "ru": "Только внешний",
+    "pt": "Somente externo",
+    "nl": "Alleen extern",
+    "fr": "Externe seulement",
+    "it": "Solo esterni",
+    "es": "Sólo externa",
+    "pl": "Tylko zewnętrzny",
+    "zh-cn": "外部只",
+    "de": "Nur extern"
+  },
+  "save config to memory and to file if autosave is on": {
+    "en": "save config to memory and to file if autosave is on"
+  },
+  "exit config without saving": {
+    "en": "exit config without saving"
+  },
+  "save config from file or dropt it here": {
+    "en": "save config from file or dropt it here"
+  },
+  "save config to file or with shift to clipboard, select new file with alt": {
+    "en": "save config to file or with shift to clipboard, select new file with alt"
+  },
+  "open file selector for config file or drop it here": {
+    "en": "open file selector for config file or drop it here"
+  },
+  "type": {
+    "en": "type"
+  },
+  "Read as JSON": {
+    "en": "Read as JSON"
+  },
+  "Write as JSON": {
+    "en": "Write as JSON"
+  },
+  "Skip At Start": {
+    "en": "Skip At Start"
+  },
+  "Remove all text until this string at file on load": {
+    "en": "Remove all text until this string at file on load",
+    "de": "Entfernen Sie den gesamten Text, bis diese Zeichenfolge beim Laden der Datei angezeigt wird",
+    "ru": "Удалить весь текст, пока эта строка в файле при загрузке",
+    "pt": "Remova todo o texto até essa sequência no arquivo em carregamento",
+    "nl": "Verwijder alle tekst tot deze string bij het laden van het bestand",
+    "fr": "Supprimer tout le texte jusqu'à ce que cette chaîne dans le fichier au chargement",
+    "it": "Rimuovi tutto il testo fino al caricamento di questa stringa nel file",
+    "es": "Elimine todo el texto hasta que esta cadena en el archivo al cargar",
+    "pl": "Usuń cały tekst, aż ten ciąg znaków w pliku przy ładowaniu",
+    "zh-cn": "删除所有文本，直到该字符串载入文件"
+  },
+  "Skip After End": {
+    "en": "Skip After End",
+    "de": "Nach Ende überspringen",
+    "ru": "Пропустить после окончания",
+    "pt": "Ignorar após o final",
+    "nl": "Overslaan na einde",
+    "fr": "Ignorer après la fin",
+    "it": "Salta dopo la fine",
+    "es": "Saltar después del final",
+    "pl": "Skip After End",
+    "zh-cn": "结束后跳过"
+  },
+  "Remove all text after this string at end file on load": {
+    "en": "Remove all text after this string at end file on load",
+    "de": "Entfernen Sie den gesamten Text nach dieser Zeichenfolge am Ende der Datei beim Laden",
+    "ru": "Удалить весь текст после этой строки в конце файла при загрузке",
+    "pt": "Remova todo o texto após esta sequência no arquivo final ao carregar",
+    "nl": "Verwijder alle tekst na deze string bij het eindbestand bij het laden",
+    "fr": "Supprimer tout le texte après cette chaîne à la fin du fichier au chargement",
+    "it": "Rimuovi tutto il testo dopo questa stringa al file finale al caricamento",
+    "es": "Elimine todo el texto después de esta cadena en el archivo final al cargar",
+    "pl": "Po załadowaniu usuń cały tekst po tym ciągu na końcu pliku",
+    "zh-cn": "删除最终文件上此字符串之后的所有文本"
+  },
+  "Add At Start": {
+    "en": "Add At Start",
+    "de": "Beim Start hinzufügen",
+    "ru": "Добавить при старте",
+    "pt": "Adicionar no início",
+    "nl": "Toevoegen bij start",
+    "fr": "Ajouter au début",
+    "it": "Aggiungi all'inizio",
+    "es": "Agregar al inicio",
+    "pl": "Dodaj na początku",
+    "zh-cn": "开始添加"
+  },
+  "Add this text at start on save": {
+    "en": "Add this text at start on save",
+    "de": "Fügen Sie diesen Text beim Speichern beim Start hinzu",
+    "ru": "Добавить этот текст в начале при сохранении",
+    "pt": "Adicione este texto no início ao salvar",
+    "nl": "Voeg deze tekst toe bij het starten bij opslaan",
+    "fr": "Ajoutez ce texte au démarrage lors de la sauvegarde",
+    "it": "Aggiungi questo testo all'avvio al salvataggio",
+    "es": "Agregue este texto al inicio al guardar",
+    "pl": "Dodaj ten tekst na początku przy zapisie",
+    "zh-cn": "在保存开始时添加此文本"
+  },
+  "Add at End": {
+    "en": "Add at End",
+    "de": "Am Ende hinzufügen",
+    "ru": "Добавить в конец",
+    "pt": "Adicionar no final",
+    "nl": "Toevoegen aan einde",
+    "fr": "Ajouter à la fin",
+    "it": "Aggiungi alla fine",
+    "es": "Agregar al final",
+    "pl": "Dodaj na końcu",
+    "zh-cn": "最后添加"
+  },
+  "Add this Text at End on save": {
+    "en": "Add this Text at End on save",
+    "de": "Fügen Sie diesen Text am Ende beim Speichern hinzu",
+    "ru": "Добавить этот текст в конце при сохранении",
+    "pt": "Adicione este texto no final ao salvar",
+    "nl": "Voeg deze tekst toe bij einde bij opslaan",
+    "fr": "Ajoutez ce texte à la fin lors de la sauvegarde",
+    "it": "Aggiungi questo testo alla fine al salvataggio",
+    "es": "Agregue este texto al final al guardar",
+    "pl": "Dodaj ten tekst na końcu przy zapisywaniu",
+    "zh-cn": "保存时在结尾处添加此文本"
+  },
+  "Autoload": {
+    "en": "Autoload",
+    "de": "Autoload",
+    "ru": "Автозагрузка",
+    "pt": "Carregamento automático",
+    "nl": "Autoload",
+    "fr": "Chargement automatique",
+    "it": "Caricamento automatico",
+    "es": "Carga automática",
+    "pl": "Automatyczne ładowanie",
+    "zh-cn": "自动加载"
+  },
+  "Autosave": {
+    "en": "Autosave",
+    "de": "Automatisch speichern",
+    "ru": "Автосохранение",
+    "pt": "Salvamento automático",
+    "nl": "Automatisch opslaan",
+    "fr": "Sauvegarde automatique",
+    "it": "Salvataggio automatico",
+    "es": "Guardar automáticamente",
+    "pl": "Automatyczne zapisywanie",
+    "zh-cn": "自动保存"
+  },
+  "Filename:": {
+    "en": "Filename:",
+    "de": "Dateiname:",
+    "ru": "Имя файла:",
+    "pt": "Nome do arquivo:",
+    "nl": "Bestandsnaam:",
+    "fr": "Nom de fichier:",
+    "it": "Nome del file:",
+    "es": "Nombre del archivo:",
+    "pl": "Nazwa pliku:",
+    "zh-cn": "文件名："
+  },
+  "Globale Übersetzungsdatei:": {
+    "en": "Globale Übersetzungsdatei:",
+    "de": "Globale Übersetzungsdatei:",
+    "ru": "Globale Übersetzungsdatei:",
+    "pt": "Globale Übersetzungsdatei:",
+    "nl": "Globale Übersetzungsdatei:",
+    "fr": "Globale Übersetzungsdatei:",
+    "it": "Globale Übersetzungsdatei:",
+    "es": "Globale Übersetzungsdatei:",
+    "pl": "Globale Übersetzungsdatei:",
+    "zh-cn": "GlobaleÜbersetzungsdatei："
+  },
+  "load Config File": {
+    "en": "load Config File",
+    "de": "Konfigurationsdatei laden",
+    "ru": "загрузить файл конфигурации",
+    "pt": "carregar arquivo de configuração",
+    "nl": "laad Config-bestand",
+    "fr": "charger le fichier de configuration",
+    "it": "carica il file di configurazione",
+    "es": "cargar archivo de configuración",
+    "pl": "załaduj plik konfiguracyjny",
+    "zh-cn": "加载配置文件"
+  },
+  "loaded!": {
+    "en": "loaded!",
+    "de": "geladen!",
+    "ru": "загружен!",
+    "pt": "carregado!",
+    "nl": "geladen!",
+    "fr": "chargé!",
+    "it": "caricato!",
+    "es": "¡cargado!",
+    "pl": "załadowany!",
+    "zh-cn": "装！"
+  },
+  "Drop config file here": {
+    "en": "Drop config file here",
+    "de": "Legen Sie die Konfigurationsdatei hier ab",
+    "ru": "Перетащите конфигурационный файл сюда",
+    "pt": "Solte o arquivo de configuração aqui",
+    "nl": "Zet het configuratiebestand hier neer",
+    "fr": "Déposer le fichier de configuration ici",
+    "it": "Trascina qui il file di configurazione",
+    "es": "Suelta el archivo de configuración aquí",
+    "pl": "Upuść plik konfiguracyjny tutaj",
+    "zh-cn": "将配置文件放在这里"
+  }
+}

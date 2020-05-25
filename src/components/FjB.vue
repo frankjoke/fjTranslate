@@ -3,10 +3,9 @@
     <template v-slot:activator="{ on }">
       <v-btn
         :icon="!label"
-        :small="!label"
         :disabled="disabled"
         v-on="on"
-        style="margin-right: 5px; margin-left: 5px"
+        style="margin-right: 5px; margin-left: 5px;"
         @click="click($event)"
         v-bind="iconAttr"
       >
@@ -18,7 +17,7 @@
           v-bind="iconAttr"
           v-text="img"
         />
-        <span v-if="!!label">{{ label | tt }}</span>
+        <span v-if="!!label">{{ label }}</span>
         <v-icon
           dense
           v-if="!!img && !iconleft"
@@ -29,7 +28,7 @@
         />
       </v-btn>
     </template>
-    {{ tooltip | tt }}
+    {{ tooltip }}
     <slot></slot>
   </v-tooltip>
   <v-btn
@@ -47,7 +46,7 @@
       @click="click($event)"
       v-text="img"
     />
-    <span v-if="!!label">{{ label | tt }}</span>
+    <span v-if="!!label">{{ label }}</span>
     <v-icon
       dense
       v-if="!!img && !iconleft"
@@ -85,7 +84,7 @@
 // import translateMixin from "../mixins/translate";
 
 export default {
-  name: "FjBtn",
+  name: "FjB",
   inheritAttrs: false,
 
   //  mixins: [attrsMixin],
@@ -96,21 +95,21 @@ export default {
       left: false,
       right: false,
       mtop: false,
-      mbottom: false
+      mbottom: false,
     };
   },
   props: {
     img: {
       type: String,
-      default: ""
+      default: "",
     },
     label: {
       type: String,
-      default: ""
+      default: "",
     },
     tooltip: {
       type: String,
-      default: ""
+      default: "",
     },
     /*     disabled: {
       type: Boolean,
@@ -118,32 +117,32 @@ export default {
     },
  */ top: {
       type: Boolean,
-      default: false
+      default: false,
     },
     bottom: {
       type: Boolean,
-      default: false
+      default: false,
     },
     disabled: {
       type: Boolean,
-      default: false
+      default: false,
     },
 
     iconleft: {
       type: Boolean,
-      default: false
+      default: false,
     },
     iconright: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   methods: {
     click(event) {
       event.stopPropagation();
       //      if (!Array.isArray(event)) event = [event];
       this.$emit("click", event);
-    }
+    },
   },
   created() {
     //    console.log(this.$attrs);
@@ -161,7 +160,7 @@ export default {
     //    if (!this.iconleft && !natt.left) natt.left = true;
     //    console.log(this.left, this.right, this.label, this.iconleft, natt);
     this.iconAttr = natt;
-  }
+  },
 };
 </script>
 

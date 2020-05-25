@@ -2,15 +2,20 @@
   <v-card raised class="ma-1">
     <v-card-title class="subtitle-1">
       <v-icon V-if="icon" left small>{{ icon }}</v-icon>
-      {{ label | tt }}
+      {{ $t(label) }}
     </v-card-title>
     <v-container fluid>
       <v-row align="center">
         <v-col class="d-flex" cols="12" sm="2">
           <v-select
+          class="body-2"
             auto-select-first
-            label="type"
-            hint="The language which you will work in to base the translations on"
+            :label="$t('type')"
+            :hint="
+              $t(
+                'The language which you will work in to base the translations on'
+              )
+            "
             :items="['JSON', 'Javascript', 'Text']"
             hide-details="auto"
             v-model="value.type"
@@ -20,24 +25,22 @@
         <v-col class="d-flex" cols="12" sm="2">
           <span class="body-2">
             {{
-              tt(
-                isJson
-                  ? "Read as JSON"
-                  : isJavascript
-                  ? "Read as eval"
-                  : "Read as text"
-              )
+              isJson
+                ? $t("Read as JSON")
+                : isJavascript
+                ? $t("Read as eval")
+                : $t("Read as text")
             }}
             <br />
-            {{ tt(isJson || isJavascript ? "Write as JSON" : "Write as text") }}
+            {{ $t(isJson || isJavascript ? "Write as JSON" : "Write as text") }}
           </span>
         </v-col>
         <v-col class="d-flex" cols="12" sm="2">
           <v-text-field
             :disabled="isJson"
             type="text"
-            label="Skip At Start"
-            hint="Remove all text until this string at file on load"
+            :label="$t('Skip At Start')"
+            :hint="$t('Remove all text until this string at file on load')"
             hide-details="auto"
             v-model="value.skipAtStart"
             dense
@@ -47,8 +50,8 @@
           <v-text-field
             :disabled="isJson"
             type="text"
-            label="Skip After End"
-            hint="Remove all text after this string at end file on load"
+            :label="$t('Skip After End')"
+            :hint="$t('Remove all text after this string at end file on load')"
             hide-details="auto"
             v-model="value.skipAfterEnd"
             dense
@@ -59,8 +62,8 @@
             class="body-2"
             :disabled="isJson"
             type="text"
-            label="Add At Start"
-            hint="Add this text at start on save"
+            :label="$t('Add At Start')"
+            :hint="$t('Add this text at start on save')"
             hide-details="auto"
             v-model="value.addAtStart"
             dense
@@ -71,8 +74,8 @@
             class="body-2"
             :disabled="isJson"
             type="text"
-            label="Add at End"
-            hint="Add this Text at End on save"
+            :label="$t('Add at End')"
+            :hint="$t('Add this Text at End on save')"
             hide-details="auto"
             v-model="value.addAtEnd"
             dense
@@ -95,11 +98,31 @@
     </v-col>
         -->
       </v-row>
-      <v-row v-if="filesys">
-        <v-col cols="12">
-          <v-text-field
+      <v-row>
+        <v-col cols="2">
+          <v-checkbox
             dense
-            label="Filename:"
+            :label="$t('Autoload')"
+            v-model="value.autoload"
+            hide-details
+          ></v-checkbox>
+        </v-col>
+        <v-col cols="2">
+          <v-checkbox
+            dense
+            :label="$t('Autosave')"
+            v-model="value.autosave"
+            hide-details
+
+          ></v-checkbox>
+        </v-col>
+        <v-col cols="8">
+          <v-text-field
+            class="body-2"
+            dense
+            prepend-icon="mdi-folder-open"
+            @click:prepend="selectfilename(value)"
+            :label="$t('Filename:')"
             v-model="value.fileName"
           ></v-text-field>
         </v-col>
@@ -130,24 +153,20 @@ export default {
         addAtStart: "",
         addAtEnd: "",
         fileName: "",
-        saveWithJSON: type == "JSON"
+        saveWithJSON: true,
       }),
-      required: true
+      required: true,
     },
     icon: {
       type: String,
       default: "",
-      required: false
+      required: false,
     },
     label: {
       type: String,
       default: "",
-      required: false
+      required: false,
     },
-    filesys: {
-      type: Object,
-      default: null
-    }
   },
   computed: {
     isJson() {
@@ -155,14 +174,33 @@ export default {
     },
     isJavascript() {
       return this.value.type == "Javascript";
-    }
+    },
   },
-  watch: {
-    value(oldV, newV) {
-      console.log("something changed!", oldV, newV);
-    }
+  // watch: {},
+  /*     value: {
+      // This will let Vue know to look inside the array
+      deep: true,
+
+      // We have to move our method to a handler field
+      handler(oldV, newV) {
+        console.log("something changed!", oldV, newV);
+      },
+    },
+ */
+  methods: {
+    async selectfilename(val) {
+      await this.$nextTick();
+      //      console.log("try to select file for ", val);
+      const file = await this.selectFile(
+        val.fileName,
+        this.$t("Select file") + " " + this.label
+      );
+      if (!file) return null;
+      this.$set(val, "fileName", file);
+      await this.wait(2);
+      this.$forceUpdate();
+    },
   },
-  methods: {},
   created() {
     //    console.log("value:", this.value, "icon:", this.icon);
     /*     this.$store.watch(
@@ -173,6 +211,6 @@ export default {
       }
     );
  */
-  }
+  },
 };
 </script>

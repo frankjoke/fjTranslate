@@ -1,4 +1,5 @@
 process.env.VUE_APP_VERSION = require("./package.json").version;
+process.env.VUE_APP_FSTRANSLATE_CONFIG = "C:\\Users\\sissi\\apps\\cofig.json";
 
 module.exports = {
   transpileDependencies: ["vuetify"],
@@ -6,14 +7,14 @@ module.exports = {
   devServer: {
     overlay: {
       warnings: false,
-      errors: true
-    }
+      errors: true,
+    },
   },
 
   runtimeCompiler: true,
 
   css: {
-    extract: false
+    extract: false,
   },
 
   assetsDir: "assets",
@@ -21,18 +22,24 @@ module.exports = {
   publicPath: "",
   pluginOptions: {
     build: {
-      appId: "com.translatedictionary.app",
+      appId: "com.fjTranslate.app",
       win: {
-        icon: "./public/favicon.ico"
+        icon: "./public/favicon.ico",
       },
-      extraResources: ["files"]
+      extraResources: ["files"],
     },
     electronBuilder: {
-      appId: "com.translatedictionary.app",
+      appId: "com.fjTranslate.app",
       win: {
-        icon: "./public/favicon.ico"
+        icon: "./public/favicon.ico",
       },
-      extraResources: ["files"]
-    }
-  }
+      extraResources: ["files"],
+    },
+    i18n: {
+      locale: "en",
+      fallbackLocale: "en",
+      localeDir: "locales",
+      enableInSFC: true,
+    },
+  },
 };

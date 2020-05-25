@@ -32,14 +32,18 @@
       "skipAtStart": "{",
       "skipAfterEnd": "}",
       "addAtStart": "!",
-      "addAtEnd": "!"
+      "addAtEnd": "!",
+      "autoload": true,
+      "fileName": "C:\\Users\\sissi\\apps\\global-words.json"
     },
     "editWordsFile": {
       "type": "Javascript",
       "skipAtStart": "{",
       "skipAfterEnd": "}",
       "addAtStart": "!",
-      "addAtEnd": "!"
+      "addAtEnd": "!",
+      "autoload": true,
+      "fileName": "C:\\Users\\sissi\\apps\\missing.json"
     },
     "yandexKey": ""
   }

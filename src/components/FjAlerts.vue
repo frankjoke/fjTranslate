@@ -52,20 +52,20 @@ export default {
   props: {
     selector: {
       type: String,
-      default: ""
+      default: "",
     },
     offsetX: {
       type: Number,
-      default: 0
+      default: 0,
     },
     offsetY: {
       type: Number,
-      default: 0
+      default: 0,
     },
     timeout: {
       type: Number,
-      default: 6
-    }
+      default: 6,
+    },
   },
   data() {
     return {
@@ -73,7 +73,7 @@ export default {
       posy: 0,
       idCount: 0,
       items: [],
-      label: ""
+      label: "",
     };
   },
   methods: {
@@ -85,7 +85,7 @@ export default {
         info: 5,
         success: 5,
         primary: 6,
-        [undefined]: 6
+        [undefined]: 6,
       };
       options = options || {};
       if (typeof options === "string") {
@@ -98,7 +98,7 @@ export default {
             label: "",
             timeout: (m[1] && Number(m[1])) || wtime[m[2]],
             text: m[3],
-            type: m[2] || "primary"
+            type: m[2] || "primary",
           };
         else options = { text, color: "primary lighten-4" };
       }
@@ -106,13 +106,12 @@ export default {
         options.type = null;
         if (!options.color) options.color = "primary lighten-2";
       }
-      if (!options.text && options.tt)
-        options.text = this.$dictionary.translate(options.tt);
+      if (!options.text && options.tt) options.text = this.$t(options.tt);
       options = Object.assign(
         {
           timeout: this.timeout,
           id: this.idCount++,
-          text: this.$dictionary.translate("empty"),
+          text: this.$t("empty"),
         },
         options
       );
@@ -121,9 +120,9 @@ export default {
       if (options.label) this.label = options.label;
       if (options.timeout) {
         const id = options.id;
-        options.hastimeout = setTimeout(_ => {
+        options.hastimeout = setTimeout((_) => {
           options.hastimeout = null;
-          const index = that.items.findIndex(i => i.id === id);
+          const index = that.items.findIndex((i) => i.id === id);
           //          console.log("will delete", index);
           if (index >= 0) that.items.splice(index, 1);
         }, options.timeout * 1000);
@@ -151,8 +150,8 @@ export default {
       //   console.log(this.$refs, this.$refs.refgnbtn.$el);
       this.posx = ref.getBoundingClientRect().left + this.offsetX;
       this.posy = ref.getBoundingClientRect().bottom + this.offsetY;
-//      this.addAlert(`Alert resize: ${this.posx}, ${this.posy}`);
-    }
+      //      this.addAlert(`Alert resize: ${this.posx}, ${this.posy}`);
+    },
   },
   created() {
     Vue.prototype.$alert = this.addAlert.bind(this);
@@ -161,8 +160,8 @@ export default {
     while (this.items.length > 0) this.deleteAlert(0);
   },
   mounted() {
-    this.$nextTick(_ => this.resize());
-  }
+    this.$nextTick((_) => this.resize());
+  },
 };
 </script>
 <style scoped>
