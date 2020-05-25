@@ -5,7 +5,6 @@ import words from "./words.json";
 Vue.use(VueI18n);
 
 function loadLocaleMessages(words, messages) {
-
   messages = messages || {};
   for (const keys of Object.keys(words))
     for (const langs of Object.keys(words[keys]))

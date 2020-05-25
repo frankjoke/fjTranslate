@@ -3,8 +3,8 @@ import Vuex from "vuex";
 
 const mylang = (navigator.language || navigator.userLanguage).slice(0, 2);
 const version = process.env.VUE_APP_VERSION;
-const envConfig = process.env.VUE_APP_FSTRANSLATE_CONFIG;
-const yandexEnv = process.env.VUE_APP_YANDEXKEY;
+const envConfig = process.env.FJTRANSLATE_CONFIG;
+const yandexEnv = process.env.FJTRANSLATE_YANDEXKEY;
 
 Vue.use(Vuex);
 
@@ -12,7 +12,7 @@ export default new Vuex.Store({
   state: {
     config: {
       devLocale: "en",
-      configFile: "./cofig.json",
+      configFile: "./config.json",
       autosave: true,
       allLocales: [
         "en",
@@ -36,6 +36,7 @@ export default new Vuex.Store({
         type: "JSON",
         autosave: true,
         autoload: true,
+        name: "",
       },
       editWordsFile: {
         addAtEnd: "!",
@@ -45,6 +46,7 @@ export default new Vuex.Store({
         type: "Javascript",
         autosave: true,
         autoload: true,
+        name: "",
       },
       yandexKey: "",
     },
@@ -79,7 +81,8 @@ export default new Vuex.Store({
   },
   getters: {
     devLocale: (state, getters) => getters.config.devLocale,
-    yandexKey: (state, getters) => getters.yandex.yandexKey || getters.config.yandexKey,
+    yandexKey: (state, getters) =>
+      getters.yandex.yandexKey || getters.config.yandexKey,
     config: (state) => state.config,
     version: (state) => state.version,
     envConfig: (state) => state.envConfig,

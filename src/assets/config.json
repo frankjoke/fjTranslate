@@ -1,7 +1,7 @@
 {
   "fjTranslate": {
     "devLocale": "en",
-    "configFile": "./cofig.json",
+    "configFile": "./config.json",
     "autosave": true,
     "allLocales": [
       "en",

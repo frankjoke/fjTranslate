@@ -28,7 +28,7 @@ Vue.component("my-component", {
 
 export default new Vuetify({
   lang: {
-    locales: { zhHans, pl, en, de, ru, pt,nl, fr, it, es },
+    locales: { zhHans, pl, en, de, ru, pt, nl, fr, it, es },
     current: "de",
   },
   icons: {

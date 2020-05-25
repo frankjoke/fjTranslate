@@ -275,17 +275,17 @@
     "pl": "Klucz API Yandex",
     "zh-cn": "Yandex API密钥"
   },
-  "Already defined in VUE_APP_YANDEXKEY environment settings!": {
-    "en": "Already defined in VUE_APP_YANDEXKEY environment settings!",
-    "de": "Bereits in den Umgebungseinstellungen von VUE_APP_YANDEXKEY definiert!",
-    "ru": "Уже определено в настройках среды VUE_APP_YANDEXKEY!",
-    "pt": "Já definido nas configurações do ambiente VUE_APP_YANDEXKEY!",
-    "nl": "Al gedefinieerd in VUE_APP_YANDEXKEY omgevingsinstellingen!",
-    "fr": "Déjà défini dans les paramètres d'environnement VUE_APP_YANDEXKEY!",
-    "it": "Già definito nelle impostazioni dell'ambiente VUE_APP_YANDEXKEY!",
-    "es": "¡Ya definido en la configuración del entorno VUE_APP_YANDEXKEY!",
-    "pl": "Już zdefiniowane w ustawieniach środowiska VUE_APP_YANDEXKEY!",
-    "zh-cn": "已在VUE_APP_YANDEXKEY环境设置中定义！"
+  "Already defined in FJTRANSLATE_YANDEXKEY environment settings!": {
+    "en": "Already defined in FJTRANSLATE_YANDEXKEY environment settings!",
+    "de": "Bereits in den Umgebungseinstellungen von FJTRANSLATE_YANDEXKEY definiert!",
+    "ru": "Уже определено в настройках среды FJTRANSLATE_YANDEXKEY!",
+    "pt": "Já definido nas configurações do ambiente FJTRANSLATE_YANDEXKEY!",
+    "nl": "Al gedefinieerd in FJTRANSLATE_YANDEXKEY omgevingsinstellingen!",
+    "fr": "Déjà défini dans les paramètres d'environnement FJTRANSLATE_YANDEXKEY!",
+    "it": "Già definito nelle impostazioni dell'ambiente FJTRANSLATE_YANDEXKEY!",
+    "es": "¡Ya definido en la configuración del entorno FJTRANSLATE_YANDEXKEY!",
+    "pl": "Już zdefiniowane w ustawieniach środowiska FJTRANSLATE_YANDEXKEY!",
+    "zh-cn": "已在FJTRANSLATE_YANDEXKEY环境设置中定义！"
   },
   "AutoSave config": {
     "en": "AutoSave config",
@@ -311,17 +311,17 @@
     "pl": "Config Nazwa pliku:",
     "zh-cn": "配置文件名："
   },
-  "If filename is stored in VUE_APP_FSTRANSLATE_CONFIG env settings  config will load automatically!": {
-    "en": "If filename is stored in VUE_APP_FSTRANSLATE_CONFIG env settings  config will load automatically!",
-    "de": "Wenn der Dateiname in VUE_APP_FSTRANSLATE_CONFIG gespeichert ist, wird die Umgebungskonfiguration automatisch geladen!",
-    "ru": "Если имя файла сохранено в VUE_APP_FSTRANSLATE_CONFIG, конфигурация настроек env загрузится автоматически!",
-    "pt": "Se o nome do arquivo estiver armazenado em VUE_APP_FSTRANSLATE_CONFIG, as configurações do env serão carregadas automaticamente!",
-    "nl": "Als de bestandsnaam is opgeslagen in VUE_APP_FSTRANSLATE_CONFIG, wordt de configuratie van de env-instellingen automatisch geladen!",
-    "fr": "Si le nom de fichier est stocké dans VUE_APP_FSTRANSLATE_CONFIG, la configuration des paramètres env se charge automatiquement!",
-    "it": "Se il nome file è memorizzato in VUE_APP_FSTRANSLATE_CONFIG, le impostazioni env verranno caricate automaticamente!",
-    "pl": "Jeśli filename przechowywane w VUE_APP_FSTRANSLATE_CONFIG ustawienia OCD konfig będzie automatycznie pobierać!",
-    "zh-cn": "如果文件是存在VUE_APP_FSTRANSLATE_CONFIG env设置的配置将负载！",
-    "es": "Si el nombre de fichero se almacena en VUE_APP_FSTRANSLATE_CONFIG env ajustes de configuración se carga de forma automática!"
+  "If filename is stored in FJTRANSLATE_CONFIG env settings  config will load automatically!": {
+    "en": "If filename is stored in FJTRANSLATE_CONFIG env settings  config will load automatically!",
+    "de": "Wenn der Dateiname in FJTRANSLATE_CONFIG gespeichert ist, wird die Umgebungskonfiguration automatisch geladen!",
+    "ru": "Если имя файла сохранено в FJTRANSLATE_CONFIG, конфигурация настроек env загрузится автоматически!",
+    "pt": "Se o nome do arquivo estiver armazenado em FJTRANSLATE_CONFIG, as configurações do env serão carregadas automaticamente!",
+    "nl": "Als de bestandsnaam is opgeslagen in FJTRANSLATE_CONFIG, wordt de configuratie van de env-instellingen automatisch geladen!",
+    "fr": "Si le nom de fichier est stocké dans FJTRANSLATE_CONFIG, la configuration des paramètres env se charge automatiquement!",
+    "it": "Se il nome file è memorizzato in FJTRANSLATE_CONFIG, le impostazioni env verranno caricate automaticamente!",
+    "pl": "Jeśli filename przechowywane w FJTRANSLATE_CONFIG ustawienia OCD konfig będzie automatycznie pobierać!",
+    "zh-cn": "如果文件是存在FJTRANSLATE_CONFIG env设置的配置将负载！",
+    "es": "Si el nombre de fichero se almacena en FJTRANSLATE_CONFIG env ajustes de configuración se carga de forma automática!"
   },
   "Load Config File": {
     "en": "Load Config File",
@@ -333,7 +333,7 @@
     "es": "Carga Del Archivo De Configuración",
     "pl": "Pobierz Plik Config",
     "zh-cn": "载荷配置文件",
-    "de": "Last-Config-Datei"
+    "de": "Lade Config-Datei"
   },
   "Save config file": {
     "en": "Save config file",
@@ -1076,15 +1076,127 @@
     "fr": "Nouvel élément de langue",
     "it": "Nuovo elemento lingua",
     "es": "Nuevo ítem de idioma",
-    "pl": "Nowa pozycja językowa"
+    "pl": "Nowa pozycja językowa",
+    "zh-cn": "新语言项目"
   },
   "Cannot translater from/to same language!": {
-    "en": "Cannot translater from/to same language!"
+    "en": "Cannot translater from/to same language!",
+    "de": "Kann nicht von / in dieselbe Sprache übersetzen!",
+    "ru": "Невозможно перевести с / на один и тот же язык!",
+    "pt": "Não é possível traduzir de / para o mesmo idioma!",
+    "nl": "Kan niet vertalen van / naar dezelfde taal!",
+    "fr": "Impossible de traduire de / vers la même langue!",
+    "it": "Impossibile tradurre dalla / alla stessa lingua!",
+    "es": "¡No se puede traducir de / al mismo idioma!",
+    "pl": "Nie można tłumaczyć z / na ten sam język!",
+    "zh-cn": "无法与其他语言进行互译！"
   },
   "No translation!": {
-    "en": "No translation!"
+    "en": "No translation!",
+    "de": "Keine Übersetzung!",
+    "ru": "Нет перевода!",
+    "pt": "Sem tradução!",
+    "nl": "Geen vertaling!",
+    "fr": "Pas de traduction!",
+    "it": "Nessuna traduzione!",
+    "es": "¡Sin traducción!",
+    "pl": "Brak tłumaczenia!",
+    "zh-cn": "没有翻译！"
   },
   "keys not fully translated:": {
-    "en": "keys not fully translated:"
+    "en": "keys not fully translated:",
+    "de": "Schlüssel nicht vollständig übersetzt:",
+    "ru": "ключи не полностью переведены:",
+    "pt": "chaves não totalmente traduzidas:",
+    "nl": "sleutels niet volledig vertaald:",
+    "fr": "clés pas entièrement traduites:",
+    "it": "chiavi non completamente tradotte:",
+    "es": "claves no completamente traducidas:",
+    "pl": "klucze nie w pełni przetłumaczone:",
+    "zh-cn": "密钥未完全翻译："
+  },
+  "This is a title!": {
+    "en": "This is a title!",
+    "de": "Das ist ein Titel!",
+    "ru": "Это название!",
+    "pt": "Este é um título!",
+    "nl": "Dit is een titel!",
+    "fr": "Ceci est un titre!",
+    "it": "Questo è un titolo!",
+    "es": "Este es un título!",
+    "pl": "To jest tytuł!",
+    "zh-cn": "这是一个标题！"
+  },
+  "keys not fully translated": {
+    "en": "keys not fully translated",
+    "de": "Schlüssel nicht vollständig übersetzt",
+    "ru": "ключи не полностью переведены",
+    "pt": "chaves não totalmente traduzidas",
+    "nl": "sleutels niet volledig vertaald",
+    "fr": "clés pas entièrement traduites",
+    "it": "chiavi non completamente tradotte",
+    "es": "claves no completamente traducidas",
+    "pl": "klucze nie w pełni przetłumaczone",
+    "zh-cn": "密钥未完全翻译"
+  },
+  "Translation Key": {
+    "en": "Translation Key",
+    "de": "Übersetzungsschlüssel",
+    "ru": "Ключ перевода",
+    "pt": "Chave de tradução",
+    "nl": "Vertaalsleutel",
+    "fr": "Clé de traduction",
+    "it": "Chiave di traduzione",
+    "es": "Clave de traducción",
+    "pl": "Klucz tłumaczenia",
+    "zh-cn": "翻译键"
+  },
+  "Actions": {
+    "en": "Actions",
+    "de": "Aktionen",
+    "ru": "действия",
+    "pt": "Ações",
+    "nl": "Acties",
+    "fr": "Actions",
+    "it": "Azioni",
+    "es": "Comportamiento",
+    "pl": "działania",
+    "zh-cn": "动作"
+  },
+  "The Yandex.Translate API key, you can put it also in FJTRANSLATE_YANDEXKEY env settings!": {
+    "en": "The Yandex.Translate API key, you can put it also in FJTRANSLATE_YANDEXKEY env settings!",
+    "de": "Den Yandex.Translate-API-Schlüssel können Sie auch in die FJTRANSLATE_YANDEXKEY-Env-Einstellungen einfügen!",
+    "ru": "Ключ API Яндекс.Переводчика, вы также можете поместить его в настройках env FJTRANSLATE_YANDEXKEY!",
+    "pt": "A chave da API Yandex.Translate, você também pode colocá-la nas configurações de ambiente FJTRANSLATE_YANDEXKEY!",
+    "nl": "De Yandex.Translate API-sleutel, u kunt deze ook in FJTRANSLATE_YANDEXKEY env-instellingen plaatsen!",
+    "fr": "La clé API Yandex.Translate, vous pouvez également la placer dans les paramètres env de FJTRANSLATE_YANDEXKEY!",
+    "it": "La chiave API Yandex.Translate, puoi inserirla anche nelle impostazioni env FJTRANSLATE_YANDEXKEY!",
+    "es": "La clave API Yandex.Translate, ¡también puede ponerla en la configuración de FJTRANSLATE_YANDEXKEY env!",
+    "pl": "Klucz API Yandex.Translate, możesz umieścić go również w ustawieniach env FJTRANSLATE_YANDEXKEY!",
+    "zh-cn": "Yandex.Translate API密钥，您也可以将其放在FJTRANSLATE_YANDEXKEY环境设置中！"
+  },
+  "Words Filename:": {
+    "en": "Words Filename:",
+    "de": "Wörter Dateiname:",
+    "ru": "Слова Имя файла:",
+    "pt": "Palavras Nome do arquivo:",
+    "nl": "Woorden bestandsnaam:",
+    "fr": "Mots Nom de fichier:",
+    "it": "Parole Nome file:",
+    "es": "Nombre de archivo de palabras:",
+    "pl": "Słowa Nazwa pliku:",
+    "zh-cn": "单词文件名："
+  },
+  "Global Filename:": {
+    "en": "Global Filename:",
+    "de": "Globaler Dateiname:",
+    "ru": "Глобальное имя файла:",
+    "pt": "Nome de arquivo global:",
+    "nl": "Globale bestandsnaam:",
+    "fr": "Nom de fichier global:",
+    "it": "Nome file globale:",
+    "es": "Nombre de archivo global:",
+    "pl": "Globalna nazwa pliku:",
+    "zh-cn": "全局文件名："
   }
 }

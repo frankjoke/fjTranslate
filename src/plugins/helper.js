@@ -18,7 +18,7 @@ const YandexTranslator = require("yandex-translator");
 
 const mylang = (navigator.language || navigator.userLanguage).slice(0, 2);
 const version = process.env.VUE_APP_VERSION;
-const envConfig = process.env.VUE_APP_FSTRANSLATE_CONFIG;
+const envConfig = process.env.FJTRANSLATE_CONFIG;
 
 function mapFilters(filters) {
   return filters.reduce((result, filter) => {
@@ -295,14 +295,14 @@ const helper = {
         try {
           r = JSON.parse(r);
         } catch (e) {
-          r = "Error: file did not include json syntax!";
+          r = "";
           this.$alert(`error:JSON.parse: ${e}`);
         }
       } else if (type === "Javascript") {
         try {
           r = eval("(" + r + ")");
         } catch (e) {
-          r = "Error: file could not be evaluated!";
+          r = "";
           this.$alert(`error:eval: ${e}`);
         }
       }
@@ -382,7 +382,7 @@ const helper = {
       if (res) that.$delete(that.editContent[key], lang);
     },
 
-    async retranslateAll(item, all) {
+    async retranslateAll(item, all, isAll) {
       const that = this;
       const key = (item && item.key) || that.editDialog.key;
       const stat = item ? item : that.editDialog;
@@ -391,9 +391,9 @@ const helper = {
       const toLangs = that.config.allLocales.filter(
         (x) => x !== that.devLocale && (all || curLangs.indexOf(x) < 0)
       );
-      that.$set(stat, "showTrans", true);
+      if (!isAll) that.$set(stat, "showTrans", true);
       for (const l of toLangs) {
-        await that.wait(20);
+        await that.wait(2);
         const r = await that.translate(key, l);
         if (r) that.$set(eck, l, r);
       }
@@ -402,7 +402,7 @@ const helper = {
         "notAll",
         Object.keys(eck).length < that.config.allLocales.length
       );
-      that.$set(stat, "showTrans", false);
+      if (!isAll) that.$set(stat, "showTrans", false);
       await that.wait(2);
       that.saveTimer = true;
       that.$forceUpdate();
@@ -411,10 +411,12 @@ const helper = {
 
     async translateAllKeys(all) {
       const that = this;
+      that.$set(that.editDialog, "showTrans", true);
       for (const key of that.editKeys) {
-        await that.retranslateAll(key, all);
-        await that.wait(50);
+        await that.retranslateAll(key, all, true);
+        await that.wait(5);
       }
+      that.$set(that.editDialog, "showTrans", false);
     },
 
     async anyTranslate(opts_) {

@@ -40,8 +40,8 @@
       />
     </v-app-bar>
 
-    <v-content class="ma-1">
-      <v-container>
+    <v-content class="ma-2">
+      <v-container fluid>
         <v-row no-gutters class="mb-1">
           <v-col cols="3">
             <FjFileLoadButton
@@ -84,12 +84,16 @@
           <v-col cols="6">
             <!--             <v-text-field dense readonly :value="config.editWordsFile.name" solo flat class="ma-0 "></v-text-field>
             -->
-            <div v-if="config.editWordsFile.name" align="top" justify="left">
-              <div style="line-height: 0.6rem;" class="caption">
+            <div
+              v-if="config.editWordsFile.name || config.editWordsFile.fileName"
+              align="top"
+              justify="left"
+            >
+              <div style="line-height: 0.7rem;" class="caption">
                 {{ $t("Words Filename:") }}
               </div>
-              <div class="body-2" style="line-height: 0.8rem;">
-                {{ config.editWordsFile.name }}
+              <div class="body-2" style="line-height: 0.9rem;">
+                {{ config.editWordsFile.name || config.editWordsFile.fileName }}
               </div>
             </div>
           </v-col>
@@ -137,12 +141,20 @@
             />
           </v-col>
           <v-col cols="6">
-            <div v-if="config.globalWordsFile.name" align="top" justify="left">
-              <div style="line-height: 0.6rem;" class="caption">
-                Global Filename:
+            <div
+              v-if="
+                config.globalWordsFile.name || config.globalWordsFile.fileName
+              "
+              align="top"
+              justify="left"
+            >
+              <div style="line-height: 0.7rem;" class="caption">
+                {{ $t("Global Filename:") }}
               </div>
-              <div class="subtitle-2" style="line-height: 0.8rem;">
-                {{ config.globalWordsFile.name }}
+              <div class="subtitle-2" style="line-height: 0.9rem;">
+                {{
+                  config.globalWordsFile.name || config.globalWordsFile.fileName
+                }}
               </div>
             </div>
           </v-col>
@@ -172,9 +184,9 @@
             />
           </v-col>
 
-          <v-col cols="3">
-            {{ `${numMissing} ${$t("keys not fully translated")}` }}
-          </v-col>
+          <v-col cols="3">{{
+            `${numMissing} ${$t("keys not fully translated")}`
+          }}</v-col>
 
           <v-col cols="3">
             <FjB
@@ -382,35 +394,6 @@ export default {
       //      time: new Date().toISOString(),
       editSearch: "",
       editExpandedSync: [],
-      editHeaders: [
-        {
-          text: "Translation Key",
-          align: "start",
-          sortable: true,
-          filterable: true,
-          value: "name",
-          width: "30%",
-        },
-        {
-          get text() {
-            return "Original text in '" + that.devLocale + "'";
-          },
-          align: "start",
-          sortable: true,
-          filterable: true,
-          value: "devKey",
-          width: "70%",
-        },
-        {
-          text: "Actions",
-          align: "end",
-          value: "langs",
-          sortable: false,
-          filterable: true,
-          width: 75,
-          //          class: "caption"
-        },
-      ],
       editedItem: {
         name: "",
         devText: "",
@@ -435,7 +418,7 @@ export default {
     async handleTranslateAll(event) {
       const that = this;
       that.inTranslateAll = true;
-      await that.wait(10);
+      await that.wait(1);
       if (event.altKey && event.shiftKey) {
         that.doCopyClipboard(that.myStringify(that.$missing, true));
         that.inTranslateAll = false;
@@ -482,14 +465,14 @@ export default {
     },
 
     loadWords(t) {
-      if (typeof t !== "object") return;
+      if (!t || typeof t !== "object") return;
       // console.log("loadWords:", t);
       t = this.checkContent(t);
       this.editContent = t;
     },
 
     loadGlobal(t) {
-      if (typeof t !== "object") return;
+      if (!t || typeof t !== "object") return;
       // console.log("loadGlobal:", t);
       t = this.checkContent(t);
       this.globalContent = t;
@@ -506,6 +489,36 @@ export default {
   },
 
   computed: {
+    editHeaders() {
+      return [
+        {
+          text: this.$t("Translation Key"),
+          align: "start",
+          sortable: true,
+          filterable: true,
+          value: "name",
+          width: "30%",
+        },
+        {
+          text: this.$t("Original text in") + " '" + this.devLocale + "'",
+          align: "start",
+          sortable: true,
+          filterable: true,
+          value: "devKey",
+          width: "70%",
+        },
+        {
+          text: this.$t("Actions"),
+          align: "end",
+          value: "langs",
+          sortable: false,
+          filterable: true,
+          width: 75,
+          //          class: "caption"
+        },
+      ];
+    },
+
     editKeys() {
       const ec = this.editContent;
       const dl = this.devLocale;
@@ -577,6 +590,7 @@ export default {
     // that.textarea = that.inspect(path) + "\n" + that.inspect(dir);
     let nc = {};
     const cfname = that.envConfig ? that.envConfig : "./config.json";
+    // console.log(cfname);
     try {
       let conf = await that.$electron.readFile(cfname, "utf8");
       conf = JSON.parse(conf);

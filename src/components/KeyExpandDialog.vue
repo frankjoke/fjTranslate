@@ -10,9 +10,7 @@
         <v-system-bar light color="grey lighten-2">
           <div class="grey--text text--darken-4">
             <span class="ml-2 body-2" v-t="'Key:'"></span>
-            <span class="ml-2 caption">
-              {{ "'" + editExpand.key + "'" }}
-            </span>
+            <span class="ml-2 caption">{{ "'" + editExpand.key + "'" }}</span>
           </div>
           <v-spacer></v-spacer>
           <FjB
@@ -38,7 +36,7 @@
           />
           <v-dialog
             v-model="editDialog.dialog"
-            max-width="800px"
+            max-width="95%"
             @close="editDialogCancel"
           >
             <v-card>
@@ -115,9 +113,9 @@
         </v-system-bar>
       </template>
       <template v-slot:item.lang="{ item }">
-        <span :class="item.lang === devLocale ? 'subtitle-2' : 'caption'">{{
-          item.lang
-        }}</span>
+        <span :class="item.lang === devLocale ? 'subtitle-2' : 'caption'">
+          {{ item.lang }}
+        </span>
       </template>
       <template v-slot:item.translation="{ item }">
         <textarea
@@ -142,7 +140,7 @@
                         >
                           {{ "'" + item.translation + "'" }}
                         </div>
-                        -->
+        -->
       </template>
       <template v-slot:item.action="{ item }">
         <FjB
@@ -172,8 +170,9 @@
           img="mdi-delete"
           @click="deleteDialogItem(item)"
         />
-      </template> </v-data-table
-  ></v-card>
+      </template>
+    </v-data-table>
+  </v-card>
 </template>
 
 <script>
@@ -183,37 +182,6 @@ export default {
   name: "KeyExpandDialog",
   mixins: [helperMixin],
 
-  data() {
-    return {
-      langsHeaders: [
-        {
-          text: "Language",
-          //          align: "start",
-          value: "lang",
-          align: "center",
-          sortable: false,
-          width: "80",
-        },
-        {
-          text: "Translation",
-          value: "translation",
-          align: "start",
-          sortable: false,
-          //          class: "caption"
-          //          width: "80%"
-          width: "100%",
-        },
-        {
-          text: "Actions",
-          value: "action",
-          align: "end",
-          sortable: false,
-          //          class: "caption"
-          width: "75",
-        },
-      ],
-    };
-  },
   props: {
     // title: {
     //   type: String,
@@ -227,6 +195,35 @@ export default {
     // },
   },
   computed: {
+    langsHeaders() {
+      return [
+        {
+          text: this.$t("Language"),
+          //          align: "start",
+          value: "lang",
+          align: "center",
+          sortable: false,
+          width: "80",
+        },
+        {
+          text: this.$t("Translation"),
+          value: "translation",
+          align: "start",
+          sortable: false,
+          //          class: "caption"
+          //          width: "80%"
+          width: "100%",
+        },
+        {
+          text: this.$t("Actions"),
+          value: "action",
+          align: "end",
+          sortable: false,
+          //          class: "caption"
+          width: "75",
+        },
+      ];
+    },
     editExpandList() {
       if (this.editExpand) {
         const trans = this.editExpand.trans;

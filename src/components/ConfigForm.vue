@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="show" max-width="1100px">
+  <v-dialog v-model="show" scrollable max-width="95%">
     <template v-slot:activator="{ on }">
       <FjB v-bind="$attrs" v-on="on" />
     </template>
@@ -9,156 +9,158 @@
         <v-spacer></v-spacer>
         <v-icon v-if="!!icon">{{ icon }}</v-icon>
       </v-card-title>
-      <ConfigFile
-        :value.sync="myConf.editWordsFile"
-        :label="$t('Words file config:')"
-        icon="mdi-folder"
-      />
-      <ConfigFile
-        :value.sync="myConf.globalWordsFile"
-        :label="$t('Global translation file:')"
-        icon="mdi-briefcase"
-      />
-      <v-card raised class="ma-1">
-        <v-card-title class="subtitle-1">
-          <v-icon small left>mdi-google-translate</v-icon>
-          <span>Language Settings:</span>
-        </v-card-title>
-        <v-container fluid class="py-1">
-          <v-row align="center">
-            <v-col cols="12" class="px-4 py-1">
-              <v-combobox
-                v-model="myConf.allLocales"
-                :items="[]"
-                dense
-                small-chips
-                multiple
-                cache-items
-                deletable-chips
-                hide-selected
-                :hint="
-                  $t('Add/remove languages you want to be able to process')
-                "
-                persistent-hint
-              >
-                <template v-slot:selection="data">
-                  <v-chip
-                    :input-value="data.selected"
-                    :key="JSON.stringify(data.item)"
-                    v-bind="data.attrs"
-                    close
-                    @click:close="removeLang(data.item)"
-                  >
-                    <span>{{ data.item }}</span
-                    >&nbsp;
-                  </v-chip>
-                </template>
-              </v-combobox>
-            </v-col>
-          </v-row>
-          <v-row align="center">
-            <v-col class="d-flex pl-4 pr-0 py-1" cols="12" sm="2">
-              <v-select
-                dense
-                :label="$t('devLocale')"
-                :hint="
-                  $t(
-                    'The language which you will work in to base the translations on'
-                  )
-                "
-                :items="myConf.allLocales"
-                hide-details="auto"
-                v-model="myConf.devLocale"
-              ></v-select>
-            </v-col>
-            <v-col class="d-flex pl-2 pr-1 py-1" cols="12" sm="2">
-              <v-switch
-                dense
-                v-model="all"
-                class="ma-2"
-                :label="all ? $t('All remaining') : $t('Select yourself')"
-              ></v-switch>
-            </v-col>
-            <v-col class="d-flex pl-1 pr-3 py-1" cols="12" sm="8">
-              <v-combobox
-                dense
-                :label="$t('locales to edit/create')"
-                :hint="
-                  $t('The languages you want to translate the devLocale into')
-                "
-                :rules="[(value) => !!value || 'required']"
-                :disabled="all"
-                hide-details="auto"
-                :items="allLocalesList"
-                v-model="myConf.locales"
-                multiple
-                chips
-              ></v-combobox>
-            </v-col>
-          </v-row>
-          <v-row align="center">
-            <v-col class="d-flex pl-2 pr-0 py-1" cols="12" sm="2">
-              <v-switch
-                dense
-                v-model="myConf.useYandex"
-                class="ma-2"
-                :label="$t('Use Yandex first')"
-              ></v-switch>
-            </v-col>
-            <v-col class="d-flex pl-1 pr-3 py-1" cols="12" sm="10">
-              <v-text-field
-                class="caption"
-                dense
-                :type="passwd ? 'password' : 'text'"
-                :label="$t('Yandex API key')"
-                append-icon="mdi-eye"
-                :placeholder="
-                  $t(
-                    yandexapi
-                      ? 'Already defined in VUE_APP_YANDEXKEY environment settings!'
-                      : 'The Yandex.Translate API key, you can put it also in VUE_APP_YANDEXKEY env settings!'
-                  )
-                "
-                :rules="[
-                  (value) =>
-                    !value ||
-                    value.length > 20 ||
+      <v-card-text max-height="80%">
+        <ConfigFile
+          :value.sync="myConf.editWordsFile"
+          :label="$t('Words file config:')"
+          icon="mdi-folder"
+        />
+        <ConfigFile
+          :value.sync="myConf.globalWordsFile"
+          :label="$t('Global translation file:')"
+          icon="mdi-briefcase"
+        />
+        <v-card raised class="ma-1">
+          <v-card-title class="subtitle-1">
+            <v-icon small left>mdi-google-translate</v-icon>
+            <span>Language Settings:</span>
+          </v-card-title>
+          <v-container fluid class="py-1">
+            <v-row align="center">
+              <v-col cols="12" class="px-4 py-1">
+                <v-combobox
+                  v-model="myConf.allLocales"
+                  :items="[]"
+                  dense
+                  small-chips
+                  multiple
+                  cache-items
+                  deletable-chips
+                  hide-selected
+                  :hint="
+                    $t('Add/remove languages you want to be able to process')
+                  "
+                  persistent-hint
+                >
+                  <template v-slot:selection="data">
+                    <v-chip
+                      :input-value="data.selected"
+                      :key="JSON.stringify(data.item)"
+                      v-bind="data.attrs"
+                      close
+                      @click:close="removeLang(data.item)"
+                    >
+                      <span>{{ data.item }}</span
+                      >&nbsp;
+                    </v-chip>
+                  </template>
+                </v-combobox>
+              </v-col>
+            </v-row>
+            <v-row align="center">
+              <v-col class="d-flex pl-4 pr-0 py-1" cols="12" sm="2">
+                <v-select
+                  dense
+                  :label="$t('devLocale')"
+                  :hint="
                     $t(
-                      'required for Yandex if not defined in VUE_APP_YANDEXKEY env settings!'
-                    ),
-                ]"
-                hide-details="auto"
-                v-model="myConf.yandexKey"
-                @click:append="passwd = !passwd"
-              ></v-text-field>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col cols="2">
-              <v-checkbox
-                dense
-                :label="$t('AutoSave config')"
-                v-model="myConf.autosave"
-                :disabled="!allowAutosave"
-              ></v-checkbox>
-            </v-col>
-            <v-col cols="10">
-              <v-text-field
-                dense
-                prepend-icon="mdi-folder-open"
-                @click:prepend="selectfilename"
-                :label="$t('Config Filename:')"
-                :hint="
-                  $t(
-                    'If filename is stored in VUE_APP_FSTRANSLATE_CONFIG env settings  config will load automatically!'
-                  )
-                "
-                v-model="myConf.configFile"
-              ></v-text-field>
-            </v-col>
-          </v-row>
-        </v-container>
-      </v-card>
+                      'The language which you will work in to base the translations on'
+                    )
+                  "
+                  :items="myConf.allLocales"
+                  hide-details="auto"
+                  v-model="myConf.devLocale"
+                ></v-select>
+              </v-col>
+              <v-col class="d-flex pl-2 pr-1 py-1" cols="12" sm="2">
+                <v-switch
+                  dense
+                  v-model="all"
+                  class="ma-2"
+                  :label="all ? $t('All remaining') : $t('Select yourself')"
+                ></v-switch>
+              </v-col>
+              <v-col class="d-flex pl-1 pr-3 py-1" cols="12" sm="8">
+                <v-combobox
+                  dense
+                  :label="$t('locales to edit/create')"
+                  :hint="
+                    $t('The languages you want to translate the devLocale into')
+                  "
+                  :rules="[(value) => !!value || 'required']"
+                  :disabled="all"
+                  hide-details="auto"
+                  :items="allLocalesList"
+                  v-model="myConf.locales"
+                  multiple
+                  chips
+                ></v-combobox>
+              </v-col>
+            </v-row>
+            <v-row align="center">
+              <v-col class="d-flex pl-2 pr-0 py-1" cols="12" sm="2">
+                <v-switch
+                  dense
+                  v-model="myConf.useYandex"
+                  class="ma-2"
+                  :label="$t('Use Yandex first')"
+                ></v-switch>
+              </v-col>
+              <v-col class="d-flex pl-1 pr-3 py-1" cols="12" sm="10">
+                <v-text-field
+                  class="caption"
+                  dense
+                  :type="passwd ? 'password' : 'text'"
+                  :label="$t('Yandex API key')"
+                  append-icon="mdi-eye"
+                  :placeholder="
+                    $t(
+                      yandexapi
+                        ? 'Already defined in FJTRANSLATE_YANDEXKEY environment settings!'
+                        : 'The Yandex.Translate API key, you can put it also in FJTRANSLATE_YANDEXKEY env settings!'
+                    )
+                  "
+                  :rules="[
+                    (value) =>
+                      !value ||
+                      value.length > 20 ||
+                      $t(
+                        'required for Yandex if not defined in FJTRANSLATE_YANDEXKEY env settings!'
+                      ),
+                  ]"
+                  hide-details="auto"
+                  v-model="myConf.yandexKey"
+                  @click:append="passwd = !passwd"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="2">
+                <v-checkbox
+                  dense
+                  :label="$t('AutoSave config')"
+                  v-model="myConf.autosave"
+                  :disabled="!allowAutosave"
+                ></v-checkbox>
+              </v-col>
+              <v-col cols="10">
+                <v-text-field
+                  dense
+                  prepend-icon="mdi-folder-open"
+                  @click:prepend="selectfilename"
+                  :label="$t('Config Filename:')"
+                  :hint="
+                    $t(
+                      'If filename is stored in FJTRANSLATE_CONFIG env settings  config will load automatically!'
+                    )
+                  "
+                  v-model="myConf.configFile"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-card>
+      </v-card-text>
       <v-card-actions class="pt-0 pb-1">
         <FjFileLoadButton
           text
@@ -235,7 +237,7 @@ export default {
       all: true,
       passwd: true,
       origConf: "",
-      yandexapi: process.env.VUE_APP_YANDEXKEY,
+      yandexapi: process.env.FJTRANSLATE_YANDEXKEY,
     };
   },
   components: { ConfigFile },

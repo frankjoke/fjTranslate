@@ -8,7 +8,7 @@
       <v-row align="center">
         <v-col class="d-flex" cols="12" sm="2">
           <v-select
-          class="body-2"
+            class="body-2"
             auto-select-first
             :label="$t('type')"
             :hint="
@@ -113,7 +113,6 @@
             :label="$t('Autosave')"
             v-model="value.autosave"
             hide-details
-
           ></v-checkbox>
         </v-col>
         <v-col cols="8">

@@ -1,5 +1,4 @@
 process.env.VUE_APP_VERSION = require("./package.json").version;
-process.env.VUE_APP_FSTRANSLATE_CONFIG = "C:\\Users\\sissi\\apps\\cofig.json";
 
 module.exports = {
   transpileDependencies: ["vuetify"],
