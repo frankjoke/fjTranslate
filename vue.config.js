@@ -23,14 +23,14 @@ module.exports = {
     build: {
       appId: "com.fjTranslate.app",
       win: {
-        icon: "./public/favicon.ico",
+        icon: "./assets/favicon.ico",
       },
       extraResources: ["files"],
     },
     electronBuilder: {
       appId: "com.fjTranslate.app",
       win: {
-        icon: "./public/favicon.ico",
+        icon: "./assets/favicon.ico",
       },
       extraResources: ["files"],
     },

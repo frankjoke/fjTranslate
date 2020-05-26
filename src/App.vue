@@ -576,6 +576,7 @@ export default {
     //    console.log(this.getTimeInterval(Date.now() - 100000));
     //    console.log(this.getTimeInterval(startup));
     //    this.toAdd = this.toAddDictionary();
+    // console.log(that.$electron.remote.getGlobal("process"));
     const path = await that.$electron.realPath("./");
     const dir = await that.$electron
       .readDir("./")
@@ -590,13 +591,14 @@ export default {
     // that.textarea = that.inspect(path) + "\n" + that.inspect(dir);
     let nc = {};
     const cfname = that.envConfig ? that.envConfig : "./config.json";
+    await that.wait(100);
     // console.log(cfname);
     try {
       let conf = await that.$electron.readFile(cfname, "utf8");
       conf = JSON.parse(conf);
       if (conf.fjTranslate) nc = conf.fjTranslate;
     } catch (e) {
-      bc = require("./assets/config.json").fjTranslate;
+      nc = require("./assets/config.json").fjTranslate;
       // no config loaded...
     } finally {
       that.$set(that.$store.state, "config", nc);
@@ -604,11 +606,14 @@ export default {
       await that.wait(10);
       that.$forceUpdate();
     }
+    await that.wait(50);
+
     await that.saveYandex();
     // if (global) {
     //   this.globalContent = global;
     //   this.globalOnly = true;
     // }
+
     that.$vuetify.lang.current = that.myLang.startsWith("zh")
       ? "zh-Hans"
       : that.myLang;
@@ -617,6 +622,7 @@ export default {
     //   text: that.$t("Mylang = {0}", that.myLang),
     // });
     //    console.log(this.$options)
+    await that.wait(50);
 
     if (that.config.globalWordsFile.autoload) {
       const gf = that.config.globalWordsFile;

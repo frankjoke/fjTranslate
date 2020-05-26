@@ -103,7 +103,7 @@ Vue.mixin({
             stack.pop();
             return i;
           });
-        else if (typeof obj === "object") {
+        else if (obj && typeof obj === "object") {
           const no = {};
           stack.push(obj);
           for (const [name, value] of Object.entries(obj)) {

@@ -4,7 +4,7 @@ import Vuex from "vuex";
 const mylang = (navigator.language || navigator.userLanguage).slice(0, 2);
 const version = process.env.VUE_APP_VERSION;
 const envConfig = process.env.FJTRANSLATE_CONFIG;
-const yandexEnv = process.env.FJTRANSLATE_YANDEXKEY;
+//const yandexEnv = process.env.FJTRANSLATE_YANDEXKEY;
 
 Vue.use(Vuex);
 
@@ -14,6 +14,7 @@ export default new Vuex.Store({
       devLocale: "en",
       configFile: "./config.json",
       autosave: true,
+      env: null,
       allLocales: [
         "en",
         "de",
@@ -71,12 +72,11 @@ export default new Vuex.Store({
       createNew: false,
       showTrans: false,
     },
-    yandexEnv,
     lastGoogleErr: 0,
     yandex: {
       yandex: null,
       yandexLangs: [],
-      yandexKey: yandexEnv,
+      yandexKey: "",
     },
   },
   getters: {

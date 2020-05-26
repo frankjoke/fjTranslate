@@ -18,7 +18,7 @@ const YandexTranslator = require("yandex-translator");
 
 const mylang = (navigator.language || navigator.userLanguage).slice(0, 2);
 const version = process.env.VUE_APP_VERSION;
-const envConfig = process.env.FJTRANSLATE_CONFIG;
+//const envConfig = process.env.FJTRANSLATE_CONFIG;
 
 function mapFilters(filters) {
   return filters.reduce((result, filter) => {
@@ -36,6 +36,9 @@ const helper = {
   //   };
   // },
   computed: {
+    env() {
+      return this.$store.state.env;
+    },
     yandexKey() {
       return this.$store.getters.yandexKey;
     },
@@ -48,7 +51,10 @@ const helper = {
     changedWords() {
       return this.editCompare != JSON.stringify(this.editContent);
     },
-    ...mapState(["version", "envConfig", "myLang", "yandex"]),
+    envConfig() {
+      return this.$store.state.env.FJTRANSLATE_CONFIG;
+    },
+    ...mapState(["version",  "myLang", "yandex"]),
 
     devLocale() {
       return this.$store.getters.devLocale;
@@ -195,7 +201,7 @@ const helper = {
   watch: {
     async devLocale(newV, oldV) {
       // console.log("devLocale changed:", newV, oldV);
-      await thia.wait(1).then((_) => this.saveYandex());
+      await this.wait(1).then((_) => this.saveYandex());
       //      if (newV !== this.config.devLocale) this.$set(this.config, "devLocale", newV);
     },
     globalContent() {
@@ -745,6 +751,17 @@ const helper = {
       }
     },
  */
+  },
+  
+  created() {
+    const env = Object.assign(
+      {},
+      process.env,
+      this.$electron.remote.getGlobal("process").env
+    );
+    console.log(env);
+    this.$set(this.$store.state.yandex, "yandexKey", env.FJTRANSLATE_YANDEXKEY)
+    this.$set(this.$store.state, "env", env);
   },
 };
 
