@@ -54,7 +54,7 @@ const helper = {
     envConfig() {
       return this.$store.state.env.FJTRANSLATE_CONFIG;
     },
-    ...mapState(["version",  "myLang", "yandex"]),
+    ...mapState(["version", "myLang", "yandex"]),
 
     devLocale() {
       return this.$store.getters.devLocale;
@@ -752,7 +752,7 @@ const helper = {
     },
  */
   },
-  
+
   created() {
     const env = Object.assign(
       {},
@@ -760,7 +760,7 @@ const helper = {
       this.$electron.remote.getGlobal("process").env
     );
     console.log(env);
-    this.$set(this.$store.state.yandex, "yandexKey", env.FJTRANSLATE_YANDEXKEY)
+    this.$set(this.$store.state.yandex, "yandexKey", env.FJTRANSLATE_YANDEXKEY);
     this.$set(this.$store.state, "env", env);
   },
 };
