@@ -12,7 +12,7 @@ import axios from "axios";
 // setting up cors-anywhere server address
 //const gTranslate = setCORS("http://cors-anywhere.herokuapp.com/");
 
-const YandexTranslator = require("yandex-translator");
+//const YandexTranslator = require("yandex-translator");
 //import config from "@/assets/config.json";
 //import global from "@/assets/global";
 
@@ -199,12 +199,12 @@ const helper = {
     }
    */
   watch: {
-    async devLocale(newV, oldV) {
+    /*     async devLocale(newV, oldV) {
       // console.log("devLocale changed:", newV, oldV);
       await this.wait(1).then((_) => this.saveYandex());
       //      if (newV !== this.config.devLocale) this.$set(this.config, "devLocale", newV);
     },
-    globalContent() {
+ */ globalContent() {
       this.saveTimer = true;
     },
     editContent() {
@@ -213,35 +213,105 @@ const helper = {
   },
   methods: {
     async loadTextFromFile(path, opts, title) {
+      const that = this;
       opts = opts || {};
       title = title || opts.title || that.$t("load file");
-      const that = this;
+      let r;
+      await that.wait(0);
       //      console.log(path, that);
+      const file = path
+        ? path
+        : await that.selectFile(opts.name || opts.fileName || "./*.*", title);
+
+      if (!file) return null;
+      opts.name = file;
+      // that.$set(opts, "name", file);
+      // console.log(opts.name);
       try {
-        const file = path
-          ? path
-          : await that.selectFile(opts.name || opts.fileName || "./*.*", title);
-
-        if (!file) return null;
-        opts.name = file;
-
-        let r = await that.$electron.readFile(file, "utf8");
-
+        r = that.$electron.fs.readFileSync(file, "utf8");
         r = that.importFile(r, opts);
-        //        console.log("results text:", r);
-        that.$alert &&
-          that.$alert(`2|success:${title} ${file} ${that.$t("loaded!")}`);
-        //        this.value = r;
-        //        return r;
-        //       this.$emit("load", e.target.result);        //        if (entry && index) entry[index] = r;
-        return r;
       } catch (e) {
-        that.$alert(`error:FileLoadError ${e}`);
+        console.log(e.toSTring());
+        that.$alert &&
+          that.$alert(`2|error:${title} ${file} file load error ${e}`);
       }
+      //        console.log("results text:", r);
+      that.$alert &&
+        r &&
+        title &&
+        that.$alert(`2|success:${title} ${file} ${that.$t("loaded!")}`);
+      //        this.value = r;
+      //        return r;
+      //       this.$emit("load", e.target.result);        //        if (entry && index) entry[index] = r;
+      return r;
     },
 
     async saveFile(what, opts, e) {
       const that = this;
+      function exportFile(what, opts) {
+        if (what === undefined || what === null)
+          return {
+            str: "",
+          };
+        opts = opts || {
+          type: typeof what === "string" ? "Text" : "JSON",
+        };
+        let {
+          type,
+          addAtStart,
+          addAtEnd,
+          saveWithJSON,
+          name,
+          fileName,
+          basename,
+          skippedAfterEnd,
+          skippedAtStart,
+        } = opts;
+        const todoTypes = {
+          JSON: {
+            stringify: true,
+            ending: ".json",
+            mime: "application/json",
+          },
+          Javascript: {
+            stringify: true,
+            ending: ".js",
+            mime: "application/javascript",
+          },
+          Text: {
+            ending: ".txt",
+            mime: "text/plain",
+          },
+        };
+        let { stringify, ending, mime } = todoTypes[type] || todoTypes.Text;
+        stringify = stringify || saveWithJSON;
+
+        name = name
+          ? name
+          : fileName
+          ? fileName
+          : (basename ? basename : "file") + ending;
+        addAtStart =
+          (addAtStart === "!"
+            ? skippedAtStart
+            : addAtStart && addAtStart.split("\\n").join("\n")) || "";
+        addAtEnd =
+          (addAtEnd === "!"
+            ? skippedAfterEnd
+            : addAtEnd && addAtEnd.split("\\n").join("\n")) || "";
+        //    debugger;
+        const str =
+          addAtStart +
+          (stringify ? JSON.stringify(what, null, 2) : what) +
+          addAtEnd;
+
+        return {
+          name,
+          str,
+          mime,
+          ending,
+        };
+      }
 
       const { mime, str, name } = that.exportFile(what, opts);
       if (!mime) throw new Error(that.$t("invalid value to save!"));
@@ -285,6 +355,8 @@ const helper = {
     importFile(r, opts) {
       opts = opts || {
         type: "JSON",
+        skipAtStart: "{",
+        skipAfterEnd: "}",
       };
       const { skipAtStart, skipAfterEnd, type } = opts;
       let ss = skipAtStart ? r.indexOf(skipAtStart) : -1;
@@ -536,7 +608,7 @@ const helper = {
         } catch (e) {
           that.$alert({
             type: "warning",
-            text: that.$t("Yandex translation error: ${1}", e),
+            text: that.$t("Yandex translation error: {0}", e),
           });
           return null;
         }
@@ -550,7 +622,7 @@ const helper = {
         tld: opts_.tld || "com",
         text: opts_.text || "no text supplied",
       };
-      const yavailable = that.yandex.yandex;
+      const yavailable = !!that.yandexKey;
       // &&
       // that.yandex.yandexLangs.indexOf(opts.from) >= 0 &&
       // that.yandex.yandexLangs.indexOf(opts.to) >= 0;
@@ -576,7 +648,7 @@ const helper = {
       return ret;
     },
 
-    async saveYandex() {
+    /*     async saveYandex() {
       const that = this;
       if (!that.yandexKey) return "Yandex key not available!";
       try {
@@ -593,70 +665,7 @@ const helper = {
         that.$alert(` SaveYandex error: ${e}`);
       }
     },
-    exportFile(what, opts) {
-      if (what === undefined || what === null)
-        return {
-          str: "",
-        };
-      opts = opts || {
-        type: typeof what === "string" ? "Text" : "JSON",
-      };
-      let {
-        type,
-        addAtStart,
-        addAtEnd,
-        saveWithJSON,
-        name,
-        fileName,
-        basename,
-        skippedAfterEnd,
-        skippedAtStart,
-      } = opts;
-      const todoTypes = {
-        JSON: {
-          stringify: true,
-          ending: ".json",
-          mime: "application/json",
-        },
-        Javascript: {
-          stringify: true,
-          ending: ".js",
-          mime: "application/javascript",
-        },
-        Text: {
-          ending: ".txt",
-          mime: "text/plain",
-        },
-      };
-      let { stringify, ending, mime } = todoTypes[type] || todoTypes.Text;
-      stringify = stringify || saveWithJSON;
-
-      name = name
-        ? name
-        : fileName
-        ? fileName
-        : (basename ? basename : "file") + ending;
-      addAtStart =
-        (addAtStart === "!"
-          ? skippedAtStart
-          : addAtStart && addAtStart.split("\\n").join("\n")) || "";
-      addAtEnd =
-        (addAtEnd === "!"
-          ? skippedAfterEnd
-          : addAtEnd && addAtEnd.split("\\n").join("\n")) || "";
-      //    debugger;
-      const str =
-        addAtStart +
-        (stringify ? JSON.stringify(what, null, 2) : what) +
-        addAtEnd;
-
-      return {
-        name,
-        str,
-        mime,
-        ending,
-      };
-    },
+ */
 
     startCase(str) {
       return str
@@ -759,7 +768,7 @@ const helper = {
       process.env,
       this.$electron.remote.getGlobal("process").env
     );
-    console.log(env);
+    //    console.log(env);
     this.$set(this.$store.state.yandex, "yandexKey", env.FJTRANSLATE_YANDEXKEY);
     this.$set(this.$store.state, "env", env);
   },

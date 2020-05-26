@@ -9,13 +9,15 @@
         <v-spacer></v-spacer>
         <v-icon v-if="!!icon">{{ icon }}</v-icon>
       </v-card-title>
-      <v-card-text max-height="80%">
+      <v-card-text max-height="85%">
         <ConfigFile
+          class="my-1"
           :value.sync="myConf.editWordsFile"
           :label="$t('Words file config:')"
           icon="mdi-folder"
         />
         <ConfigFile
+          class="my-1"
           :value.sync="myConf.globalWordsFile"
           :label="$t('Global translation file:')"
           icon="mdi-briefcase"

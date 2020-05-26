@@ -74,8 +74,8 @@ export default new Vuex.Store({
     },
     lastGoogleErr: 0,
     yandex: {
-      yandex: null,
-      yandexLangs: [],
+      // yandex: null,
+      // yandexLangs: [],
       yandexKey: "",
     },
   },

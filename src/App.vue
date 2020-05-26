@@ -43,25 +43,26 @@
     <v-content class="ma-2">
       <v-container fluid>
         <v-row no-gutters class="mb-1">
-          <v-col cols="3">
+          <v-col cols="2">
             <FjFileLoadButton
               justify="center"
               iconleft
               img="mdi-folder-upload"
               :label="$t('load words')"
               @onchange="
-                loadTextFromFile(
-                  '',
-                  config.editWordsFile,
-                  $t('load Words file:')
-                ).then((x) => loadWords(x))
+                (path) =>
+                  loadTextFromFile(
+                    path,
+                    config.editWordsFile,
+                    $t('load Words file:')
+                  ).then((x) => loadWords(x))
               "
               :droplabel="$t('Drop words file here')"
               :tooltip="$t('open file selector for words file or drop it here')"
               small
             ></FjFileLoadButton>
           </v-col>
-          <v-col cols="3">
+          <v-col cols="2">
             <FjB
               justify="center"
               iconleft
@@ -81,6 +82,27 @@
               "
             />
           </v-col>
+          <v-col cols="2">
+            <FjFileLoadButton
+              justify="center"
+              iconleft
+              img="mdi-folder-plus"
+              :label="$t('Add keys to words')"
+              @onchange="
+                (path) =>
+                  loadTextFromFile(
+                    path,
+                    config.globalWordsFile,
+                    $t('load Global file:')
+                  ).then((x) => addWords(x, editContent))
+              "
+              :droplabel="$t('Drop additional globals')"
+              :tooltip="
+                $t('file to be added to global can be loaded dropped here')
+              "
+              small
+            ></FjFileLoadButton>
+          </v-col>
           <v-col cols="6">
             <!--             <v-text-field dense readonly :value="config.editWordsFile.name" solo flat class="ma-0 "></v-text-field>
             -->
@@ -99,7 +121,7 @@
           </v-col>
         </v-row>
         <v-row no-gutters class="mb-1">
-          <v-col cols="3">
+          <v-col cols="2">
             <FjFileLoadButton
               justify="center"
               iconleft
@@ -120,7 +142,7 @@
               small
             ></FjFileLoadButton>
           </v-col>
-          <v-col cols="3">
+          <v-col cols="2">
             <FjB
               justify="center"
               iconleft
@@ -139,6 +161,27 @@
                 )
               "
             />
+          </v-col>
+          <v-col cols="2">
+            <FjFileLoadButton
+              justify="center"
+              iconleft
+              img="mdi-briefcase-plus"
+              :label="$t('Add keys to global')"
+              @onchange="
+                (path) =>
+                  loadTextFromFile(
+                    path,
+                    config.globalWordsFile,
+                    $t('load Global file:')
+                  ).then((x) => addWords(x, globalContent))
+              "
+              :droplabel="$t('Drop additional globals')"
+              :tooltip="
+                $t('file to be added to global can be loaded dropped here')
+              "
+              small
+            ></FjFileLoadButton>
           </v-col>
           <v-col cols="6">
             <div
@@ -184,9 +227,9 @@
             />
           </v-col>
 
-          <v-col cols="3">{{
-            `${numMissing} ${$t("keys not fully translated")}`
-          }}</v-col>
+          <v-col cols="3">
+            {{ `${numMissing} ${$t("keys not fully translated")}` }}
+          </v-col>
 
           <v-col cols="3">
             <FjB
@@ -425,9 +468,11 @@ export default {
         return that.$alert(that.$t("Missing words saved to clipboard!"));
       }
       const q = await that.$fjConfirm(
-        `okText=all,cancelText=${that.$t("missing")},title=${that.$t(
-          "Translate"
-        )}:|${that.$t("(re)Translate all or only missing languages?")}`
+        `okText=${that.$t("all")},cancelText=${that.$t(
+          "missing"
+        )},title=${that.$t("Translate")}:|${that.$t(
+          "(re)Translate all or only missing languages?"
+        )}`
       );
       await that.translateAllKeys(q);
       that.inTranslateAll = false;
@@ -447,7 +492,11 @@ export default {
     editRemoveKey(props) {
       //      console.log("removeKey:", props.item.key);
       return this.$fjConfirm(
-        `title=Delete key:, color=error darken-2, okColor=error darken-2|Do you really want to delete<br>
+        `title=${this.$t(
+          "Delete key"
+        )}:, color=error darken-2, okColor=error darken-2|${this.$t(
+          "Do you really want to delete"
+        )}<br>
         '<strong>${props.item.key}</strong>'?`
       ).then((res) => res && this.$delete(this.editContent, props.item.key));
     },
@@ -476,6 +525,46 @@ export default {
       // console.log("loadGlobal:", t);
       t = this.checkContent(t);
       this.globalContent = t;
+    },
+
+    async addWords(t, base) {
+      const that = this;
+      if (!t || typeof t !== "object") return;
+      let found = false;
+      let count = 0;
+      for (const key of Object.keys(t))
+        if (base[key]) {
+          found = true;
+          break;
+        }
+      if (found)
+        found = await await that.$fjConfirm(
+          `okText=${that.$t("Replace all")},cancelText=${that.$t(
+            "Only add new"
+          )},title=${that.$t("add keys to file")}:|${that.$t(
+            "If key exist already should I replace with content from file or add only new keys?"
+          )}`
+        );
+      for (const entry of Object.entries(t)) {
+        const [key, value] = entry;
+        if (!base[key]) {
+          base[key] = value;
+          count++;
+        } else if (
+          found &&
+          value &&
+          typeof value === "object" &&
+          typeof base[key] == object
+        ) {
+          count++;
+          for (const lang of Object.entries(value)) {
+            const [l, w] = lang;
+            base[key][l] = w;
+          }
+        }
+      }
+      that.$alert(`info:${that.$t("Added {0} keys to file!", count)}`);
+      if (count) that.saveTimer = true;
     },
 
     getEditItem(n) {
@@ -606,9 +695,6 @@ export default {
       await that.wait(10);
       that.$forceUpdate();
     }
-    await that.wait(50);
-
-    await that.saveYandex();
     // if (global) {
     //   this.globalContent = global;
     //   this.globalOnly = true;
