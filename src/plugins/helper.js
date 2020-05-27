@@ -43,13 +43,16 @@ const helper = {
       return this.$store.getters.yandexKey;
     },
     changedGlobal() {
-      return this.globalCompare != JSON.stringify(this.globalContent);
+      const test = this.update || 2 > 1;
+      return test && this.globalCompare != JSON.stringify(this.globalContent);
     },
     isGlobalContent() {
-      return this.globalContent && this.globalCompare != "{}";
+      const test = this.update || 2 > 1;
+      return test && this.globalContent && this.globalCompare != "{}";
     },
     changedWords() {
-      return this.editCompare != JSON.stringify(this.editContent);
+      const test = this.update || 2 > 1;
+      return test && this.editCompare != JSON.stringify(this.editContent);
     },
     envConfig() {
       return this.$store.state.env.FJTRANSLATE_CONFIG;
@@ -99,6 +102,16 @@ const helper = {
         // this.$store.state.config = value;
       },
     },
+    update: {
+      get() {
+        return this.$store.state.update;
+      },
+      set(value) {
+        this.$set(this.$store.state, "update", !this.$store.state.update);
+        // this.$store.state.config = value;
+      },
+    },
+
     globalContent: {
       get() {
         return this.$store.state.globalContent;
@@ -204,11 +217,14 @@ const helper = {
       await this.wait(1).then((_) => this.saveYandex());
       //      if (newV !== this.config.devLocale) this.$set(this.config, "devLocale", newV);
     },
- */ globalContent() {
+ */
+    globalContent() {
       this.saveTimer = true;
+      this.update = true;
     },
     editContent() {
       this.saveTimer = true;
+      this.update = true;
     },
   },
   methods: {
@@ -248,6 +264,7 @@ const helper = {
 
     async saveFile(what, opts, e) {
       const that = this;
+
       function exportFile(what, opts) {
         if (what === undefined || what === null)
           return {
@@ -313,7 +330,7 @@ const helper = {
         };
       }
 
-      const { mime, str, name } = that.exportFile(what, opts);
+      const { mime, str, name } = exportFile(what, opts);
       if (!mime) throw new Error(that.$t("invalid value to save!"));
 
       //      console.log("Want to save file:", name, opts, e);
@@ -353,11 +370,13 @@ const helper = {
     },
 
     importFile(r, opts) {
-      opts = opts || {
-        type: "JSON",
-        skipAtStart: "{",
-        skipAfterEnd: "}",
-      };
+      opts = opts || {};
+      if (!opts.type)
+        Object.assign(opts, {
+          type: "JSON",
+          skipAtStart: "{",
+          skipAfterEnd: "}",
+        });
       const { skipAtStart, skipAfterEnd, type } = opts;
       let ss = skipAtStart ? r.indexOf(skipAtStart) : -1;
       if (ss > 0) {
@@ -414,8 +433,7 @@ const helper = {
           type: "error",
           text: that.$t(
             "globalOnly not possible: Global key '{0}' not found for language '{1}'",
-            key,
-            to
+            [key, to]
           ),
         });
         return null;
@@ -481,7 +499,8 @@ const helper = {
         Object.keys(eck).length < that.config.allLocales.length
       );
       if (!isAll) that.$set(stat, "showTrans", false);
-      await that.wait(2);
+      await that.wait(1);
+      this.update = true;
       that.saveTimer = true;
       that.$forceUpdate();
       return key;
@@ -608,7 +627,7 @@ const helper = {
         } catch (e) {
           that.$alert({
             type: "warning",
-            text: that.$t("Yandex translation error: {0}", e),
+            text: that.$t("Yandex translation error: {0}", [e]),
           });
           return null;
         }

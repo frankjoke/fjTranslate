@@ -4,7 +4,9 @@
       :headers="langsHeaders"
       :items="editExpandList"
       item-key="lang"
+      :items-per-page="-1"
       dense
+      hide-default-footer
     >
       <template v-slot:top>
         <v-system-bar light color="grey lighten-2">
@@ -307,13 +309,13 @@ export default {
         } catch (e) {
           that.$alert({
             type: "error",
-            text: that.$t("Error in translation: ${0}", e),
+            text: that.$t("Error in translation: {0}", [e]),
           });
         }
       } else
         that.$alert({
           type: "warning",
-          text: that.$t("could not find language for '${0}'!", key),
+          text: that.$t("could not find language for '{0}'!", [key]),
         });
     },
 

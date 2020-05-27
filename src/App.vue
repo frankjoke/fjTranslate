@@ -17,14 +17,14 @@
           href="http://translate.yandex.com"
           target="_blank"
           img="mdi-open-in-new"
-          :tooltip="$t('open webpage of {0}', 'Yandex.Translate')"
+          :tooltip="$t('open webpage of {0}', ['Yandex.Translate'])"
         />
         <span>and Google</span>
         <FjB
           href="https://translate.google.com/"
           target="_blank"
           img="mdi-open-in-new"
-          :tooltip="$t('open webpage of {0}', 'Translate.Google')"
+          :tooltip="$t('open webpage of {0}', ['Translate.Google'])"
         />
       </div>
 
@@ -82,7 +82,7 @@
               "
             />
           </v-col>
-          <v-col cols="2">
+          <v-col cols="3">
             <FjFileLoadButton
               justify="center"
               iconleft
@@ -92,8 +92,8 @@
                 (path) =>
                   loadTextFromFile(
                     path,
-                    config.globalWordsFile,
-                    $t('load Global file:')
+                    undefined,
+                    $t('load additions for words file:')
                   ).then((x) => addWords(x, editContent))
               "
               :droplabel="$t('Drop additional globals')"
@@ -103,7 +103,7 @@
               small
             ></FjFileLoadButton>
           </v-col>
-          <v-col cols="6">
+          <v-col cols="5">
             <!--             <v-text-field dense readonly :value="config.editWordsFile.name" solo flat class="ma-0 "></v-text-field>
             -->
             <div
@@ -112,7 +112,7 @@
               justify="left"
             >
               <div style="line-height: 0.7rem;" class="caption">
-                {{ $t("Words Filename:") }}
+                {{ $t("Words Filename with {0} keys:", [editCount]) }}
               </div>
               <div class="body-2" style="line-height: 0.9rem;">
                 {{ config.editWordsFile.name || config.editWordsFile.fileName }}
@@ -162,7 +162,7 @@
               "
             />
           </v-col>
-          <v-col cols="2">
+          <v-col cols="3">
             <FjFileLoadButton
               justify="center"
               iconleft
@@ -172,8 +172,8 @@
                 (path) =>
                   loadTextFromFile(
                     path,
-                    config.globalWordsFile,
-                    $t('load Global file:')
+                    undefined,
+                    $t('load additions for Global file:')
                   ).then((x) => addWords(x, globalContent))
               "
               :droplabel="$t('Drop additional globals')"
@@ -183,7 +183,7 @@
               small
             ></FjFileLoadButton>
           </v-col>
-          <v-col cols="6">
+          <v-col cols="5">
             <div
               v-if="
                 config.globalWordsFile.name || config.globalWordsFile.fileName
@@ -192,7 +192,7 @@
               justify="left"
             >
               <div style="line-height: 0.7rem;" class="caption">
-                {{ $t("Global Filename:") }}
+                {{ $t("Global Filename with {0} keys:", [globalCount]) }}
               </div>
               <div class="subtitle-2" style="line-height: 0.9rem;">
                 {{
@@ -203,7 +203,7 @@
           </v-col>
         </v-row>
         <v-row no-gutters class="mb-1">
-          <v-col cols="3">
+          <v-col cols="2">
             <v-checkbox
               class="chb1 my-0 py-0 caption"
               justify="center"
@@ -215,7 +215,7 @@
               :title="$t('This is a title!')"
             />
           </v-col>
-          <v-col cols="3">
+          <v-col cols="2">
             <v-checkbox
               class="my-0 py-0 caption"
               justify="center"
@@ -227,14 +227,15 @@
             />
           </v-col>
 
-          <v-col cols="3">
-            {{ `${numMissing} ${$t("keys not fully translated")}` }}
-          </v-col>
+          <v-col cols="3" />
+          <v-col cols="3">{{
+            `${numMissing} ${$t("keys not fully translated")}`
+          }}</v-col>
 
-          <v-col cols="3">
+          <v-col cols="2">
             <FjB
               v-if="!inTranslateAll"
-              justify="center"
+              justify="right"
               iconleft
               small
               img="mdi-folder-multiple"
@@ -267,6 +268,7 @@
               :search="editSearch"
               calculate-widths
               :footer-props="{ showFirstLastPage: true }"
+              itemsPerPage="20"
             >
               <template v-slot:top>
                 <v-system-bar window light class="pb-2">
@@ -436,6 +438,8 @@ export default {
       editWhat: null,
       //      time: new Date().toISOString(),
       editSearch: "",
+      // editCount: 0,
+      // globalCount: 0,
       editExpandedSync: [],
       editedItem: {
         name: "",
@@ -518,6 +522,7 @@ export default {
       // console.log("loadWords:", t);
       t = this.checkContent(t);
       this.editContent = t;
+      this.update = true;
     },
 
     loadGlobal(t) {
@@ -525,6 +530,7 @@ export default {
       // console.log("loadGlobal:", t);
       t = this.checkContent(t);
       this.globalContent = t;
+      this.update = true;
     },
 
     async addWords(t, base) {
@@ -563,8 +569,9 @@ export default {
           }
         }
       }
-      that.$alert(`info:${that.$t("Added {0} keys to file!", count)}`);
+      that.$alert(`info:${that.$t("Added {0} keys to file!", [count])}`);
       if (count) that.saveTimer = true;
+      this.update = true;
     },
 
     getEditItem(n) {
@@ -574,10 +581,21 @@ export default {
     saveKeyChange(item) {
       this.$set(this.editContent, item.name, item.trans);
       this.$delete(this.editContent, item.key);
+      this.update = true;
     },
   },
 
   computed: {
+    editCount() {
+      const test = this.update || 2 > 1;
+      return test && Object.keys(this.editContent).length;
+    },
+
+    globalCount() {
+      const test = this.update || 2 > 1;
+      return test && Object.keys(this.globalContent).length;
+    },
+
     editHeaders() {
       return [
         {
@@ -612,7 +630,8 @@ export default {
       const ec = this.editContent;
       const dl = this.devLocale;
       const res = [];
-      if (ec)
+      const test = this.update || 2 > 1;
+      if (ec && test)
         for (const entry of Object.entries(ec)) {
           const [key, value] = entry;
           //          console.log(dl, key, value);
@@ -656,6 +675,23 @@ export default {
       );
       // console.log(this.editExpand);
     },
+    /* 
+    "$store.state.editContent": {
+      deep: true,
+      handler(newi) {
+        // console.log("showConfigForm ganged to", newi);
+        this.editCount = Object.keys(newi).length;
+      },
+    },
+
+    "$store.state.globalContent": {
+      deep: true,
+      handler(newi) {
+        // console.log("showConfigForm ganged to", newi);
+        this.globalCount = Object.keys(newi).length;
+      },
+    },
+ */
   },
 
   async mounted() {
@@ -705,7 +741,7 @@ export default {
       : that.myLang;
     // console.log(that.config);
     // that.$alert({
-    //   text: that.$t("Mylang = {0}", that.myLang),
+    //   text: that.$t("Mylang = {0}", [that.myLang]),
     // });
     //    console.log(this.$options)
     await that.wait(50);
@@ -768,19 +804,6 @@ export default {
       that.$forceUpdate();
     }
   },
- */
-  /*   created() {
-    timerTiv = setInterval(_ => {
-      //       debugger;
-      this.tiv = this.getTimeInterval(startup);
-    }, 5000);
-  },
-  destroyed() {
-    if (timerTiv) {
-      clearInterval(timerTiv);
-      timerTiv = null;
-    }
-  }
  */
 };
 /* let timerTiv = null;
