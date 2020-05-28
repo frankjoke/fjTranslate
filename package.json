@@ -84,46 +84,4 @@
     "> 1%",
     "last 2 versions"
   ],
-  "fjTranslate": {
-    "devLocale": "en",
-    "allLocales": [
-      "en",
-      "de",
-      "ru",
-      "pt",
-      "nl",
-      "fr",
-      "it",
-      "es",
-      "pl",
-      "zh-cn"
-    ],
-    "locales": [
-      "de",
-      "ru",
-      "pt",
-      "nl",
-      "fr",
-      "it",
-      "es",
-      "pl",
-      "zh-cn"
-    ],
-    "useYandex": false,
-    "globalWordsFile": {
-      "type": "Javascript",
-      "skipAtStart": "{",
-      "skipAfterEnd": "}",
-      "addAtStart": "!",
-      "addAtEnd": "!"
-    },
-    "editWordsFile": {
-      "type": "Javascript",
-      "skipAtStart": "{",
-      "skipAfterEnd": "}",
-      "addAtStart": "!",
-      "addAtEnd": "!"
-    },
-    "yandexKey": ""
-  }
 }

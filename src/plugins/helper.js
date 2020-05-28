@@ -514,6 +514,8 @@ const helper = {
         await that.wait(5);
       }
       that.$set(that.editDialog, "showTrans", false);
+      await that.wait(1);
+      this.update;
     },
 
     async anyTranslate(opts_) {
