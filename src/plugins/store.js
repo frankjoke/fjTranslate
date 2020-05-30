@@ -10,11 +10,11 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    env: null,
     config: {
       devLocale: "en",
       configFile: "./config.json",
       autosave: true,
-      env: null,
       allLocales: [
         "en",
         "de",
@@ -46,10 +46,11 @@ export default new Vuex.Store({
         skipAtStart: "{",
         type: "Javascript",
         autosave: true,
-        autoload: true,
+        autoload: false,
         name: "",
       },
       yandexKey: "",
+      googleKey: "",
     },
     globalContent: {},
     globalCompare: "",
@@ -74,25 +75,72 @@ export default new Vuex.Store({
       showTrans: false,
     },
     lastGoogleErr: 0,
-    yandex: {
+    translateKeys: {
       // yandex: null,
       // yandexLangs: [],
       yandexKey: "",
+      googleKey: "",
     },
   },
   getters: {
     devLocale: (state, getters) => getters.config.devLocale,
     yandexKey: (state, getters) =>
-      getters.yandex.yandexKey || getters.config.yandexKey,
+      getters.translateKeys.yandexKey || getters.config.yandexKey,
+    googleKey: (state, getters) =>
+      getters.translateKeys.googleKey || getters.config.googleKey,
     config: (state) => state.config,
     version: (state) => state.version,
     envConfig: (state) => state.envConfig,
+    env: (state) => state.env,
     editContent: (state) => state.editContent,
     globalContent: (state) => state.globalContent,
     myLang: (state) => state.myLang,
-    yandex: (state) => state.yandex,
+    translateKeys: (state) => state.translateKeys,
   },
-  mutations: {},
+  mutations: {
+    config(state, value) {
+      state.config = value;
+    },
+    env(state, value) {
+      state.env = value;
+    },
+    globalContent(state, value) {
+      state.globalContent = value;
+    },
+    globalCompare(state, value) {
+      state.globalCompare = value;
+    },
+    editContent(state, value) {
+      state.editContent = value;
+    },
+    editCompare(state, value) {
+      state.editCompare = value;
+    },
+    update(state, value) {
+      state.update = value;
+    },
+    editExpand(state, value) {
+      state.editExpand = value;
+    },
+    saveTimer(state, value) {
+      state.saveTimer = value;
+    },
+    globalOnly(state, value) {
+      state.globalOnly = value;
+    },
+    noGlobal(state, value) {
+      state.noGlobal = value;
+    },
+    editDialog(state, value) {
+      state.editDialog = value;
+    },
+    lastGoogleErr(state, value) {
+      state.lastGoogleErr = value;
+    },
+    translateKeys(state, value) {
+      state.translateKeys = value;
+    },
+  },
   actions: {},
   modules: {},
 });

@@ -18,18 +18,10 @@ import fr from "vuetify/es5/locale/fr";
 import it from "vuetify/es5/locale/it";
 import es from "vuetify/es5/locale/es";
 
-Vue.component("my-component", {
-  methods: {
-    changeLocale() {
-      this.$vuetify.lang.current = "sv";
-    },
-  },
-});
-
 export default new Vuetify({
   lang: {
     locales: { zhHans, pl, en, de, ru, pt, nl, fr, it, es },
-    current: "de",
+    current: "en",
   },
   icons: {
     iconfont: "mdi",

@@ -99,22 +99,6 @@
         -->
       </v-row>
       <v-row>
-        <v-col cols="2">
-          <v-checkbox
-            dense
-            :label="$t('Autoload')"
-            v-model="value.autoload"
-            hide-details
-          ></v-checkbox>
-        </v-col>
-        <v-col cols="2">
-          <v-checkbox
-            dense
-            :label="$t('Autosave')"
-            v-model="value.autosave"
-            hide-details
-          ></v-checkbox>
-        </v-col>
         <v-col cols="8">
           <v-text-field
             class="body-2"
@@ -124,6 +108,24 @@
             :label="$t('Filename:')"
             v-model="value.fileName"
           ></v-text-field>
+        </v-col>
+        <v-col cols="2">
+          <v-checkbox
+            dense
+            :label="$t('Autoload')"
+            v-model="value.autoload"
+            hide-details
+            :disabled="!value.fileName"
+          ></v-checkbox>
+        </v-col>
+        <v-col cols="2">
+          <v-checkbox
+            dense
+            :label="$t('Autosave')"
+            v-model="value.autosave"
+            hide-details
+            :disabled="!value.fileName"
+          ></v-checkbox>
         </v-col>
       </v-row>
     </v-container>

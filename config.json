@@ -1,7 +1,7 @@
 {
   "fjTranslate": {
     "devLocale": "en",
-    "configFile": ".\\config.json",
+    "configFile": "./config.json",
     "autosave": true,
     "allLocales": [
       "en",
@@ -28,27 +28,26 @@
     ],
     "useYandex": false,
     "globalWordsFile": {
-      "type": "JSON",
-      "skipAtStart": "{",
-      "skipAfterEnd": "}",
-      "addAtStart": "!",
       "addAtEnd": "!",
+      "addAtStart": "!",
+      "skipAfterEnd": "}",
+      "skipAtStart": "{",
+      "type": "JSON",
+      "autosave": true,
       "autoload": true,
-      "fileName": "..\\global-words.json",
-      "skippedAfterEnd": "",
-      "autosave": true
+      "name": ""
     },
     "editWordsFile": {
-      "type": "JSON",
-      "skipAtStart": "{",
-      "skipAfterEnd": "}",
-      "addAtStart": "!",
       "addAtEnd": "!",
-      "fileName": "..\\missing.json",
-      "autoload": true,
-      "skippedAfterEnd": "",
-      "autosave": true
+      "addAtStart": "!",
+      "skipAfterEnd": "}",
+      "skipAtStart": "{",
+      "type": "Javascript",
+      "autosave": true,
+      "autoload": false,
+      "name": ""
     },
-    "yandexKey": ""
+    "yandexKey": "",
+    "googleKey": ""
   }
 }

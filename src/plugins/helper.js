@@ -8,6 +8,7 @@ if there is a value named 'my_attrs' use it to filer
 import inspect from "browser-util-inspect";
 import { mapState } from "vuex";
 import axios from "axios";
+import googleTranslate from "google-translate";
 //import { setCORS } from "google-translate-api-browser";
 // setting up cors-anywhere server address
 //const gTranslate = setCORS("http://cors-anywhere.herokuapp.com/");
@@ -28,6 +29,7 @@ function mapFilters(filters) {
     return result;
   }, {});
 }
+let googleClient = null;
 
 const helper = {
   // data() {
@@ -41,6 +43,9 @@ const helper = {
     },
     yandexKey() {
       return this.$store.getters.yandexKey;
+    },
+    googleKey() {
+      return this.$store.getters.googleKey;
     },
     changedGlobal() {
       const test = this.update || 2 > 1;
@@ -57,7 +62,7 @@ const helper = {
     envConfig() {
       return this.$store.state.env.FJTRANSLATE_CONFIG;
     },
-    ...mapState(["version", "myLang", "yandex"]),
+    ...mapState(["version", "myLang", "translateKeys"]),
 
     devLocale() {
       return this.$store.getters.devLocale;
@@ -68,7 +73,7 @@ const helper = {
         return now - this.$store.state.lastGoogleErr < 30000;
       },
       set(value) {
-        this.$store.state.lastGoogleErr = value ? Date.now() : 0;
+        this.$store.commit("lastGoogleErr", value ? Date.now() : 0);
       },
     },
     saveTimer: {
@@ -79,17 +84,20 @@ const helper = {
         const that = this;
         if (that.$store.state.saveTimer) {
           clearTimeout(this.$store.state.saveTimer);
-          that.$store.state.saveTimer = 0;
+          that.$store.commit("saveTimer", 0);
         }
         if (value) {
-          that.$store.state.saveTimer = setTimeout(() => {
-            that.$store.state.saveTimer = 0;
-            try {
-              that.saveTimeout();
-            } finally {
-              // console.log("SaveTimeout!");
-            }
-          }, 5000);
+          that.$store.commit(
+            "saveTimer",
+            setTimeout(() => {
+              that.$store.commit("saveTimer", 0);
+              try {
+                that.saveTimeout();
+              } finally {
+                // console.log("SaveTimeout!");
+              }
+            }, 5000)
+          );
         }
       },
     },
@@ -98,7 +106,7 @@ const helper = {
         return this.$store.state.config;
       },
       set(value) {
-        this.$set(this.$store.state, "config", value);
+        this.$store.commit("config", value);
         // this.$store.state.config = value;
       },
     },
@@ -107,7 +115,7 @@ const helper = {
         return this.$store.state.update;
       },
       set(value) {
-        this.$set(this.$store.state, "update", !this.$store.state.update);
+        this.$store.commit("update", !this.$store.state.update);
         // this.$store.state.config = value;
       },
     },
@@ -117,8 +125,8 @@ const helper = {
         return this.$store.state.globalContent;
       },
       set(value) {
-        this.$set(this.$store.state, "globalContent", value);
-        this.$set(this.$store.state, "globalCompare", this.myStringify(value));
+        this.$store.commit("globalContent", value);
+        this.$store.commit("globalCompare", this.myStringify(value));
         // this.$store.state.globalContent = value;
       },
     },
@@ -127,8 +135,7 @@ const helper = {
         return this.$store.state.globalCompare;
       },
       set(value) {
-        this.$set(
-          this.$store.state,
+        this.$store.commit(
           "globalCompare",
           value === true ? this.myStringify(this.globalContent) : value
         );
@@ -139,8 +146,7 @@ const helper = {
         return this.$store.state.editCompare;
       },
       set(value) {
-        this.$set(
-          this.$store.state,
+        this.$store.commit(
           "editCompare",
           value === true ? this.myStringify(this.editContent) : value
         );
@@ -151,8 +157,8 @@ const helper = {
         return this.$store.state.editContent;
       },
       set(value) {
-        this.$set(this.$store.state, "editContent", value);
-        this.$set(this.$store.state, "editCompare", this.myStringify(value));
+        this.$store.commit("editContent", value);
+        this.$store.commit("editCompare", this.myStringify(value));
       },
     },
     editExpand: {
@@ -160,7 +166,7 @@ const helper = {
         return this.$store.state.editExpand;
       },
       set(value) {
-        this.$set(this.$store.state, "editExpand", value);
+        this.$store.commit("editExpand", value);
         // this.$store.state.editExpand = value;
       },
     },
@@ -169,7 +175,7 @@ const helper = {
         return this.$store.state.editDialog;
       },
       set(value) {
-        this.$set(this.$store.state, "editDialog", value);
+        this.$store.commit("editDialog", value);
         // this.$store.state.editDialog = value;
       },
     },
@@ -178,7 +184,7 @@ const helper = {
         return this.$store.state.globalOnly;
       },
       set(value) {
-        this.$set(this.$store.state, "globalOnly", value);
+        this.$store.commit("globalOnly", value);
         // this.$store.state.globalOnly = value;
       },
     },
@@ -187,7 +193,7 @@ const helper = {
         return this.$store.state.noGlobal;
       },
       set(value) {
-        this.$set(this.$store.state, "noGlobal", value);
+        this.$store.commit("noGlobal", value);
         // this.$store.state.globalOnly = value;
       },
     },
@@ -459,6 +465,7 @@ const helper = {
               [l]: eck[l] || key,
             });
           that.$set(gc[key], to, ret);
+          that.saveTimer = true;
         }
         return ret;
       }
@@ -522,6 +529,51 @@ const helper = {
       const that = this;
 
       async function gTrans() {
+        if (googleClient || that.googleKey) {
+          if (
+            // googleClient !== false &&
+            googleClient === null &&
+            that.googleKey
+          ) {
+            googleClient = googleTranslate(that.googleKey);
+            const langs = await new Promise((resume) => {
+              googleClient.getSupportedLanguages((err, res) => {
+                if (err) {
+                  that.$alert(
+                    `warning:${that.$t(
+                      "Google Key available but does nioot seem to work!"
+                    )} ${err}`
+                  );
+                  googleClient = false;
+                  resume(null);
+                }
+                resume(res);
+              });
+            });
+            // console.log("Google langs:", langs);
+          }
+          if (googleClient) {
+            const res = await new Promise((resolve) => {
+              const args = [opts.text];
+              if (opts.from == "auto") args.push(opts.to);
+              else {
+                args.push(opts.from);
+                args.push(opts.to);
+              }
+              googleClient.translate(...args, (err, result) => {
+                if (err) {
+                  console.log("google translate error:", err);
+                  result = null;
+                } else {
+                  result.service = "googleApi";
+                  result.text = result.translatedText;
+                }
+                resolve(result);
+              });
+            });
+            if (res) return res;
+          }
+        }
         if (that.wasGoogleError) return null;
         try {
           const res = await translateGoogle(opts.text, opts);
@@ -783,16 +835,7 @@ const helper = {
  */
   },
 
-  created() {
-    const env = Object.assign(
-      {},
-      process.env,
-      this.$electron.remote.getGlobal("process").env
-    );
-    //    console.log(env);
-    this.$set(this.$store.state.yandex, "yandexKey", env.FJTRANSLATE_YANDEXKEY);
-    this.$set(this.$store.state, "env", env);
-  },
+  // created() {},
 };
 
 export default helper;

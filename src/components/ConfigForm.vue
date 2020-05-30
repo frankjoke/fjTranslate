@@ -108,7 +108,7 @@
                   :label="$t('Use Yandex first')"
                 ></v-switch>
               </v-col>
-              <v-col class="d-flex pl-1 pr-3 py-1" cols="12" sm="10">
+              <v-col class="d-flex pl-1 pr-3 py-1" cols="12" sm="5">
                 <v-text-field
                   class="caption"
                   dense
@@ -117,7 +117,7 @@
                   append-icon="mdi-eye"
                   :placeholder="
                     $t(
-                      yandexapi
+                      translateKeys.yandexKey
                         ? 'Already defined in FJTRANSLATE_YANDEXKEY environment settings!'
                         : 'The Yandex.Translate API key, you can put it also in FJTRANSLATE_YANDEXKEY env settings!'
                     )
@@ -133,6 +133,33 @@
                   hide-details="auto"
                   v-model="myConf.yandexKey"
                   @click:append="passwd = !passwd"
+                ></v-text-field>
+              </v-col>
+              <v-col class="d-flex pl-1 pr-3 py-1" cols="12" sm="5">
+                <v-text-field
+                  class="caption"
+                  dense
+                  :type="passwdg ? 'password' : 'text'"
+                  :label="$t('Google API key')"
+                  append-icon="mdi-eye"
+                  :placeholder="
+                    $t(
+                      translateKeys.googleKey
+                        ? 'Already defined in FJTRANSLATE_GOOGLEKEY environment settings!'
+                        : 'The Google Translate API key, you can put it also in FJTRANSLATE_GOOGLEKEY env settings!'
+                    )
+                  "
+                  :rules="[
+                    (value) =>
+                      !value ||
+                      value.length > 20 ||
+                      $t(
+                        'required for Google cloud translate if not defined in FJTRANSLATE_GOOGLEKEY env settings!'
+                      ),
+                  ]"
+                  hide-details="auto"
+                  v-model="myConf.googleKey"
+                  @click:append="passwdg = !passwdg"
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -238,6 +265,7 @@ export default {
       allLocales: [],
       all: true,
       passwd: true,
+      passwdg: true,
       origConf: "",
       yandexapi: process.env.FJTRANSLATE_YANDEXKEY,
     };

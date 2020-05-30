@@ -42,7 +42,7 @@
 
     <v-content class="ma-2">
       <v-container fluid>
-        <v-row no-gutters class="mb-1">
+        <v-row no-gutters class="my-1">
           <v-col cols="2">
             <FjFileLoadButton
               justify="center"
@@ -120,7 +120,7 @@
             </div>
           </v-col>
         </v-row>
-        <v-row no-gutters class="mb-1">
+        <v-row no-gutters class="my-1">
           <v-col cols="2">
             <FjFileLoadButton
               justify="center"
@@ -268,7 +268,7 @@
               :search="editSearch"
               calculate-widths
               :footer-props="{ showFirstLastPage: true }"
-              itemsPerPage="20"
+              :itemsPerPage="20"
             >
               <template v-slot:top>
                 <v-system-bar window light class="pb-2">
@@ -692,6 +692,20 @@ export default {
       },
     },
  */
+  },
+
+  created() {
+    const env = Object.assign(
+      {},
+      process.env,
+      this.$electron.remote.getGlobal("process").env
+    );
+    //    console.log(env);
+    this.$store.commit("env", env);
+    this.$store.commit("translateKeys", {
+      yandexKey: env.FJTRANSLATE_YANDEXKEY,
+      googleKey: env.FJTRANSLATE_GOOGLEKEY,
+    });
   },
 
   async mounted() {
