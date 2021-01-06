@@ -21,7 +21,7 @@
   },
   "main": "background.js",
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "browser-util-inspect": "^0.2.0",
     "google-translate": "^3.0.0",
     "material-design-icons-iconfont": "^5.0.1",
